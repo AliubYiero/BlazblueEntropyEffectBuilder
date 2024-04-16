@@ -187,144 +187,146 @@ export const useSkillInfoStore = defineStore( 'skillInfo', () => {
 	const triggerInfoList: {
 		name: SectValue,
 		trigger: Trigger[]
-	}[] = reactive( [
-		{
-			'name': '燃烧',
-			'trigger': [ '冲刺', '普攻', '技能' ],
-		},
-		{
-			'name': '火弹',
-			'trigger': [ '技能', '传承' ],
-		},
-		{
-			'name': '火环',
-			'trigger': [ '传承' ],
-		},
-		{
-			'name': '地雷',
-			'trigger': [ '召唤' ],
-		},
-		{
-			'name': '火精灵',
-			'trigger': [ '普攻' ],
-		},
-		{
-			'name': '寒冷',
-			'trigger': [ '普攻', '技能' ],
-		},
-		{
-			'name': '寒冷(爆发)',
-			'trigger': [ '普攻', '技能' ],
-		},
-		{
-			'name': '寒冷(冰冻)',
-			'trigger': [ '普攻', '技能' ],
-		},
-		{
-			'name': '冰锥',
-			'trigger': [ '冲刺', '传承' ],
-		},
-		{
-			'name': '冰刺',
-			'trigger': [ '召唤' ],
-		},
-		{
-			'name': '感电',
-			'trigger': [ '技能', '传承' ],
-		},
-		{
-			'name': '闪电链',
-			'trigger': [ '普攻', '技能', '传承' ],
-		},
-		{
-			'name': '落雷',
-			'trigger': [ '冲刺' ],
-		},
-		{
-			'name': '电球',
-			'trigger': [ '召唤' ],
-		},
-		{
-			'name': '闪电链(雷云)',
-			'trigger': [ '传承' ],
-		},
-		{
-			'name': '中毒',
-			'trigger': [ '普攻', '技能' ],
-		},
-		{
-			'name': '中毒(毒雾)',
-			'trigger': [ '普攻' ],
-		},
-		{
-			'name': '中毒(毒环)',
-			'trigger': [ '技能' ],
-		},
-		{
-			'name': '毒弹',
-			'trigger': [ '冲刺' ],
-		},
-		{
-			'name': '毒液',
-			'trigger': [ '技能', '传承' ],
-		},
-		{
-			'name': '史莱姆',
-			'trigger': [ '召唤' ],
-		},
-		{
-			'name': '触手',
-			'trigger': [ '召唤' ],
-		},
-		{
-			'name': '影子',
-			'trigger': [ '冲刺' ],
-		},
-		{
-			'name': '影刺',
-			'trigger': [ '普攻', '技能' ],
-		},
-		{
-			'name': '黑洞',
-			'trigger': [ '传承' ],
-		},
-		{
-			'name': '光枪',
-			'trigger': [ '技能', '传承' ],
-		},
-		{
-			'name': '闪光',
-			'trigger': [ '传承' ],
-		},
-		{
-			'name': '光波',
-			'trigger': [ '普攻' ],
-		},
-		{
-			'name': '光阵',
-			'trigger': [ '召唤' ],
-		},
-		{
-			'name': '圣光标记',
-			'trigger': [ '冲刺' ],
-		},
-		{
-			'name': '飞剑',
-			'trigger': [ '冲刺' ],
-		},
-		{
-			'name': '撕裂',
-			'trigger': [ '普攻', '技能' ],
-		},
-		{
-			'name': '刃环',
-			'trigger': [ '召唤' ],
-		},
-		{
-			'name': '刀刃风暴',
-			'trigger': [ '技能', '传承' ],
-		},
-	] );
+	}[] = reactive(
+		[
+			{
+				'name': '燃烧',
+				'trigger': [ '冲刺', '普攻', '技能' ],
+			},
+			{
+				'name': '火弹',
+				'trigger': [ '技能', '传承' ],
+			},
+			{
+				'name': '火环',
+				'trigger': [ '传承' ],
+			},
+			{
+				'name': '地雷',
+				'trigger': [ '召唤' ],
+			},
+			{
+				'name': '火精灵',
+				'trigger': [ '普攻' ],
+			},
+			{
+				'name': '寒冷',
+				'trigger': [ '普攻', '技能' ],
+			},
+			{
+				'name': '寒冷(爆发)',
+				'trigger': [ '普攻', '技能' ],
+			},
+			{
+				'name': '寒冷(冰冻)',
+				'trigger': [ '普攻', '技能' ],
+			},
+			{
+				'name': '冰锥',
+				'trigger': [ '冲刺', '传承' ],
+			},
+			{
+				'name': '冰刺',
+				'trigger': [ '召唤' ],
+			},
+			{
+				'name': '感电',
+				'trigger': [ '技能', '传承' ],
+			},
+			{
+				'name': '闪电链',
+				'trigger': [ '普攻', '技能', '传承' ],
+			},
+			{
+				'name': '落雷',
+				'trigger': [ '冲刺' ],
+			},
+			{
+				'name': '电球',
+				'trigger': [ '召唤' ],
+			},
+			{
+				'name': '闪电链(雷云)',
+				'trigger': [ '传承' ],
+			},
+			{
+				'name': '中毒',
+				'trigger': [ '普攻', '技能' ],
+			},
+			{
+				'name': '中毒(毒雾)',
+				'trigger': [ '普攻' ],
+			},
+			{
+				'name': '中毒(毒环)',
+				'trigger': [ '技能' ],
+			},
+			{
+				'name': '毒弹',
+				'trigger': [ '冲刺' ],
+			},
+			{
+				'name': '毒液',
+				'trigger': [ '技能', '传承' ],
+			},
+			{
+				'name': '史莱姆',
+				'trigger': [ '召唤' ],
+			},
+			{
+				'name': '触手',
+				'trigger': [ '召唤' ],
+			},
+			{
+				'name': '影子',
+				'trigger': [ '冲刺' ],
+			},
+			{
+				'name': '影刺',
+				'trigger': [ '普攻', '技能' ],
+			},
+			{
+				'name': '黑洞',
+				'trigger': [ '传承' ],
+			},
+			{
+				'name': '光枪',
+				'trigger': [ '技能', '传承' ],
+			},
+			{
+				'name': '闪光',
+				'trigger': [ '传承' ],
+			},
+			{
+				'name': '光波',
+				'trigger': [ '普攻' ],
+			},
+			{
+				'name': '光阵',
+				'trigger': [ '召唤' ],
+			},
+			{
+				'name': '圣光标记',
+				'trigger': [ '冲刺' ],
+			},
+			{
+				'name': '飞剑',
+				'trigger': [ '冲刺' ],
+			},
+			{
+				'name': '撕裂',
+				'trigger': [ '普攻', '技能' ],
+			},
+			{
+				'name': '刃环',
+				'trigger': [ '召唤' ],
+			},
+			{
+				'name': '刀刃风暴',
+				'trigger': [ '技能', '传承' ],
+			},
+		],
+	);
 	
 	return {
 		skillInfoList,

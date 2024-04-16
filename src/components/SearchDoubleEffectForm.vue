@@ -13,7 +13,30 @@
 	width: 100%;
 	display: flex;
 	justify-content: center;
+	align-items: flex-start;
 	gap: 20px;
+}
+
+// 选择框容器
+.checkbox {
+	// 容器
+	&-container {
+		display: flex;
+		flex-flow: column;
+	}
+	
+	@mixin flex {
+		display: flex;
+		gap: 20px;
+	}
+	
+	&-first-line-container {
+		@include flex;
+	}
+	
+	&-second-line-container {
+		@include flex;
+	}
 }
 
 // 表单输入框提示文本样式
@@ -21,49 +44,54 @@
 	margin-right: 5px;
 }
 
-// 数据列表展示容器
-.data-list-container {
-	width: 80%;
+
+// 数据展示
+.data {
+	// 数据列表展示容器
+	&-list-container {
+		width: 80%;
+	}
+	
+	// 数据展示样式
+	&-item__ {
+		// 火颜色
+		&fire {
+			color: #ed5126;
+		}
+		
+		// 冰颜色
+		&ice {
+			color: #128eb1;
+		}
+		
+		// 电颜色
+		&thunder {
+			color: #f2d012;
+		}
+		
+		// 毒颜色
+		&poison {
+			color: #b15212;
+		}
+		
+		// 暗颜色
+		&dark {
+			color: #705242;
+		}
+		
+		// 光颜色
+		&light {
+			color: #ffde59;
+		}
+		
+		// 刃颜色
+		&cut {
+			color: #c2c2c2;
+		}
+		
+	}
 }
 
-// 数据展示样式
-.data-item__ {
-	// 火颜色
-	&fire {
-		color: #ed5126;
-	}
-	
-	// 冰颜色
-	&ice {
-		color: #128eb1;
-	}
-	
-	// 电颜色
-	&thunder {
-		color: #f2d012;
-	}
-	
-	// 毒颜色
-	&poison {
-		color: #b15212;
-	}
-	
-	// 暗颜色
-	&dark {
-		color: #705242;
-	}
-	
-	// 光颜色
-	&light {
-		color: #ffde59;
-	}
-	
-	// 刃颜色
-	&cut {
-		color: #c2c2c2;
-	}
-	
-}
 </style>
 
 <template>
@@ -92,21 +120,71 @@
 				/>
 			</el-form-item>
 			
-			<!-- 主流派筛选多选框 -->
-			<el-form-item class="main-sect-form-item">
-				<el-checkbox
-					v-model="isCheckMainSect"
-					label="主流派"
-				/>
-			</el-form-item>
-			
-			<!-- 副流派筛选多选框 -->
-			<el-form-item class="second-sect-form-item">
-				<el-checkbox
-					v-model="isCheckSecondSect"
-					label="副流派"
-				/>
-			</el-form-item>
+			<div class="checkbox-container">
+				<!-- 流派选择 -->
+				<section class="checkbox-first-line-container">
+					<!-- 主流派筛选多选框 -->
+					<el-form-item class="main-sect-form-item">
+						<el-checkbox
+							v-model="isCheckMainSect"
+							label="主流派"
+						/>
+					</el-form-item>
+					
+					<!-- 副流派筛选多选框 -->
+					<el-form-item class="second-sect-form-item">
+						<el-checkbox
+							v-model="isCheckSecondSect"
+							label="副流派"
+						/>
+					</el-form-item>
+				</section>
+				
+				<!-- 触发槽位选择 -->
+				<section class="checkbox-second-line-container">
+					<!-- 普攻筛选多选框 -->
+					<el-form-item class="attack-trigger-form-item">
+						<el-checkbox
+							v-model="isCheckAttack"
+							label="普攻"
+						/>
+					</el-form-item>
+					
+					<!-- 技能筛选多选框 -->
+					<el-form-item class="kill-trigger-form-item">
+						<el-checkbox
+							v-model="isCheckSkill"
+							label="技能"
+						/>
+					</el-form-item>
+					
+					<!-- 冲刺筛选多选框 -->
+					<el-form-item class="sprint-trigger-form-item">
+						<el-checkbox
+							v-model="isCheckSprint"
+							label="冲刺"
+						/>
+					</el-form-item>
+					
+					<!-- 召唤筛选多选框 -->
+					<el-form-item class="call-trigger-form-item">
+						<el-checkbox
+							v-model="isCheckCall"
+							label="召唤"
+						/>
+					</el-form-item>
+					
+					<!-- 传承技筛选多选框 -->
+					<el-form-item
+						class="inheriting-trigger-form-item">
+						<el-checkbox
+							v-model="isCheckInheriting"
+							label="传承"
+						/>
+					</el-form-item>
+				
+				</section>
+			</div>
 		</el-form>
 		
 		<el-divider/>
@@ -230,7 +308,9 @@ const useFormData = () => {
 		// 如果 attribute 有值, 那么选择 attribute 对应的派系
 		if ( attribute.value.trim() ) {
 			const sectList = sectConfig[ <Attribute> attribute.value.trim() ]
-				.map( item => ( { value: item } ) ) as { value: Sect[keyof Sect] }[];
+				.map( item => ( { value: item } ) ) as {
+				value: Sect[keyof Sect]
+			}[];
 			
 			sectSuggestions = sectList.filter( item => {
 				return item.value.includes( searchString );
@@ -263,6 +343,15 @@ const useFormData = () => {
 	 * */
 	const isCheckSecondSect = ref<boolean>( true );
 	
+	/**
+	 * 创建用户选择的触发位勾选器
+	 * */
+	const isCheckAttack = ref<boolean>( true );
+	const isCheckSkill = ref<boolean>( true );
+	const isCheckSprint = ref<boolean>( true );
+	const isCheckCall = ref<boolean>( true );
+	const isCheckInheriting = ref<boolean>( true );
+	
 	return {
 		attribute,
 		handleFetchAttributeSuggestions,
@@ -270,6 +359,11 @@ const useFormData = () => {
 		handleFetchSectSuggestions,
 		isCheckMainSect,
 		isCheckSecondSect,
+		isCheckAttack,
+		isCheckSkill,
+		isCheckSprint,
+		isCheckCall,
+		isCheckInheriting,
 	};
 };
 
@@ -279,10 +373,26 @@ const useFormData = () => {
 const useDataList = ( options: {
 	attribute: Ref<'' | Attribute>,
 	sect: Ref<'' | Sect[keyof Sect]>,
+	
 	isCheckMainSect: Ref<boolean>,
-	isCheckSecondSect: Ref<boolean>
+	isCheckSecondSect: Ref<boolean>,
+	
+	isCheckAttack: Ref<boolean>,
+	isCheckSkill: Ref<boolean>,
+	isCheckSprint: Ref<boolean>,
+	isCheckCall: Ref<boolean>,
+	isCheckInheriting: Ref<boolean>,
 } ) => {
-	let { attribute, sect, isCheckSecondSect, isCheckMainSect } = options;
+	let {
+		attribute,
+		sect,
+		isCheckSecondSect,
+		isCheckMainSect,
+	} = options;
+	
+	/**
+	 * 创建过滤列表, 通过传入的选择参数过滤技能数组
+	 * */
 	const filterSkillInfoList = computed( () => {
 		const skillInfoList = skillInfoStore.skillInfoList;
 		// console.log( 'skillInfoList:', skillInfoList );
@@ -301,8 +411,28 @@ const useDataList = ( options: {
 				// 过滤流派
 				&& skillInfo.secondSect.includes( sect.value );
 			
-			// console.log( 'isMain:', isMain, 'isSecond:', isSecond );
-			return isMain || isSecond;
+			/*
+			* 遍历 trigger, 判断当前 trigger 是否全部符合已勾选的 trigger
+			* */
+			// 生成当前取消勾选的所有触发位
+			const checkTriggerList: Trigger[] = [
+				isCheckAttack.value || '普攻',
+				isCheckSkill.value || '技能',
+				isCheckSprint.value || '冲刺',
+				isCheckCall.value || '召唤',
+				isCheckInheriting.value || '传承',
+			].filter( item => item !== true ) as Trigger[];
+			
+			// 如果当前词条因为取消触发位不允许出现
+			const isTrigger = skillInfo.trigger.every( trigger => {
+				// console.log( 'trigger', trigger );
+				return checkTriggerList.includes( trigger );
+			} );
+			
+			// console.log( 'isTrigger', skillInfo.name, isTrigger );
+			// console.log( 'isMain', isMain );
+			// console.log( 'isSecond', isSecond );
+			return ( isMain || isSecond ) && !isTrigger;
 		} );
 		
 	} );
@@ -333,11 +463,26 @@ const {
 	handleFetchSectSuggestions,
 	isCheckMainSect,
 	isCheckSecondSect,
+	isCheckAttack,
+	isCheckSkill,
+	isCheckSprint,
+	isCheckCall,
+	isCheckInheriting,
 } = useFormData();
 
 const {
 	filterSkillInfoList,
 	styleMapper,
-} = useDataList( { attribute, sect, isCheckSecondSect, isCheckMainSect } );
+} = useDataList( {
+	attribute,
+	sect,
+	isCheckSecondSect,
+	isCheckMainSect,
+	isCheckAttack,
+	isCheckSkill,
+	isCheckSprint,
+	isCheckCall,
+	isCheckInheriting,
+} );
 
 </script>
