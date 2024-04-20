@@ -224,11 +224,12 @@
 </template>
 
 <script lang="ts" setup>
-import { useSkillInfoStore } from '../store/useSkillInfoStore.ts';
-import { Attribute } from '../interfaces/attribute.ts';
-import { computed, Ref, ref } from 'vue';
-import { Sect } from '../interfaces/sect.ts';
-import { sectConfig } from '../config/sectConfig.ts';
+import { useSkillInfoStore } from '../../store/useSkillInfoStore.ts';
+import { Attribute } from '../../interfaces/Attribute.ts';
+import { computed, ref } from 'vue';
+import { Sect } from '../../interfaces/Sect.ts';
+import { sectConfig } from '../../config/sectConfig.ts';
+import { Trigger } from '../../interfaces/Trigger.ts';
 
 const skillInfoStore = useSkillInfoStore();
 console.log( skillInfoStore.skillInfoList );
@@ -366,30 +367,25 @@ const useFormData = () => {
 		isCheckInheriting,
 	};
 };
+const {
+	attribute,
+	handleFetchAttributeSuggestions,
+	sect,
+	handleFetchSectSuggestions,
+	isCheckMainSect,
+	isCheckSecondSect,
+	isCheckAttack,
+	isCheckSkill,
+	isCheckSprint,
+	isCheckCall,
+	isCheckInheriting,
+} = useFormData();
+
 
 /**
  * 数据列表作用域
  * */
-const useDataList = ( options: {
-	attribute: Ref<'' | Attribute>,
-	sect: Ref<'' | Sect[keyof Sect]>,
-	
-	isCheckMainSect: Ref<boolean>,
-	isCheckSecondSect: Ref<boolean>,
-	
-	isCheckAttack: Ref<boolean>,
-	isCheckSkill: Ref<boolean>,
-	isCheckSprint: Ref<boolean>,
-	isCheckCall: Ref<boolean>,
-	isCheckInheriting: Ref<boolean>,
-} ) => {
-	let {
-		attribute,
-		sect,
-		isCheckSecondSect,
-		isCheckMainSect,
-	} = options;
-	
+const useDataList = () => {
 	/**
 	 * 创建过滤列表, 通过传入的选择参数过滤技能数组
 	 * */
@@ -457,32 +453,8 @@ const useDataList = ( options: {
 };
 
 const {
-	attribute,
-	handleFetchAttributeSuggestions,
-	sect,
-	handleFetchSectSuggestions,
-	isCheckMainSect,
-	isCheckSecondSect,
-	isCheckAttack,
-	isCheckSkill,
-	isCheckSprint,
-	isCheckCall,
-	isCheckInheriting,
-} = useFormData();
-
-const {
 	filterSkillInfoList,
 	styleMapper,
-} = useDataList( {
-	attribute,
-	sect,
-	isCheckSecondSect,
-	isCheckMainSect,
-	isCheckAttack,
-	isCheckSkill,
-	isCheckSprint,
-	isCheckCall,
-	isCheckInheriting,
-} );
+} = useDataList();
 
 </script>

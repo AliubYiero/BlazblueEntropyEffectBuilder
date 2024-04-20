@@ -14,7 +14,11 @@ export const router = createRouter( {
 	routes: [
 		{
 			path: '/',
-			component: () => import('../components/SearchDoubleEffectForm.vue'),
+			component: () => import('../views/SearchDoublePage.vue'),
+		},
+		{
+			path: '/builder',
+			component: () => import('../views/SectBuilderPage.vue'),
 		},
 	],
 } );

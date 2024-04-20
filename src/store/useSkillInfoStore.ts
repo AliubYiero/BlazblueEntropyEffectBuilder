@@ -8,10 +8,11 @@
 
 import { defineStore } from 'pinia';
 import { reactive } from 'vue';
-import { Attribute } from '../interfaces/attribute.ts';
-import { Sect } from '../interfaces/sect.ts';
+import { Attribute } from '../interfaces/Attribute.ts';
+import { Sect } from '../interfaces/Sect.ts';
 import { sectConfig } from '../config/sectConfig.ts';
-import { SectValue } from '../interfaces/sectValue.ts';
+import { SectValue } from '../interfaces/SectValue.ts';
+import { Trigger } from '../interfaces/Trigger.ts';
 
 /**
  * 创建一个流派Mapper
