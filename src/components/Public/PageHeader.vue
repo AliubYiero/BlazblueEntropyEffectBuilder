@@ -17,6 +17,9 @@
 
 <script lang="ts" setup>
 
+import { router } from '../../router';
+import { computed } from 'vue';
+
 /**
  * tabs router Mapper
  * */
@@ -24,8 +27,9 @@ const tabMapper = {
 	searchDouble: '/',
 	sectBuilder: '/builder',
 };
+
 /**
  * 默认菜单
  * */
-const defaultActiveTab = tabMapper.searchDouble;
+const defaultActiveTab = computed( () => router.currentRoute.value.fullPath );
 </script>
