@@ -13,4 +13,6 @@ export interface SkillCardInfo {
 	sect: EmptyStringAble<SectValue>;
 	// 触发位的名称, 如普攻, 技能...
 	triggerName: Trigger;
+	// 当前位置是否存在继承
+	inherit: boolean;
 }

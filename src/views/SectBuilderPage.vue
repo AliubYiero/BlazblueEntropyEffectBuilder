@@ -16,6 +16,8 @@
 
 <template>
 	<main class="skill-card-container">
+		<enabled-double-skill/>
+		<el-divider/>
 		<section v-for="skillCardInfo in skillCardInfoList"
 		         class="skill-card-item">
 			<skill-card :skillCardInfo="skillCardInfo"/>
@@ -36,6 +38,8 @@ import {
 } from '../store/useSkillCardInfoStore.ts';
 import SelectableSkillCard
 	from '../components/SectBuilderPage/SelectableSkillCard.vue';
+import EnabledDoubleSkill
+	from '../components/SectBuilderPage/EnabledDoubleSkill.vue';
 
 /**
  * 作用域: 获取技能卡片信息

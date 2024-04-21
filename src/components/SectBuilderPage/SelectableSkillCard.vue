@@ -111,7 +111,7 @@ const useDetailSkillList = () => {
 		
 		// 将当前存在的流派变成数组
 		const existTriggerList = skillCardInfoStore.skillCardInfoList
-			.filter( skillCardInfo => skillCardInfo.sect )
+			.filter( skillCardInfo => skillCardInfo.sect || skillCardInfo.inherit )
 			.map( skillCardInfo => skillCardInfo.triggerName );
 		
 		// 再过滤掉已经有的触发位

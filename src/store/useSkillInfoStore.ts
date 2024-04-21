@@ -81,7 +81,7 @@ export const useSkillInfoStore = defineStore( 'skillInfo', () => {
 	
 	
 	/** 技能信息列表 */
-	const skillInfoList = reactive<SkillInfoInterface[]>( [
+	const skillInfoList: SkillInfoInterface[] = reactive<SkillInfoInterface[]>( [
 		/* 火系 */
 		createSkillInfo( '火环燃烧', '燃烧', '火环', [ '传承' ], '火环可使敌人燃烧, 每秒收到400伤害. ' ),
 		createSkillInfo( '火焰飞剑', '燃烧', '飞剑', [ '冲刺' ], '飞剑升级为火焰飞剑, 命中后可使敌人燃烧, 每秒收到170伤害. ' ),
