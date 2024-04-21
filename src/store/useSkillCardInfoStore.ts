@@ -13,6 +13,7 @@ import { Trigger } from '../interfaces/Trigger.ts';
 import { SectValue } from '../interfaces/SectValue.ts';
 
 export const useSkillCardInfoStore = defineStore( 'skillCardInfo', () => {
+	/** 技能卡片信息列表 */
 	const skillCardInfoList: SkillCardInfoTuple = reactive( [
 		{ triggerName: '普攻', sect: '' },
 		{ triggerName: '技能', sect: '' },

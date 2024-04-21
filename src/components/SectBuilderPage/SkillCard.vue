@@ -9,9 +9,13 @@
 	
 	// 技能触发位的名称, 如普攻, 技能...
 	&-skill-trigger-name {
+		$fontSize: 16px;
+		
 		writing-mode: vertical-lr;
-		padding: 40px 3px 0 0;
-		font-size: 16px;
+		padding: 0 3px 0 0;
+		align-self: center;
+		margin-top: -$fontSize;
+		font-size: $fontSize;
 		font-style: italic;
 		font-family: $font;
 		color: #5d5d5d;

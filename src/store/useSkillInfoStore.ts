@@ -13,6 +13,10 @@ import { Sect } from '../interfaces/Sect.ts';
 import { sectConfig } from '../config/sectConfig.ts';
 import { SectValue } from '../interfaces/SectValue.ts';
 import { Trigger } from '../interfaces/Trigger.ts';
+import { DoubleSkillName } from '../interfaces/DoubleSkillName.ts';
+import {
+	SkillInfoInterface,
+} from '../interfaces/SkillInfoInterface.ts';
 
 /**
  * 创建一个流派Mapper
@@ -33,21 +37,21 @@ const createSectMapper = () => {
  * */
 export const useSkillInfoStore = defineStore( 'skillInfo', () => {
 	const sectMapper = createSectMapper();
-	console.log( Array.from( sectMapper.keys() ).map( item => ( {
-		name: item,
-		trigger: [],
-	} ) ) );
+	// console.log( Array.from( sectMapper.keys() ).map( item => ( {
+	// 	name: item,
+	// 	trigger: [],
+	// } ) ) );
 	
 	/**
 	 * 创建一个技能信息
 	 * */
 	const createSkillInfo = (
-		name: string,
+		name: DoubleSkillName,
 		mainSect: SectValue,
 		secondSect: SectValue,
 		trigger: Trigger[],
 		description: string = '',
-	) => {
+	): SkillInfoInterface => {
 		const mainAttribute = sectMapper.get( mainSect );
 		const secondAttribute = sectMapper.get( secondSect );
 		
@@ -76,8 +80,8 @@ export const useSkillInfoStore = defineStore( 'skillInfo', () => {
 	};
 	
 	
-	// 技能信息列表
-	const skillInfoList = reactive( [
+	/** 技能信息列表 */
+	const skillInfoList = reactive<SkillInfoInterface[]>( [
 		/* 火系 */
 		createSkillInfo( '火环燃烧', '燃烧', '火环', [ '传承' ], '火环可使敌人燃烧, 每秒收到400伤害. ' ),
 		createSkillInfo( '火焰飞剑', '燃烧', '飞剑', [ '冲刺' ], '飞剑升级为火焰飞剑, 命中后可使敌人燃烧, 每秒收到170伤害. ' ),

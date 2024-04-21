@@ -1,0 +1,205 @@
+<mxfile host="app.diagrams.net" modified="2024-04-21T08:44:01.080Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36" etag="hBO2F1aYyT7XJMdUfWLF" version="24.2.5" type="device">
+  <diagram name="第 1 页" id="2nigW6g02W1iGaGz54yn">
+    <mxGraphModel dx="1024" dy="1729" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-1" value="普攻" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="40" y="240" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-2" value="技能" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="40" y="345" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-3" value="冲刺" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="40" y="450" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-4" value="召唤" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="40" y="555" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-5" value="传承" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="40" y="660" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-6" value="" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="160" y="240" width="480" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="ViXK2sWHm9SOlhRIp9Dq-7" target="ViXK2sWHm9SOlhRIp9Dq-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-7" value="&amp;nbsp; &amp;nbsp;普攻对应的&lt;div&gt;可选择双重词条&lt;/div&gt;" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="640" y="140" width="150" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-10" value="" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="160" y="345" width="480" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-11" value="" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="160" y="450" width="480" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-12" value="" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="160" y="555" width="480" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-13" value="" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="160" y="660" width="480" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-15" value="页面基础展示" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry width="210" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-16" value="页面交互展示" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="840" width="210" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-17" value="普攻" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="930" y="240" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-18" value="技能" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="930" y="345" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-19" value="冲刺" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="930" y="450" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-20" value="召唤" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="930" y="555" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-21" value="传承" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="930" y="660" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-22" value="" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1050" y="240" width="480" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-23" value="" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1050" y="345" width="480" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-24" value="" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1050" y="450" width="480" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-25" value="" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1050" y="555" width="480" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-26" value="" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1050" y="660" width="480" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0;exitDx=140;exitDy=25;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="ViXK2sWHm9SOlhRIp9Dq-28" target="ViXK2sWHm9SOlhRIp9Dq-29">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-28" value="点击, 弹出选择输入框" style="shape=callout;whiteSpace=wrap;html=1;perimeter=calloutPerimeter;" vertex="1" parent="1">
+          <mxGeometry x="910" y="160" width="140" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-29" value="" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1780" y="240" width="560" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-41" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="1807" y="276.5" width="490" height="165" as="geometry" />
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-38" value="" style="group" vertex="1" connectable="0" parent="ViXK2sWHm9SOlhRIp9Dq-41">
+          <mxGeometry x="60" y="135" width="160" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-36" value="确定" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="ViXK2sWHm9SOlhRIp9Dq-38">
+          <mxGeometry width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-37" value="取消" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="ViXK2sWHm9SOlhRIp9Dq-38">
+          <mxGeometry x="90" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-39" value="" style="group" vertex="1" connectable="0" parent="ViXK2sWHm9SOlhRIp9Dq-41">
+          <mxGeometry y="66" width="490" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-33" value="流派" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="ViXK2sWHm9SOlhRIp9Dq-39">
+          <mxGeometry y="2.5" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-34" value="选择流派" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="ViXK2sWHm9SOlhRIp9Dq-39">
+          <mxGeometry x="60" width="330" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-35" value="选择属性" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="ViXK2sWHm9SOlhRIp9Dq-39">
+          <mxGeometry x="400" width="90" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-40" value="" style="group" vertex="1" connectable="0" parent="ViXK2sWHm9SOlhRIp9Dq-41">
+          <mxGeometry width="490" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-31" value="触发位" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="ViXK2sWHm9SOlhRIp9Dq-40">
+          <mxGeometry y="5" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-32" value="普攻" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="ViXK2sWHm9SOlhRIp9Dq-40">
+          <mxGeometry x="60" width="430" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-42" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="ViXK2sWHm9SOlhRIp9Dq-36" target="ViXK2sWHm9SOlhRIp9Dq-46">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="2020" y="540" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-43" value="选择完成流派, 点击确定" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="ViXK2sWHm9SOlhRIp9Dq-42">
+          <mxGeometry x="-0.173" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-46" value="" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1680" y="510" width="713" height="410" as="geometry" />
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-47" value="" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1891.5" y="540" width="290" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-51" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="ViXK2sWHm9SOlhRIp9Dq-49">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="920.7777777777778" y="-330" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-49" value="用户" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="906" y="-1140" width="30" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-52" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="ViXK2sWHm9SOlhRIp9Dq-50">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1280" y="-320" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-50" value="页面&lt;div&gt;SectBuilderPage.vue&lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1220" y="-1135" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-56" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="920" y="-960" as="sourcePoint" />
+            <mxPoint x="1600" y="-960" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-66" value="点击 [普攻] 选项" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="ViXK2sWHm9SOlhRIp9Dq-56">
+          <mxGeometry x="0.0922" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-61" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="920" y="-840" as="sourcePoint" />
+            <mxPoint x="1920" y="-840" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-67" value="选择流派, 点击 [确定]" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="ViXK2sWHm9SOlhRIp9Dq-61">
+          <mxGeometry x="0.0377" y="2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-65" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="ViXK2sWHm9SOlhRIp9Dq-64">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1599.5" y="-318.75" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-64" value="组件&lt;div&gt;SkillCard.vue&lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1540" y="-1140" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-70" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="ViXK2sWHm9SOlhRIp9Dq-68">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1919.8518518518517" y="-309.25925925925924" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-68" value="组件&lt;div&gt;SkillCard.vue&lt;br&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1860" y="-1140" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-71" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1600" y="-960" as="sourcePoint" />
+            <mxPoint x="1920" y="-960" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ViXK2sWHm9SOlhRIp9Dq-72" value="弹出选择对话框" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="ViXK2sWHm9SOlhRIp9Dq-71">
+          <mxGeometry x="0.0196" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -6,6 +6,11 @@
 		gap: 20px;
 		justify-content: center;
 	}
+	
+	&-item {
+		display: flex;
+		gap: 20px;
+	}
 }
 </style>
 
@@ -14,12 +19,14 @@
 		<section v-for="skillCardInfo in skillCardInfoList"
 		         class="skill-card-item">
 			<skill-card :skillCardInfo="skillCardInfo"/>
+			<selectable-skill-card
+				:skillCardInfo="skillCardInfo"/>
 		</section>
 	</main>
 </template>
 
 <script lang="ts" setup>
-import { computed, ComputedRef } from 'vue';
+import { computed } from 'vue';
 import SkillCard from '../components/SectBuilderPage/SkillCard.vue';
 import {
 	SkillCardInfoTuple,
@@ -27,6 +34,18 @@ import {
 import {
 	useSkillCardInfoStore,
 } from '../store/useSkillCardInfoStore.ts';
+import SelectableSkillCard
+	from '../components/SectBuilderPage/SelectableSkillCard.vue';
 
-const skillCardInfoList: ComputedRef<SkillCardInfoTuple> = computed( () => useSkillCardInfoStore().skillCardInfoList );
+/**
+ * 作用域: 获取技能卡片信息
+ * */
+const useMatchSkillCardInfo = () => {
+	const skillCardInfoList = computed<SkillCardInfoTuple>( () => useSkillCardInfoStore().skillCardInfoList );
+	return {
+		skillCardInfoList,
+	};
+};
+const { skillCardInfoList } = useMatchSkillCardInfo();
+
 </script>
