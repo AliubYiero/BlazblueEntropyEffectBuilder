@@ -44,7 +44,7 @@ src/
 │   │   └── SearchDoubleEffectForm.vue    # 筛选表单与结果展示
 │   └── SectBuilderPage/         # 流派构建页组件
 │       ├── ChangeSkillSectForm.vue       # 修改流派对话框
-│       ├── EnabledDoubleSkill.vue        # [已废弃] 功能已整合到父组件
+│       ├── EnabledDoubleSkill.vue        # [已删除] 功能已整合到 SectBuilderPage.vue
 │       ├── SelectableSkillCard.vue       # 可选择技能卡片（展示可激活策略）
 │       └── SkillCard.vue                 # 技能位卡片（触发位选择）
 ├── composables/         # 组合式函数
@@ -521,11 +521,9 @@ export function useStyleMapper() {
 
 #### 8.2.3 废弃组件清理
 
-**当前问题**：`EnabledDoubleSkill.vue` 组件已废弃但文件保留
+**状态**：✅ 已完成
 
-**建议**：
-- 确认无其他文件引用后删除
-- 或在文档中标记为废弃并说明替代方案
+**说明**：`EnabledDoubleSkill.vue` 组件已删除，功能整合到 `SectBuilderPage.vue`
 
 #### 8.2.4 表单验证增强
 

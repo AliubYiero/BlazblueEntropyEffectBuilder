@@ -63,7 +63,7 @@ src/
 │   │   └── SearchDoubleEffectForm.vue
 │   └── SectBuilderPage/         # 流派构建页组件
 │       ├── ChangeSkillSectForm.vue   # 修改流派对话框
-│       ├── EnabledDoubleSkill.vue    # 可激活双重策略列表
+
 │       ├── SelectableSkillCard.vue   # 可选择技能卡片
 │       └── SkillCard.vue             # 技能位卡片
 ├── config/
@@ -192,7 +192,7 @@ src/
 - 36种具体流派
 - 73种双重策略（含触发位、解锁条件、效果描述）
 
-数据硬编码在 `useSkillInfoStore.ts` 中，未来可提取到 JSON 文件。
+数据存储在 `src/data/SkillInfoList.json` 中，通过 `useSkillData` composable 动态加载。
 
 ---
 
