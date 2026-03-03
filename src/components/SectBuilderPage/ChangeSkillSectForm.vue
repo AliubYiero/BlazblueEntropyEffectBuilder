@@ -389,7 +389,7 @@ const filterSectList = computed(() => {
 		sectConfig[attr].forEach(sect => {
 			const triggerInfo = availableTriggers.find(t => t.name === sect);
 			if (triggerInfo) {
-				allSects.push({ name: sect, attribute: attr });
+				allSects.push({ name: sect as SectValue, attribute: attr });
 			}
 		});
 	}

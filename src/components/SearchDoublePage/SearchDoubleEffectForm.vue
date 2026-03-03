@@ -515,6 +515,7 @@ import { useSkillInfoStore } from '../../store/useSkillInfoStore.ts';
 import { Attribute } from '../../interfaces/Attribute.ts';
 import { computed, ref, reactive } from 'vue';
 import { Sect } from '../../interfaces/Sect.ts';
+import { SectValue } from '../../interfaces/SectValue.ts';
 import { sectConfig } from '../../config/sectConfig.ts';
 import { Trigger } from '../../interfaces/Trigger.ts';
 
@@ -559,13 +560,13 @@ const handleFetchSectSuggestions = (searchString: string, cb: Function) => {
 	skillInfoStore.skillInfoList.forEach(item => {
 		sectSet.add(item.mainSect);
 	});
-	const sectList = Array.from(sectSet).map(item => ({ value: item }));
+	const sectList = Array.from(sectSet).map(item => ({ value: item })) as { value: SectValue }[];
 	
 	let suggestions = sectList;
 	
 	if (attribute.value.trim()) {
 		const filteredList = sectConfig[<Attribute>attribute.value.trim()]
-			.map(item => ({ value: item }));
+			.map(item => ({ value: item as SectValue }));
 		suggestions = searchString 
 			? filteredList.filter(item => item.value.includes(searchString))
 			: filteredList;
