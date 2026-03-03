@@ -12,6 +12,7 @@ const THEME_KEY = 'theme-preference';
 // 全局单例状态
 const isDark = ref<boolean>( false );
 let initialized = false;
+let refCount = 0;
 let stopWatch: (() => void) | null = null;
 let cleanupSystemListener: (() => void) | null = null;
 
@@ -134,11 +135,19 @@ const cleanupThemeSystem = (): void => {
 
 export function useTheme() {
 	onMounted( () => {
-		initThemeSystem();
+		// 引用计数：第一个组件初始化
+		if ( refCount === 0 ) {
+			initThemeSystem();
+		}
+		refCount++;
 	} );
 
 	onScopeDispose( () => {
-		cleanupThemeSystem();
+		// 引用计数：最后一个组件卸载时清理
+		refCount--;
+		if ( refCount === 0 ) {
+			cleanupThemeSystem();
+		}
 	} );
 
 	return {
