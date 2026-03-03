@@ -1,260 +1,111 @@
 <style lang="scss" scoped>
-/* ============================================
-   导航栏 - 赛博朋克风格
-   ============================================ */
-
 .header {
 	position: sticky;
 	top: 0;
-	z-index: 1000;
-	background: linear-gradient(180deg, rgba(10, 10, 15, 0.98) 0%, rgba(10, 10, 15, 0.9) 100%);
-	backdrop-filter: blur(20px);
-	border-bottom: 1px solid var(--border-primary);
-	
-	/* 扫描线效果 */
-	&::after {
-		content: '';
-		position: absolute;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		height: 1px;
-		background: linear-gradient(90deg, 
-			transparent 0%, 
-			var(--accent-primary) 50%, 
-			transparent 100%);
-		opacity: 0.5;
-	}
+	z-index: 50;
+	background: hsl(var(--background));
+	border-bottom: 1px solid hsl(var(--border));
 }
 
 .header-inner {
-	max-width: 1600px;
+	max-width: 1280px;
 	margin: 0 auto;
-	padding: 0 32px;
-	height: 72px;
+	padding: 0 24px;
+	height: 60px;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 }
 
-/* Logo 区域 */
 .logo-section {
 	display: flex;
 	align-items: center;
-	gap: 16px;
-}
-
-.logo-icon {
-	width: 48px;
-	height: 48px;
-	position: relative;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	
-	/* 六边形背景 */
-	&::before {
-		content: '';
-		position: absolute;
-		inset: 0;
-		background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
-		clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-		opacity: 0.9;
-		animation: pulse-glow 3s ease-in-out infinite;
-	}
-	
-	/* 内部图案 */
-	&::after {
-		content: '';
-		position: absolute;
-		inset: 6px;
-		background: var(--bg-primary);
-		clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-	}
+	gap: 12px;
 }
 
 .logo-text {
-	font-family: var(--font-display);
-	font-size: 14px;
-	font-weight: 700;
-	letter-spacing: 3px;
-	text-transform: uppercase;
-	background: linear-gradient(135deg, var(--accent-primary) 0%, #fff 50%, var(--accent-secondary) 100%);
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
-	background-clip: text;
+	font-family: var(--font-chinese);
+	font-size: 16px;
+	font-weight: 600;
+	color: hsl(var(--foreground));
 }
 
 .logo-subtitle {
 	font-family: var(--font-chinese);
-	font-size: 10px;
-	color: var(--text-muted);
-	letter-spacing: 4px;
-	margin-top: 2px;
+	font-size: 12px;
+	color: hsl(var(--muted-foreground));
 }
 
-/* 导航菜单 */
 .nav-menu {
 	display: flex;
-	gap: 8px;
-	padding: 4px;
-	background: rgba(0, 0, 0, 0.3);
-	border-radius: 12px;
-	border: 1px solid var(--border-primary);
+	gap: 4px;
 }
 
 .nav-item {
-	position: relative;
-	padding: 12px 24px;
-	font-family: var(--font-display);
-	font-size: 13px;
-	font-weight: 600;
-	letter-spacing: 2px;
-	text-transform: uppercase;
-	color: var(--text-secondary);
+	padding: 8px 16px;
+	font-family: var(--font-chinese);
+	font-size: 14px;
+	font-weight: 500;
+	color: hsl(var(--muted-foreground));
 	background: transparent;
 	border: none;
-	border-radius: 8px;
+	border-radius: calc(var(--radius) - 4px);
 	cursor: pointer;
-	transition: all var(--transition-normal);
-	overflow: hidden;
-	
-	/* Hover 背景光效 */
-	&::before {
-		content: '';
-		position: absolute;
-		inset: 0;
-		background: linear-gradient(135deg, 
-			rgba(0, 212, 255, 0.1) 0%, 
-			rgba(255, 61, 61, 0.1) 100%);
-		opacity: 0;
-		transition: opacity var(--transition-normal);
-	}
-	
-	/* 底部指示线 */
-	&::after {
-		content: '';
-		position: absolute;
-		bottom: 0;
-		left: 50%;
-		transform: translateX(-50%);
-		width: 0;
-		height: 2px;
-		background: var(--accent-primary);
-		transition: width var(--transition-normal);
-		box-shadow: 0 0 10px var(--element-ice-glow);
-	}
-	
+	transition: all 0.15s ease;
+
 	&:hover {
-		color: var(--text-primary);
-		
-		&::before {
-			opacity: 1;
-		}
-		
-		&::after {
-			width: 60%;
-		}
+		color: hsl(var(--foreground));
+		background: hsl(var(--accent) / 0.5);
 	}
-	
-	/* 激活状态 */
+
 	&.is-active {
-		color: var(--accent-primary);
-		background: rgba(0, 212, 255, 0.1);
-		
-		&::after {
-			width: 80%;
-			background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
-		}
-		
-		/* 角落装饰 */
-		.corner {
-			position: absolute;
-			width: 8px;
-			height: 8px;
-			border: 1px solid var(--accent-primary);
-			
-			&--tl {
-				top: 4px;
-				left: 4px;
-				border-right: none;
-				border-bottom: none;
-			}
-			
-			&--tr {
-				top: 4px;
-				right: 4px;
-				border-left: none;
-				border-bottom: none;
-			}
-			
-			&--bl {
-				bottom: 4px;
-				left: 4px;
-				border-right: none;
-				border-top: none;
-			}
-			
-			&--br {
-				bottom: 4px;
-				right: 4px;
-				border-left: none;
-				border-top: none;
-			}
-		}
-	}
-	
-	.nav-label {
-		position: relative;
-		z-index: 1;
+		color: hsl(var(--foreground));
+		background: hsl(var(--accent));
 	}
 }
 
-/* 右侧装饰 */
-.header-decoration {
+.header-actions {
 	display: flex;
 	align-items: center;
-	gap: 16px;
+	gap: 8px;
 }
 
-.decoration-line {
-	width: 100px;
-	height: 1px;
-	background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
-	opacity: 0.5;
+.theme-toggle {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 36px;
+	height: 36px;
+	background: transparent;
+	border: 1px solid hsl(var(--border));
+	border-radius: calc(var(--radius) - 4px);
+	cursor: pointer;
+	transition: all 0.15s ease;
+
+	&:hover {
+		background: hsl(var(--accent) / 0.5);
+		border-color: hsl(var(--ring));
+	}
+
+	svg {
+		width: 18px;
+		height: 18px;
+		color: hsl(var(--foreground));
+	}
 }
 
-.decoration-dot {
-	width: 8px;
-	height: 8px;
-	background: var(--accent-primary);
-	border-radius: 50%;
-	animation: pulse-glow 2s ease-in-out infinite;
-}
-
-/* 响应式 */
 @media (max-width: 768px) {
 	.header-inner {
 		padding: 0 16px;
-		height: 64px;
 	}
-	
-	.logo-text {
-		font-size: 12px;
-		letter-spacing: 2px;
-	}
-	
+
 	.logo-subtitle {
 		display: none;
 	}
-	
+
 	.nav-item {
-		padding: 10px 16px;
-		font-size: 11px;
-	}
-	
-	.header-decoration {
-		display: none;
+		padding: 6px 12px;
+		font-size: 13px;
 	}
 }
 </style>
@@ -262,16 +113,11 @@
 <template>
 	<header class="header">
 		<div class="header-inner">
-			<!-- Logo 区域 -->
 			<div class="logo-section">
-				<div class="logo-icon"></div>
-				<div class="logo-container">
-					<div class="logo-text">Entropy Effect</div>
-					<div class="logo-subtitle">流派构建器</div>
-				</div>
+				<span class="logo-text">苍翼混沌效应</span>
+				<span class="logo-subtitle">流派构建器</span>
 			</div>
-			
-			<!-- 导航菜单 -->
+
 			<nav class="nav-menu">
 				<button
 					v-for="item in navItems"
@@ -279,20 +125,27 @@
 					:class="['nav-item', { 'is-active': currentPath === item.path }]"
 					@click="handleNavigate(item.path)"
 				>
-					<span class="nav-label">{{ item.label }}</span>
-					<template v-if="currentPath === item.path">
-						<span class="corner corner--tl"></span>
-						<span class="corner corner--tr"></span>
-						<span class="corner corner--bl"></span>
-						<span class="corner corner--br"></span>
-					</template>
+					{{ item.label }}
 				</button>
 			</nav>
-			
-			<!-- 右侧装饰 -->
-			<div class="header-decoration">
-				<div class="decoration-line"></div>
-				<div class="decoration-dot"></div>
+
+			<div class="header-actions">
+				<button class="theme-toggle" @click="toggleTheme" :title="isDark ? '切换到浅色模式' : '切换到深色模式'">
+					<svg v-if="isDark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+						<circle cx="12" cy="12" r="5"></circle>
+						<line x1="12" y1="1" x2="12" y2="3"></line>
+						<line x1="12" y1="21" x2="12" y2="23"></line>
+						<line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+						<line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+						<line x1="1" y1="12" x2="3" y2="12"></line>
+						<line x1="21" y1="12" x2="23" y2="12"></line>
+						<line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+						<line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+					</svg>
+					<svg v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+						<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+					</svg>
+				</button>
 			</div>
 		</div>
 	</header>
@@ -301,6 +154,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 import { router } from '../../router';
+import { useTheme } from '../../composables/useTheme';
 
 interface NavItem {
 	label: string;
@@ -313,6 +167,7 @@ const navItems: NavItem[] = [
 ];
 
 const currentPath = computed(() => router.currentRoute.value.path);
+const { isDark, toggleTheme } = useTheme();
 
 const handleNavigate = (path: string) => {
 	router.push(path);
