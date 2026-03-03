@@ -1,460 +1,619 @@
 <style lang="scss" scoped>
-// 总展示容器
-.show-container {
+/* ============================================
+   双重词条筛选页 - 赛博朋克风格
+   ============================================ */
+
+.page-container {
+	min-height: calc(100vh - 72px);
+	padding: 32px;
+	max-width: 1600px;
+	margin: 0 auto;
+}
+
+/* 筛选区域 */
+.filter-section {
+	margin-bottom: 40px;
+}
+
+.filter-card {
+	background: var(--bg-card);
+	border: 1px solid var(--border-primary);
+	border-radius: 16px;
+	padding: 32px;
+	position: relative;
+	overflow: hidden;
+	
+	/* 顶部装饰线 */
+	&::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 32px;
+		right: 32px;
+		height: 1px;
+		background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+	}
+}
+
+.filter-title {
+	font-family: var(--font-display);
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: 3px;
+	text-transform: uppercase;
+	color: var(--accent-primary);
+	margin-bottom: 24px;
 	display: flex;
-	flex-flow: column;
-	width: 100%;
-	justify-content: center;
+	align-items: center;
+	gap: 12px;
+	
+	&::before {
+		content: '';
+		width: 16px;
+		height: 2px;
+		background: var(--accent-primary);
+	}
+}
+
+/* 输入行 */
+.input-row {
+	display: flex;
+	gap: 24px;
+	margin-bottom: 24px;
+	flex-wrap: wrap;
+}
+
+.input-group {
+	flex: 1;
+	min-width: 200px;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.input-label {
+	font-family: var(--font-chinese);
+	font-size: 13px;
+	font-weight: 500;
+	color: var(--text-secondary);
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	
+	.label-icon {
+		width: 6px;
+		height: 6px;
+		background: var(--accent-primary);
+		border-radius: 2px;
+	}
+}
+
+/* 复选框区域 */
+.checkbox-section {
+	padding-top: 16px;
+	border-top: 1px solid var(--border-primary);
+}
+
+.checkbox-row {
+	display: flex;
+	gap: 16px;
+	flex-wrap: wrap;
+	
+	&:not(:last-child) {
+		margin-bottom: 12px;
+	}
+}
+
+.checkbox-group {
+	display: flex;
+	gap: 12px;
 	align-items: center;
 }
 
-// 表单容器
-.input-form {
-	width: 100%;
+.checkbox-label {
+	font-family: var(--font-display);
+	font-size: 10px;
+	font-weight: 600;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	color: var(--text-muted);
+	min-width: 60px;
+}
+
+/* 元素复选框 */
+.element-checkbox {
+	padding: 8px 16px;
+	border-radius: 8px;
+	background: rgba(0, 0, 0, 0.3);
+	border: 1px solid var(--border-primary);
+	transition: all var(--transition-normal);
+	cursor: pointer;
+	
+	&:hover {
+		border-color: var(--border-glow);
+		background: rgba(0, 212, 255, 0.05);
+	}
+	
+	&.is-checked {
+		border-color: var(--accent-primary);
+		background: rgba(0, 212, 255, 0.1);
+		
+		.checkbox-text {
+			color: var(--accent-primary);
+		}
+	}
+	
+	.checkbox-text {
+		font-family: var(--font-chinese);
+		font-size: 13px;
+		color: var(--text-secondary);
+		transition: color var(--transition-fast);
+	}
+}
+
+/* 结果统计 */
+.results-header {
 	display: flex;
-	justify-content: center;
-	align-items: flex-start;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 24px;
+}
+
+.results-count {
+	font-family: var(--font-display);
+	font-size: 14px;
+	color: var(--text-secondary);
+	
+	.count-number {
+		font-size: 24px;
+		font-weight: 700;
+		color: var(--accent-primary);
+		margin-right: 8px;
+		text-shadow: 0 0 20px var(--element-ice-glow);
+	}
+}
+
+/* 技能卡片网格 */
+.skills-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
 	gap: 20px;
 }
 
-// 选择框容器
-.checkbox {
-	// 容器
-	&-container {
-		display: flex;
-		flex-flow: column;
+/* 技能卡片 */
+.skill-card {
+	background: var(--bg-card);
+	border: 1px solid var(--border-primary);
+	border-radius: 12px;
+	padding: 20px;
+	transition: all var(--transition-normal);
+	position: relative;
+	overflow: hidden;
+	cursor: pointer;
+	
+	/* 顶部元素色条 */
+	&::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 3px;
+		background: var(--card-accent, var(--accent-primary));
+		opacity: 0.8;
 	}
 	
-	@mixin flex {
-		display: flex;
-		gap: 20px;
+	/* Hover 光效 */
+	&::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(135deg, 
+			rgba(0, 212, 255, 0.03) 0%, 
+			transparent 50%);
+		opacity: 0;
+		transition: opacity var(--transition-normal);
 	}
 	
-	&-first-line-container {
-		@include flex;
+	&:hover {
+		border-color: var(--card-accent, var(--border-glow));
+		transform: translateY(-4px);
+		box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+		
+		&::after {
+			opacity: 1;
+		}
+		
+		.skill-name {
+			text-shadow: 0 0 20px var(--card-accent-glow, var(--element-ice-glow));
+		}
 	}
 	
-	&-second-line-container {
-		@include flex;
+	/* 元素主题 */
+	&--fire {
+		--card-accent: var(--element-fire);
+		--card-accent-glow: var(--element-fire-glow);
+	}
+	
+	&--ice {
+		--card-accent: var(--element-ice);
+		--card-accent-glow: var(--element-ice-glow);
+	}
+	
+	&--thunder {
+		--card-accent: var(--element-thunder);
+		--card-accent-glow: var(--element-thunder-glow);
+	}
+	
+	&--poison {
+		--card-accent: var(--element-poison);
+		--card-accent-glow: var(--element-poison-glow);
+	}
+	
+	&--dark {
+		--card-accent: var(--element-dark);
+		--card-accent-glow: var(--element-dark-glow);
+	}
+	
+	&--light {
+		--card-accent: var(--element-light);
+		--card-accent-glow: var(--element-light-glow);
+	}
+	
+	&--blade {
+		--card-accent: var(--element-blade);
+		--card-accent-glow: var(--element-blade-glow);
 	}
 }
 
-// 表单输入框提示文本样式
-.text {
-	margin-right: 5px;
+.card-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	margin-bottom: 16px;
 }
 
+.skill-name {
+	font-family: var(--font-chinese);
+	font-size: 18px;
+	font-weight: 700;
+	color: var(--text-primary);
+	transition: text-shadow var(--transition-normal);
+}
 
-// 数据展示
-.data {
-	// 数据列表展示容器
-	&-list-container {
-		width: 80%;
+.trigger-badges {
+	display: flex;
+	gap: 6px;
+}
+
+.trigger-badge {
+	font-family: var(--font-display);
+	font-size: 10px;
+	font-weight: 600;
+	letter-spacing: 1px;
+	padding: 4px 8px;
+	border-radius: 4px;
+	background: rgba(0, 212, 255, 0.1);
+	color: var(--accent-primary);
+	border: 1px solid rgba(0, 212, 255, 0.2);
+}
+
+/* 流派组合 */
+.sect-combo {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin-bottom: 12px;
+}
+
+.sect-item {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+.sect-label {
+	font-family: var(--font-display);
+	font-size: 9px;
+	font-weight: 600;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	color: var(--text-muted);
+}
+
+.sect-name {
+	font-family: var(--font-chinese);
+	font-size: 14px;
+	font-weight: 600;
+}
+
+.sect-connector {
+	font-size: 20px;
+	color: var(--text-muted);
+	opacity: 0.5;
+}
+
+/* 描述 */
+.skill-description {
+	font-family: var(--font-chinese);
+	font-size: 13px;
+	line-height: 1.7;
+	color: var(--text-secondary);
+	padding-top: 12px;
+	border-top: 1px solid var(--border-primary);
+}
+
+/* 空状态 */
+.empty-state {
+	grid-column: 1 / -1;
+	text-align: center;
+	padding: 80px 20px;
+}
+
+.empty-icon {
+	font-size: 64px;
+	margin-bottom: 24px;
+	opacity: 0.3;
+}
+
+.empty-text {
+	font-family: var(--font-chinese);
+	font-size: 16px;
+	color: var(--text-muted);
+}
+
+/* 响应式 */
+@media (max-width: 768px) {
+	.page-container {
+		padding: 16px;
 	}
 	
-	// 数据展示样式
-	&-item__ {
-		// 火颜色
-		&fire {
-			color: #ed5126;
-		}
-		
-		// 冰颜色
-		&ice {
-			color: #128eb1;
-		}
-		
-		// 电颜色
-		&thunder {
-			color: #f2d012;
-		}
-		
-		// 毒颜色
-		&poison {
-			color: #b15212;
-		}
-		
-		// 暗颜色
-		&dark {
-			color: #705242;
-		}
-		
-		// 光颜色
-		&light {
-			color: #ffde59;
-		}
-		
-		// 刃颜色
-		&cut {
-			color: #c2c2c2;
-		}
-		
+	.filter-card {
+		padding: 20px;
+	}
+	
+	.input-row {
+		flex-direction: column;
+		gap: 16px;
+	}
+	
+	.skills-grid {
+		grid-template-columns: 1fr;
 	}
 }
-
 </style>
 
 <template>
-	<el-main class="show-container">
-		<!-- 表单容器 -->
-		<el-form class="input-form">
-			<!-- 属性输入框(自动联想) -->
-			<el-form-item class="attribute-form-item">
-				<span class="text">属性: </span>
-				<el-autocomplete
-					v-model="attribute"
-					:fetch-suggestions="handleFetchAttributeSuggestions"
-					label="属性"
-					placeholder="请输入/选择属性"
-				/>
-			</el-form-item>
-			
-			<!-- 流派输入框(自动联想) -->
-			<el-form-item class="sect-form-item">
-				<span class="text">流派: </span>
-				<el-autocomplete
-					v-model="sect"
-					:fetch-suggestions="handleFetchSectSuggestions"
-					label="流派"
-					placeholder="请输入/选择流派"
-				/>
-			</el-form-item>
-			
-			<div class="checkbox-container">
-				<!-- 流派选择 -->
-				<section class="checkbox-first-line-container">
-					<!-- 主流派筛选多选框 -->
-					<el-form-item class="main-sect-form-item">
-						<el-checkbox
-							v-model="isCheckMainSect"
-							label="主流派"
-						/>
-					</el-form-item>
-					
-					<!-- 副流派筛选多选框 -->
-					<el-form-item class="second-sect-form-item">
-						<el-checkbox
-							v-model="isCheckSecondSect"
-							label="副流派"
-						/>
-					</el-form-item>
-				</section>
+	<div class="page-container">
+		<!-- 筛选区域 -->
+		<section class="filter-section">
+			<div class="filter-card">
+				<div class="filter-title">筛选条件</div>
 				
-				<!-- 触发槽位选择 -->
-				<section class="checkbox-second-line-container">
-					<!-- 普攻筛选多选框 -->
-					<el-form-item class="attack-trigger-form-item">
-						<el-checkbox
-							v-model="isCheckAttack"
-							label="普攻"
+				<!-- 输入框 -->
+				<div class="input-row">
+					<div class="input-group">
+						<label class="input-label">
+							<span class="label-icon"></span>
+							属性
+						</label>
+						<el-autocomplete
+							v-model="attribute"
+							:fetch-suggestions="handleFetchAttributeSuggestions"
+							placeholder="选择或输入属性"
+							clearable
 						/>
-					</el-form-item>
+					</div>
 					
-					<!-- 技能筛选多选框 -->
-					<el-form-item class="kill-trigger-form-item">
-						<el-checkbox
-							v-model="isCheckSkill"
-							label="技能"
+					<div class="input-group">
+						<label class="input-label">
+							<span class="label-icon"></span>
+							流派
+						</label>
+						<el-autocomplete
+							v-model="sect"
+							:fetch-suggestions="handleFetchSectSuggestions"
+							placeholder="选择或输入流派"
+							clearable
 						/>
-					</el-form-item>
-					
-					<!-- 冲刺筛选多选框 -->
-					<el-form-item class="sprint-trigger-form-item">
-						<el-checkbox
-							v-model="isCheckSprint"
-							label="冲刺"
-						/>
-					</el-form-item>
-					
-					<!-- 召唤筛选多选框 -->
-					<el-form-item class="call-trigger-form-item">
-						<el-checkbox
-							v-model="isCheckCall"
-							label="召唤"
-						/>
-					</el-form-item>
-					
-					<!-- 传承技筛选多选框 -->
-					<el-form-item
-						class="inheriting-trigger-form-item">
-						<el-checkbox
-							v-model="isCheckInheriting"
-							label="传承"
-						/>
-					</el-form-item>
+					</div>
+				</div>
 				
-				</section>
+				<!-- 复选框 -->
+				<div class="checkbox-section">
+					<div class="checkbox-row">
+						<span class="checkbox-label">流派</span>
+						<div class="checkbox-group">
+							<label 
+								v-for="item in sectCheckboxes" 
+								:key="item.key"
+								:class="['element-checkbox', { 'is-checked': item.value }]"
+							>
+								<el-checkbox v-model="item.value" :label="item.label" />
+							</label>
+						</div>
+					</div>
+					
+					<div class="checkbox-row">
+						<span class="checkbox-label">槽位</span>
+						<div class="checkbox-group">
+							<label 
+								v-for="item in triggerCheckboxes" 
+								:key="item.key"
+								:class="['element-checkbox', { 'is-checked': item.value }]"
+							>
+								<el-checkbox v-model="item.value" :label="item.label" />
+							</label>
+						</div>
+					</div>
+				</div>
 			</div>
-		</el-form>
+		</section>
 		
-		<el-divider/>
+		<!-- 结果统计 -->
+		<div class="results-header">
+			<div class="results-count">
+				<span class="count-number">{{ filterSkillInfoList.length }}</span>
+				条双重策略
+			</div>
+		</div>
 		
-		<!-- 数据列表 -->
-		<el-table
-			:data="filterSkillInfoList"
-			class="data-list-container"
-			stripe
-		>
-			<el-table-column label="名称" prop="name"/>
-			<el-table-column label="主流派">
-				<template #default="scope">
-					<div
-						:class="{[`data-item__${styleMapper[<Attribute>scope.row.mainAttribute]}`]: true}">
-						{{
-							scope.row.mainSect
-						}}
+		<!-- 技能卡片网格 -->
+		<div class="skills-grid">
+			<div 
+				v-if="filterSkillInfoList.length === 0"
+				class="empty-state"
+			>
+				<div class="empty-icon">◇</div>
+				<div class="empty-text">没有找到匹配的双重策略</div>
+			</div>
+			
+			<div 
+				v-for="skill in filterSkillInfoList"
+				:key="skill.name"
+				:class="['skill-card', `skill-card--${styleMapper[skill.mainAttribute]}`]"
+			>
+				<div class="card-header">
+					<h3 class="skill-name">{{ skill.name }}</h3>
+					<div class="trigger-badges">
+						<span 
+							v-for="trigger in skill.trigger" 
+							:key="trigger"
+							class="trigger-badge"
+						>{{ trigger }}</span>
 					</div>
-				</template>
-			</el-table-column>
-			<el-table-column label="副流派" prop="secondSect">
-				<template #default="scope">
-					<div
-						:class="{[`data-item__${styleMapper[<Attribute>scope.row.secondAttribute]}`]: true}">
-						{{
-							scope.row.secondSect
-						}}
+				</div>
+				
+				<div class="sect-combo">
+					<div class="sect-item">
+						<span class="sect-label">主流派</span>
+						<span 
+							class="sect-name"
+							:style="{ color: `var(--element-${styleMapper[skill.mainAttribute]})` }"
+						>{{ skill.mainSect }}</span>
 					</div>
-				</template>
-			</el-table-column>
-			<el-table-column label="触发槽位" prop="trigger"/>
-			<el-table-column label="介绍" prop="description"
-			                 width="300"/>
-		</el-table>
-	</el-main>
+					
+					<span class="sect-connector">⊕</span>
+					
+					<div class="sect-item">
+						<span class="sect-label">副流派</span>
+						<span 
+							class="sect-name"
+							:style="{ color: `var(--element-${styleMapper[skill.secondAttribute]})` }"
+						>{{ skill.secondSect }}</span>
+					</div>
+				</div>
+				
+				<p class="skill-description">{{ skill.description }}</p>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script lang="ts" setup>
 import { useSkillInfoStore } from '../../store/useSkillInfoStore.ts';
 import { Attribute } from '../../interfaces/Attribute.ts';
-import { computed, ref } from 'vue';
+import { computed, ref, reactive } from 'vue';
 import { Sect } from '../../interfaces/Sect.ts';
 import { sectConfig } from '../../config/sectConfig.ts';
 import { Trigger } from '../../interfaces/Trigger.ts';
 
 const skillInfoStore = useSkillInfoStore();
-console.log( skillInfoStore.skillInfoList );
 
-/**
- * 句柄, 表单值作用域.
- *
- * 包括:
- * 属性, 操作属性的句柄,
- * 流派, 操作流派的句柄,
- * 主流派, 操作主流派的句柄,
- * 副流派, 操作副流派的句柄,
- * */
-const useFormData = () => {
-	const skillInfoList = skillInfoStore.skillInfoList;
-	
-	/**
-	 * 创建用户输入的绑定值
-	 * */
-	const attribute = ref<Attribute | ''>( '' );
-	
-	/**
-	 * 获取所有属性值建议
-	 * */
-	const handleFetchAttributeSuggestions = ( searchString: string, cb: Function ) => {
-		/*
-		* 过滤出 skillInfoList 所有属性
-		* */
-		const attributeSet: Set<Attribute> = new Set();
-		skillInfoList.forEach( item => {
-			attributeSet.add( item.mainAttribute );
-		} );
-		const attributeList = Array.from( attributeSet ).map( item => ( { value: item } ) );
-		
-		/*
-		* 创建回调数组,
-		* 如果 searchString 为空, 则返回所有属性值建议,
-        * 否则返回属性值中包含 searchString 的属性值建议
-		* */
-		const attributeSuggestions = searchString
-			? attributeList.filter( item => item.value.includes( searchString ) )
-			: attributeList;
-		
-		
-		cb( attributeSuggestions );
-	};
-	
-	/*
-	* 流派值
-	* */
-	/**
-	 * 创建用户输入的绑定值
-	 * */
-	const sect = ref<Sect[keyof Sect] | ''>( '' );
-	
-	/**
-	 * 获取所有派系建议
-	 * */
-	const handleFetchSectSuggestions = ( searchString: string, cb: Function ) => {
-		searchString = searchString.trim();
-		/*
-		* 过滤出 skillInfoList 所有属性
-		* */
-		const sectSet: Set<Sect[keyof Sect]> = new Set();
-		skillInfoList.forEach( item => {
-			sectSet.add( item.mainSect );
-		} );
-		const sectList = Array.from( sectSet ).map( item => ( { value: item } ) );
-		
-		/*
-		* 创建回调数组,
-		* 如果 searchString 为空, 则返回所有属性值建议,
-        * 否则返回属性值中包含 searchString 的属性值建议
-		* */
-		let sectSuggestions: { value: Sect[keyof Sect] }[] = sectList;
-		// console.log( 'attribute: ', attribute.value.trim() );
-		// 如果 attribute 有值, 那么选择 attribute 对应的派系
-		if ( attribute.value.trim() ) {
-			const sectList = sectConfig[ <Attribute> attribute.value.trim() ]
-				.map( item => ( { value: item } ) ) as {
-				value: Sect[keyof Sect]
-			}[];
-			
-			sectSuggestions = sectList.filter( item => {
-				return item.value.includes( searchString );
-			} );
-		}
-		// 如果没有, 返回所有属性的排序
-		else if ( searchString ) {
-			sectSuggestions = sectList.filter( item => {
-				return item.value.includes( searchString );
-			} );
-		}
-		
-		console.log( sectSuggestions );
-		cb( sectSuggestions );
-	};
-	
-	/**
-	 * 创建用户选择的主流派勾选器,
-	 * 默认勾选
-	 *
-	 * @default true
-	 * */
-	const isCheckMainSect = ref<boolean>( true );
-	
-	/**
-	 * 创建用户选择的副流派勾选器,
-	 * 默认勾选
-	 *
-	 * @default true
-	 * */
-	const isCheckSecondSect = ref<boolean>( true );
-	
-	/**
-	 * 创建用户选择的触发位勾选器
-	 * */
-	const isCheckAttack = ref<boolean>( true );
-	const isCheckSkill = ref<boolean>( true );
-	const isCheckSprint = ref<boolean>( true );
-	const isCheckCall = ref<boolean>( true );
-	const isCheckInheriting = ref<boolean>( true );
-	
-	return {
-		attribute,
-		handleFetchAttributeSuggestions,
-		sect,
-		handleFetchSectSuggestions,
-		isCheckMainSect,
-		isCheckSecondSect,
-		isCheckAttack,
-		isCheckSkill,
-		isCheckSprint,
-		isCheckCall,
-		isCheckInheriting,
-	};
-};
-const {
-	attribute,
-	handleFetchAttributeSuggestions,
-	sect,
-	handleFetchSectSuggestions,
-	isCheckMainSect,
-	isCheckSecondSect,
-	isCheckAttack,
-	isCheckSkill,
-	isCheckSprint,
-	isCheckCall,
-	isCheckInheriting,
-} = useFormData();
+/* 表单数据 */
+const attribute = ref<Attribute | ''>('');
+const sect = ref<Sect[keyof Sect] | ''>('');
 
+/* 复选框数据 */
+const sectCheckboxes = reactive([
+	{ key: 'main', label: '主流派', value: true },
+	{ key: 'second', label: '副流派', value: true },
+]);
 
-/**
- * 数据列表作用域
- * */
-const useDataList = () => {
-	/**
-	 * 创建过滤列表, 通过传入的选择参数过滤技能数组
-	 * */
-	const filterSkillInfoList = computed( () => {
-		const skillInfoList = skillInfoStore.skillInfoList;
-		// console.log( 'skillInfoList:', skillInfoList );
-		return skillInfoList.filter( skillInfo => {
-			// 符合主属性
-			const isMain = isCheckMainSect.value
-				// 过滤属性
-				&& skillInfo.mainAttribute.includes( attribute.value )
-				// 过滤流派
-				&& skillInfo.mainSect.includes( sect.value );
-			
-			// 符合副属性
-			const isSecond = isCheckSecondSect.value
-				// 过滤属性
-				&& skillInfo.secondAttribute.includes( attribute.value )
-				// 过滤流派
-				&& skillInfo.secondSect.includes( sect.value );
-			
-			/*
-			* 遍历 trigger, 判断当前 trigger 是否全部符合已勾选的 trigger
-			* */
-			// 生成当前取消勾选的所有触发位
-			const checkTriggerList: Trigger[] = [
-				isCheckAttack.value || '普攻',
-				isCheckSkill.value || '技能',
-				isCheckSprint.value || '冲刺',
-				isCheckCall.value || '召唤',
-				isCheckInheriting.value || '传承',
-			].filter( item => item !== true ) as Trigger[];
-			
-			// 如果当前词条因为取消触发位不允许出现
-			const isTrigger = skillInfo.trigger.every( trigger => {
-				// console.log( 'trigger', trigger );
-				return checkTriggerList.includes( trigger );
-			} );
-			
-			// console.log( 'isTrigger', skillInfo.name, isTrigger );
-			// console.log( 'isMain', isMain );
-			// console.log( 'isSecond', isSecond );
-			return ( isMain || isSecond ) && !isTrigger;
-		} );
-		
-	} );
+const triggerCheckboxes = reactive([
+	{ key: 'attack', label: '普攻', value: true },
+	{ key: 'skill', label: '技能', value: true },
+	{ key: 'sprint', label: '冲刺', value: true },
+	{ key: 'call', label: '召唤', value: true },
+	{ key: 'inherit', label: '传承', value: true },
+]);
+
+/* 属性建议 */
+const handleFetchAttributeSuggestions = (searchString: string, cb: Function) => {
+	const attributeSet: Set<Attribute> = new Set();
+	skillInfoStore.skillInfoList.forEach(item => {
+		attributeSet.add(item.mainAttribute);
+	});
+	const attributeList = Array.from(attributeSet).map(item => ({ value: item }));
 	
-	/**
-	 * 样式选择Mapper
-	 * */
-	const styleMapper = {
-		'火': 'fire',
-		'冰': 'ice',
-		'电': 'thunder',
-		'毒': 'poison',
-		'光': 'light',
-		'暗': 'dark',
-		'刃': 'cut',
-	};
+	const suggestions = searchString
+		? attributeList.filter(item => item.value.includes(searchString))
+		: attributeList;
 	
-	return {
-		filterSkillInfoList,
-		styleMapper,
-	};
+	cb(suggestions);
 };
 
-const {
-	filterSkillInfoList,
-	styleMapper,
-} = useDataList();
+/* 流派建议 */
+const handleFetchSectSuggestions = (searchString: string, cb: Function) => {
+	const sectSet: Set<Sect[keyof Sect]> = new Set();
+	skillInfoStore.skillInfoList.forEach(item => {
+		sectSet.add(item.mainSect);
+	});
+	const sectList = Array.from(sectSet).map(item => ({ value: item }));
+	
+	let suggestions = sectList;
+	
+	if (attribute.value.trim()) {
+		const filteredList = sectConfig[<Attribute>attribute.value.trim()]
+			.map(item => ({ value: item }));
+		suggestions = searchString 
+			? filteredList.filter(item => item.value.includes(searchString))
+			: filteredList;
+	} else if (searchString) {
+		suggestions = sectList.filter(item => item.value.includes(searchString));
+	}
+	
+	cb(suggestions);
+};
 
+/* 过滤列表 */
+const filterSkillInfoList = computed(() => {
+	return skillInfoStore.skillInfoList.filter(skillInfo => {
+		// 主流派筛选
+		const isMain = sectCheckboxes[0].value
+			&& skillInfo.mainAttribute.includes(attribute.value)
+			&& skillInfo.mainSect.includes(sect.value);
+		
+		// 副流派筛选
+		const isSecond = sectCheckboxes[1].value
+			&& skillInfo.secondAttribute.includes(attribute.value)
+			&& skillInfo.secondSect.includes(sect.value);
+		
+		// 触发位筛选
+		const uncheckedTriggers: Trigger[] = [
+			triggerCheckboxes[0].value || '普攻',
+			triggerCheckboxes[1].value || '技能',
+			triggerCheckboxes[2].value || '冲刺',
+			triggerCheckboxes[3].value || '召唤',
+			triggerCheckboxes[4].value || '传承',
+		].filter(item => item !== true) as Trigger[];
+		
+		const isTrigger = skillInfo.trigger.every(trigger => 
+			uncheckedTriggers.includes(trigger)
+		);
+		
+		return (isMain || isSecond) && !isTrigger;
+	});
+});
+
+/* 样式映射 */
+const styleMapper: Record<Attribute, string> = {
+	'火': 'fire',
+	'冰': 'ice',
+	'电': 'thunder',
+	'毒': 'poison',
+	'暗': 'dark',
+	'光': 'light',
+	'刃': 'blade',
+};
 </script>

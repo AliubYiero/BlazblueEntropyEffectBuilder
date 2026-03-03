@@ -1,297 +1,457 @@
 <style lang="scss" scoped>
-.changer-form {
-	// 输入项
-	&-item {
-		display: flex;
-		//gap: 10px;
-		align-items: center;
+/* ============================================
+   修改流派对话框组件 - 赛博朋克风格
+   ============================================ */
+
+.form-container {
+	padding: 8px 0;
+}
+
+/* 表单组 */
+.form-group {
+	margin-bottom: 24px;
+	
+	&:last-child {
+		margin-bottom: 0;
+	}
+}
+
+.form-label {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-family: var(--font-display);
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	color: var(--text-secondary);
+	margin-bottom: 12px;
+	
+	.label-dot {
+		width: 6px;
+		height: 6px;
+		background: var(--accent-primary);
+		border-radius: 2px;
+	}
+}
+
+/* 触发位显示 */
+.trigger-display {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 12px 16px;
+	background: rgba(0, 212, 255, 0.05);
+	border: 1px solid rgba(0, 212, 255, 0.2);
+	border-radius: 8px;
+}
+
+.trigger-badge {
+	font-family: var(--font-display);
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	color: var(--accent-primary);
+}
+
+.trigger-icon {
+	width: 24px;
+	height: 24px;
+	background: var(--accent-primary);
+	clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+	opacity: 0.6;
+}
+
+/* 输入行 */
+.input-row {
+	display: flex;
+	gap: 12px;
+	align-items: stretch;
+}
+
+.input-main {
+	flex: 1;
+}
+
+.input-side {
+	width: 120px;
+	flex-shrink: 0;
+}
+
+/* 自定义输入框样式 */
+:deep(.el-input__wrapper),
+:deep(.el-autocomplete .el-input__wrapper) {
+	background: rgba(0, 0, 0, 0.3) !important;
+	border: 1px solid var(--border-primary) !important;
+	border-radius: 8px !important;
+	padding: 4px 12px !important;
+	min-height: 42px;
+	transition: all var(--transition-normal) !important;
+	
+	&:hover {
+		border-color: var(--border-glow) !important;
 	}
 	
-	/*
-	输入表单
-	*/
-	&-attribute-input {
-		width: 100px;
+	&.is-focus,
+	&:focus-within {
+		border-color: var(--accent-primary) !important;
+		box-shadow: 0 0 20px rgba(0, 212, 255, 0.15) !important;
+	}
+}
+
+:deep(.el-input__inner) {
+	font-family: var(--font-chinese) !important;
+	font-size: 14px !important;
+	color: var(--text-primary) !important;
+	
+	&::placeholder {
+		color: var(--text-muted) !important;
+	}
+}
+
+/* 选择框样式 */
+:deep(.el-select) {
+	width: 100%;
+	
+	.el-input__wrapper {
+		background: rgba(0, 0, 0, 0.3) !important;
+	}
+}
+
+/* 按钮组 */
+.button-group {
+	display: flex;
+	gap: 12px;
+	justify-content: flex-end;
+	margin-top: 32px;
+	padding-top: 24px;
+	border-top: 1px solid var(--border-primary);
+}
+
+.btn {
+	font-family: var(--font-display) !important;
+	font-size: 12px !important;
+	font-weight: 600 !important;
+	letter-spacing: 2px !important;
+	text-transform: uppercase !important;
+	padding: 12px 28px !important;
+	border-radius: 8px !important;
+	transition: all var(--transition-normal) !important;
+	cursor: pointer;
+	
+	&--primary {
+		background: linear-gradient(135deg, var(--accent-primary) 0%, #00a8cc 100%) !important;
+		border: none !important;
+		color: var(--bg-primary) !important;
+		
+		&:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 8px 25px rgba(0, 212, 255, 0.4) !important;
+		}
+		
+		&:active {
+			transform: translateY(0);
+		}
+	}
+	
+	&--secondary {
+		background: transparent !important;
+		border: 1px solid var(--border-primary) !important;
+		color: var(--text-secondary) !important;
+		
+		&:hover {
+			border-color: var(--text-secondary) !important;
+			color: var(--text-primary) !important;
+		}
+	}
+}
+
+/* 可选流派列表 */
+.sect-options {
+	margin-top: 16px;
+	max-height: 200px;
+	overflow-y: auto;
+}
+
+.sect-option {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 10px 14px;
+	background: rgba(0, 0, 0, 0.2);
+	border: 1px solid var(--border-primary);
+	border-radius: 8px;
+	margin-bottom: 8px;
+	cursor: pointer;
+	transition: all var(--transition-fast);
+	
+	&:hover {
+		border-color: var(--border-glow);
+		background: rgba(0, 212, 255, 0.03);
+	}
+	
+	&.is-selected {
+		border-color: var(--accent-primary);
+		background: rgba(0, 212, 255, 0.08);
+	}
+}
+
+.sect-color {
+	width: 8px;
+	height: 8px;
+	border-radius: 2px;
+	
+	&--fire { background: var(--element-fire); }
+	&--ice { background: var(--element-ice); }
+	&--thunder { background: var(--element-thunder); }
+	&--poison { background: var(--element-poison); }
+	&--dark { background: var(--element-dark); }
+	&--light { background: var(--element-light); }
+	&--blade { background: var(--element-blade); }
+}
+
+.sect-name {
+	font-family: var(--font-chinese);
+	font-size: 13px;
+	color: var(--text-primary);
+}
+
+.sect-attribute {
+	font-family: var(--font-display);
+	font-size: 9px;
+	font-weight: 600;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	color: var(--text-muted);
+	margin-left: auto;
+}
+
+/* 响应式 */
+@media (max-width: 480px) {
+	.input-row {
+		flex-direction: column;
+	}
+	
+	.input-side {
+		width: 100%;
+	}
+	
+	.button-group {
+		flex-direction: column-reverse;
+		
+		.btn {
+			width: 100%;
+		}
 	}
 }
 </style>
 
 <template>
-	<el-form ref="formRef"
-	         :model="formData"
-	         :rules="rules"
-	         class="changer-form-container"
-	         label-width="auto"
-	>
-		<!-- 触发位 -->
-		<el-form-item
-			class="changer-form-item trigger-input-container"
-			label="触发位:"
-			prop="formData.triggerName"
-		>
-			<el-select v-model="formData.triggerName"
-			           class="changer-form-input changer-form-trigger-input"
-			           disabled
-			           placeholder="请选择流派"
-			>
-				<el-option
-					v-for="triggerOption in triggerOptionList"
-					:value="triggerOption"
-				/>
-			</el-select>
-		</el-form-item>
-		
-		<!-- 流派 / 属性 -->
-		<el-form-item
-			class="changer-form-item"
-			label="流派:"
-			prop="formData.sect"
-		>
-			<!-- 流派 -->
-			<el-autocomplete
-				v-model="formData.sect"
-				:fetch-suggestions="fetchSectListSuggestions"
-				class="changer-form-input changer-form-sect-input"
-				clearable
-				placeholder="请输入流派"
-				style="flex: 1; margin: 0 5px 0 0;"
-			/>
+	<div class="form-container">
+		<el-form ref="formRef" :model="formData" :rules="rules">
+			<!-- 触发位显示 -->
+			<div class="form-group">
+				<label class="form-label">
+					<span class="label-dot"></span>
+					触发位
+				</label>
+				<div class="trigger-display">
+					<div class="trigger-icon"></div>
+					<span class="trigger-badge">{{ triggerName }}</span>
+				</div>
+			</div>
 			
-			<!-- 属性 -->
-			<el-select
-				v-model="formData.attribute"
-				class="changer-form-input changer-form-attribute-input"
-				placeholder="选择属性"
-			>
-				<el-option v-for="attribute in attributeList"
-				           :key="attribute"
-				           :value="attribute"
-				></el-option>
-			</el-select>
-		</el-form-item>
-		
-		<!-- 确定按钮 / 关闭按钮 -->
-		<el-form-item
-			class="changer-form-item submit-btn-group-input-container"
-		>
-			<!-- 确定按钮 / 关闭按钮 -->
-			<el-button type="primary"
-			           @click="handleSubmitForm"
-			>
-				确定
-			</el-button>
-			<el-button @click="handleEmitCloseDialog">
-				取消
-			</el-button>
-		</el-form-item>
-	</el-form>
+			<!-- 流派选择 -->
+			<div class="form-group">
+				<label class="form-label">
+					<span class="label-dot"></span>
+					流派
+				</label>
+				<div class="input-row">
+					<el-form-item prop="sect" class="input-main">
+						<el-autocomplete
+							v-model="formData.sect"
+							:fetch-suggestions="fetchSectListSuggestions"
+							placeholder="输入或选择流派"
+							clearable
+							@select="handleSectSelect"
+						/>
+					</el-form-item>
+					<el-select
+						v-model="formData.attribute"
+						class="input-side"
+						placeholder="属性筛选"
+						clearable
+					>
+						<el-option
+							v-for="attr in attributeList"
+							:key="attr"
+							:value="attr"
+						/>
+					</el-select>
+				</div>
+			</div>
+			
+			<!-- 快捷选择 -->
+			<div v-if="filterSectList.length > 0" class="sect-options">
+				<div 
+					v-for="sect in filterSectList.slice(0, 8)"
+					:key="sect.name"
+					:class="['sect-option', { 'is-selected': formData.sect === sect.name }]"
+					@click="handleQuickSelect(sect.name)"
+				>
+					<div :class="['sect-color', `sect-color--${styleMapper[sect.attribute]}`]"></div>
+					<span class="sect-name">{{ sect.name }}</span>
+					<span class="sect-attribute">{{ sect.attribute }}</span>
+				</div>
+			</div>
+			
+			<!-- 按钮组 -->
+			<div class="button-group">
+				<button type="button" class="btn btn--secondary" @click="handleCancel">
+					取消
+				</button>
+				<button type="button" class="btn btn--primary" @click="handleSubmit">
+					确定
+				</button>
+			</div>
+		</el-form>
+	</div>
 </template>
 
 <script lang="ts" setup>
+import { reactive, ref, computed, watch } from 'vue';
 import { Trigger } from '../../interfaces/Trigger.ts';
-import { computed, reactive, ref, watch } from 'vue';
-import { sectConfig } from '../../config/sectConfig.ts';
 import { Attribute } from '../../interfaces/Attribute.ts';
 import { SectValue } from '../../interfaces/SectValue.ts';
-import { Sect } from '../../interfaces/Sect.ts';
-import { EmptyStringAble } from '../../interfaces/Nullable.ts';
+import { sectConfig } from '../../config/sectConfig.ts';
 import { useSkillInfoStore } from '../../store/useSkillInfoStore.ts';
+import { useSkillCardInfoStore } from '../../store/useSkillCardInfoStore.ts';
 import { FormInstance } from 'element-plus';
-import {
-	useSkillCardInfoStore,
-} from '../../store/useSkillCardInfoStore.ts';
 
-/**
- * 定义参数
- * */
 const props = defineProps<{
-	triggerName: Trigger,
+	triggerName: Trigger;
 }>();
 
-/**
- * 定义传出事件
- * */
-const emits = defineEmits<{
-	( event: 'closeDialog', value: void ): void;
+const emit = defineEmits<{
+	(event: 'closeDialog'): void;
 }>();
 
-/**
- * 作用域: 输入表单操作
- * */
-const useFormOperator = () => {
-	interface FormData {
-		triggerName: Trigger;
-		attribute: EmptyStringAble<Attribute>;
-		sect: EmptyStringAble<SectValue>;
+const skillInfoStore = useSkillInfoStore();
+const skillCardInfoStore = useSkillCardInfoStore();
+
+/* 表单数据 */
+const formData = reactive({
+	triggerName: props.triggerName,
+	attribute: '' as Attribute | '',
+	sect: '' as SectValue | '',
+});
+
+const formRef = ref<FormInstance>();
+
+/* 校验规则 */
+const rules = {
+	sect: [{ required: true, message: '请选择流派', trigger: 'change' }],
+};
+
+/* 属性列表 */
+const attributeList = Object.keys(sectConfig) as Attribute[];
+
+/* 根据流派获取属性 */
+const getAttributeBySect = (sect: SectValue): Attribute | '' => {
+	for (const attr of Object.keys(sectConfig) as Attribute[]) {
+		if (sectConfig[attr].includes(sect)) {
+			return attr;
+		}
+	}
+	return '';
+};
+
+/* 监听流派变化 */
+watch(() => formData.sect, (newVal) => {
+	if (newVal) {
+		formData.attribute = getAttributeBySect(newVal);
+	}
+});
+
+/* 过滤流派列表 */
+const filterSectList = computed(() => {
+	const allSects: { name: SectValue; attribute: Attribute }[] = [];
+	
+	// 获取该触发位可用的流派
+	const availableTriggers = skillInfoStore.triggerInfoList.filter(
+		t => t.trigger.includes(props.triggerName)
+	);
+	
+	for (const attr of Object.keys(sectConfig) as Attribute[]) {
+		sectConfig[attr].forEach(sect => {
+			const triggerInfo = availableTriggers.find(t => t.name === sect);
+			if (triggerInfo) {
+				allSects.push({ name: sect, attribute: attr });
+			}
+		});
 	}
 	
-	/*
-	* 表单数据
-	* */
-	const formData = reactive<FormData>( {
-		triggerName: props.triggerName,
-		attribute: '',
-		sect: '',
-	} );
+	// 按属性筛选
+	if (formData.attribute) {
+		return allSects.filter(s => s.attribute === formData.attribute);
+	}
 	
-	/*
-	* 触发位
-	* */
-	/** 触发位列表 */
-	const triggerOptionList: Trigger[] = [ '普攻', '技能', '冲刺', '传承', '召唤' ] as const;
-	
-	/**
-	 * 根据输入的 Sect 获取流派对应的属性
-	 * */
-	const getAttribute = ( sect: SectValue ): EmptyStringAble<Attribute> => {
-		for ( let sectConfigKey in sectConfig ) {
-			const attribute = sectConfigKey as Attribute;
-			const singleSectList = sectConfig[ <keyof Sect> sectConfigKey ];
-			
-			const inCurrentSect = singleSectList.includes( sect );
-			if ( inCurrentSect ) {
-				return attribute;
-			}
-		}
-		return '';
-	};
-	
-	/*
-	* 属性/流派更改监听
-	* */
-	watch( formData, () => {
-		/*
-		* 监听 formData.attribute 的更改, 进行对应的响应式拦截
-		*
-		* 如果 formData.sect (流派) 有值, 不允许修改;
-		* 当 formData.sect 更改时, 将 formData.attribute 修改为对应的流派;
-		* */
-		if ( formData.sect ) {
-			// 因为引用对象被更改无法直接获取旧的修改值, 所以这里是重新获取了当前流派的对应属性
-			formData.attribute = getAttribute( formData.sect );
-		}
-	} );
-	
-	/** 获取包含所有属性的数组 */
-	const attributeList = Array.from( Object.keys( sectConfig ) );
-	
-	/**
-	 * 句柄: 过滤掉不属于当前触发位的 SectList
-	 * */
-	const handleFilterSectList = ( sectList: SectValue[] ) => {
-		return sectList.filter( ( sect ) => {
-			const triggerInfoList = useSkillInfoStore().triggerInfoList;
-			const currentSectTriggerInfo = triggerInfoList.find( item => item.name === sect );
-			if ( !currentSectTriggerInfo ) {
-				return false;
-			}
-			return currentSectTriggerInfo.trigger.includes( props.triggerName );
-		} );
-	};
-	/** 显示给用户的流派列表 */
-	const filterSectList = computed( () => {
-		let sectList: SectValue[] = handleFilterSectList( <SectValue[]> Array.from( Object.values( sectConfig ) ).flat() );
-		if ( formData.attribute ) {
-			sectList = handleFilterSectList( <SectValue[]> sectConfig[ formData.attribute ] );
-		}
-		return sectList;
-	} );
-	/**
-	 * 获取当前所有预选流派
-	 * */
-	const fetchSectListSuggestions = () => {
-		// console.log( 'filterSectList', filterSectList.value );
-		return filterSectList.value.map( item => ( { value: item } ) );
-	};
-	
-	
-	return {
-		formData,
-		
-		triggerOptionList,
-		attributeList,
-		
-		fetchSectListSuggestions,
-	};
-};
-const {
-	formData,
-	
-	triggerOptionList,
-	attributeList,
-	
-	fetchSectListSuggestions,
-} = useFormOperator();
+	return allSects;
+});
 
-/**
- * 作用域: 初始化表单和校验表单
- * */
-const useFormValidator = () => {
-	// 获取表单dom
-	const formRef = ref<FormInstance>();
+/* 获取流派建议 */
+const fetchSectListSuggestions = (searchString: string, cb: Function) => {
+	let suggestions = filterSectList.value.map(s => ({ value: s.name }));
 	
-	// 确定校验规则
-	const rules = reactive( {
-		triggerName: [
-			{ required: true, message: '请勿更改触发位', trigger: 'blur' },
-		],
-		sect: [
-			{ required: true, message: '请输入更改流派', trigger: 'change' },
-		],
-	} );
+	if (searchString) {
+		suggestions = suggestions.filter(s => 
+			s.value.toLowerCase().includes(searchString.toLowerCase())
+		);
+	}
 	
-	/**
-	 * 句柄: 校验表单
-	 * */
-	const handleSubmitForm = async () => {
-		if ( !formRef.value ) return;
-		await formRef.value.validate( ( valid, fields ) => {
-			// 验证失败
-			if ( !valid ) {
-				console.log( 'error submit!', fields );
-				return false;
-			}
-			
-			/*
-			* 验证成功流程
-			* */
-			// 将当前修改提交给存储
-			const skillCardInfoStore = useSkillCardInfoStore();
-			skillCardInfoStore.updateSkillCardInfo( formData.triggerName, <SectValue> formData.sect );
-			
-			// 关闭并重置对话框
-			handleEmitCloseDialog();
-		} );
-	};
-	
-	/**
-	 * 句柄: 触发 close-dialog 事件关闭对话框
-	 * */
-	const handleEmitCloseDialog = () => {
-		// 清空所有输入
-		formData.sect = '';
-		formData.attribute = '';
-		
-		// 派发事件
-		emits( 'closeDialog' );
-	};
-	
-	return {
-		formRef,
-		
-		rules,
-		
-		handleSubmitForm,
-		handleEmitCloseDialog,
-	};
+	cb(suggestions);
 };
-const {
-	formRef,
-	
-	rules,
-	
-	handleSubmitForm,
-	handleEmitCloseDialog,
-} = useFormValidator();
 
+/* 选择流派 */
+const handleSectSelect = (item: { value: SectValue }) => {
+	formData.sect = item.value;
+};
+
+/* 快捷选择 */
+const handleQuickSelect = (sect: SectValue) => {
+	formData.sect = sect;
+};
+
+/* 提交 */
+const handleSubmit = async () => {
+	if (!formRef.value) return;
+	
+	await formRef.value.validate((valid) => {
+		if (valid && formData.sect) {
+			skillCardInfoStore.updateSkillCardInfo(props.triggerName, formData.sect);
+			handleCancel();
+		}
+	});
+};
+
+/* 取消 */
+const handleCancel = () => {
+	formData.sect = '';
+	formData.attribute = '';
+	emit('closeDialog');
+};
+
+/* 样式映射 */
+const styleMapper: Record<Attribute, string> = {
+	'火': 'fire',
+	'冰': 'ice',
+	'电': 'thunder',
+	'毒': 'poison',
+	'暗': 'dark',
+	'光': 'light',
+	'刃': 'blade',
+};
 </script>
