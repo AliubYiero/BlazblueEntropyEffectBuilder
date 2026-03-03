@@ -100,8 +100,12 @@
 				<label class="form-label">流派</label>
 				<div class="input-row">
 					<el-form-item prop="sect" class="input-main">
-						<el-autocomplete v-model="formData.sect" :fetch-suggestions="fetchSectListSuggestions" placeholder="选择流派"
-							clearable />
+						<el-autocomplete
+							v-model="formData.sect"
+							:fetch-suggestions="fetchSectListSuggestions"
+							placeholder="选择流派"
+							clearable
+						/>
 					</el-form-item>
 					<el-select v-model="formData.attribute" class="input-side" placeholder="属性" clearable>
 						<el-option v-for="attr in attributeList" :key="attr" :value="attr" />
@@ -110,8 +114,12 @@
 			</div>
 
 			<div v-if="filterSectList.length > 0" class="sect-options">
-				<div v-for="sect in filterSectList.slice(0, 6)" :key="sect.name"
-					:class="['sect-option', { 'is-selected': formData.sect === sect.name }]" @click="formData.sect = sect.name">
+				<div
+					v-for="sect in filterSectList.slice(0, 6)"
+					:key="sect.name"
+					:class="['sect-option', { 'is-selected': formData.sect === sect.name }]"
+					@click="formData.sect = sect.name"
+				>
 					<span :class="['element-dot', `element-dot--${styleMapper[sect.attribute]}`]"></span>
 					<span class="sect-name">{{ sect.name }}</span>
 				</div>
@@ -127,19 +135,21 @@
 
 <script lang="ts" setup>
 import { reactive, ref, computed, watch } from 'vue';
-import { Trigger } from '../../interfaces/Trigger.ts';
-import { Attribute } from '../../interfaces/Attribute.ts';
-import { SectValue } from '../../interfaces/SectValue.ts';
+import type { Trigger } from '../../interfaces/Trigger.ts';
+import type { Attribute } from '../../interfaces/Attribute.ts';
+import type { SectValue } from '../../interfaces/SectValue.ts';
 import { sectConfig } from '../../config/sectConfig.ts';
-import { useSkillInfoStore } from '../../store/useSkillInfoStore.ts';
+import { useSkillData } from '../../composables/useSkillData.ts';
 import { useSkillCardInfoStore } from '../../store/useSkillCardInfoStore.ts';
-import { FormInstance } from 'element-plus';
+import { useSectValidation } from '../../composables/useSectValidation.ts';
+import type { FormInstance } from 'element-plus';
 
 const props = defineProps<{ triggerName: Trigger }>();
 const emit = defineEmits<{ (event: 'closeDialog'): void }>();
 
-const skillInfoStore = useSkillInfoStore();
+const skillData = useSkillData();
 const skillCardInfoStore = useSkillCardInfoStore();
+const { rules, validateAttributeMatch } = useSectValidation(props.triggerName);
 
 const formData = reactive({
 	triggerName: props.triggerName,
@@ -148,33 +158,69 @@ const formData = reactive({
 });
 
 const formRef = ref<FormInstance>();
-const rules = { sect: [{ required: true, message: '请选择流派', trigger: 'change' }] };
 const attributeList = Object.keys(sectConfig) as Attribute[];
 
-watch(() => formData.sect, (val) => {
-	if (val) {
-		for (const attr of attributeList) {
-			if (sectConfig[attr].includes(val)) formData.attribute = attr;
+/**
+ * 监听流派变化，自动设置属性
+ * */
+watch(
+	() => formData.sect,
+	(val) => {
+		if (val) {
+			const actualAttr = skillData.getAttributeBySect(val);
+			if (actualAttr && actualAttr !== formData.attribute) {
+				formData.attribute = actualAttr;
+			}
 		}
-	}
-});
+	},
+);
 
+/**
+ * 监听属性变化，验证与流派是否匹配
+ * */
+watch(
+	() => formData.attribute,
+	(val) => {
+		if (val && formData.sect) {
+			const isMatch = validateAttributeMatch(formData.sect, val);
+			if (!isMatch) {
+				formData.sect = '';
+			}
+		}
+	},
+);
+
+/**
+ * 根据当前触发位和选中属性筛选可用流派
+ * */
 const filterSectList = computed(() => {
-	const available = skillInfoStore.triggerInfoList.filter(t => t.trigger.includes(props.triggerName));
+	const available = skillData.triggerInfoList.value.filter((t) =>
+		t.trigger.includes(props.triggerName),
+	);
 	const all: { name: SectValue; attribute: Attribute }[] = [];
+
 	for (const attr of attributeList) {
-		sectConfig[attr].forEach(sect => {
-			if (available.find(t => t.name === sect)) all.push({ name: sect as SectValue, attribute: attr });
+		sectConfig[attr].forEach((sect) => {
+			if (available.find((t) => t.name === sect)) {
+				all.push({ name: sect as SectValue, attribute: attr });
+			}
 		});
 	}
-	return formData.attribute ? all.filter(s => s.attribute === formData.attribute) : all;
+
+	return formData.attribute ? all.filter((s) => s.attribute === formData.attribute) : all;
 });
 
+/**
+ * 流派搜索建议
+ * */
 const fetchSectListSuggestions = (search: string, cb: Function) => {
-	const list = filterSectList.value.map(s => ({ value: s.name }));
-	cb(search ? list.filter(s => s.value.includes(search)) : list);
+	const list = filterSectList.value.map((s) => ({ value: s.name }));
+	cb(search ? list.filter((s) => s.value.includes(search)) : list);
 };
 
+/**
+ * 提交表单
+ * */
 const handleSubmit = async () => {
 	if (!formRef.value) return;
 	await formRef.value.validate((valid) => {
@@ -185,6 +231,9 @@ const handleSubmit = async () => {
 	});
 };
 
+/**
+ * 取消并关闭对话框
+ * */
 const handleCancel = () => {
 	formData.sect = '';
 	formData.attribute = '';
@@ -192,7 +241,12 @@ const handleCancel = () => {
 };
 
 const styleMapper: Record<Attribute, string> = {
-	'火': 'fire', '冰': 'ice', '电': 'thunder',
-	'毒': 'poison', '暗': 'dark', '光': 'light', '刃': 'blade',
+	火: 'fire',
+	冰: 'ice',
+	电: 'thunder',
+	毒: 'poison',
+	暗: 'dark',
+	光: 'light',
+	刃: 'blade',
 };
 </script>
