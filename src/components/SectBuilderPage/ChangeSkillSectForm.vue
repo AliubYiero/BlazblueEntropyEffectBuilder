@@ -94,6 +94,17 @@
 		color: hsl(var(--primary-foreground));
 		border-color: hsl(var(--primary));
 	}
+	
+	&.is-disabled {
+		opacity: 0.4;
+		cursor: not-allowed;
+		background: hsl(var(--secondary) / 0.5);
+		border-color: hsl(var(--border) / 0.5);
+		
+		&:hover {
+			transform: none;
+		}
+	}
 }
 
 .skill-desc {
