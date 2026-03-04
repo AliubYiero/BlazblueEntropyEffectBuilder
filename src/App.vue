@@ -4,9 +4,6 @@
    shadcn 风格 UI
    ============================================ */
 
-/* Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap');
-
 /* CSS 变量 - shadcn 风格 */
 :root {
 	/* 基础颜色 (HSL 格式) */
@@ -30,7 +27,7 @@
 	--input: 214.3 31.8% 91.4%;
 	--ring: 222.2 84% 4.9%;
 	--radius: 0.5rem;
-
+	
 	/* 元素颜色 - 用于小圆点标识 */
 	--element-fire: 0 84% 60%;
 	--element-ice: 199 89% 48%;
@@ -39,7 +36,7 @@
 	--element-dark: 258 90% 66%;
 	--element-light: 45 93% 47%;
 	--element-blade: 215 16% 47%;
-
+	
 	/* 字体 */
 	--font-sans: 'Inter', 'Noto Sans SC', system-ui, sans-serif;
 	--font-chinese: 'Noto Sans SC', sans-serif;
@@ -88,7 +85,7 @@
 ::-webkit-scrollbar-thumb {
 	background: hsl(var(--border));
 	border-radius: 4px;
-
+	
 	&:hover {
 		background: hsl(var(--muted-foreground));
 	}
@@ -130,11 +127,11 @@ body {
 
 .el-menu-item {
 	font-family: var(--font-chinese) !important;
-
+	
 	&:hover {
 		background: hsl(var(--accent) / 0.5) !important;
 	}
-
+	
 	&.is-active {
 		border-bottom: 2px solid hsl(var(--primary)) !important;
 		color: hsl(var(--primary)) !important;
@@ -149,9 +146,9 @@ body {
 	--el-table-border-color: hsl(var(--border));
 	--el-table-text-color: hsl(var(--foreground));
 	--el-table-header-text-color: hsl(var(--foreground));
-
+	
 	font-family: var(--font-chinese) !important;
-
+	
 	.el-table__header th {
 		font-weight: 600;
 		font-size: 12px;
@@ -166,11 +163,11 @@ body {
 	border: 1px solid hsl(var(--border)) !important;
 	border-radius: calc(var(--radius) - 2px) !important;
 	box-shadow: none !important;
-
+	
 	&:hover {
 		border-color: hsl(var(--ring)) !important;
 	}
-
+	
 	&.is-focus,
 	&:focus-within {
 		border-color: hsl(var(--ring)) !important;
@@ -181,7 +178,7 @@ body {
 .el-input__inner {
 	color: hsl(var(--foreground)) !important;
 	font-family: var(--font-chinese) !important;
-
+	
 	&::placeholder {
 		color: hsl(var(--muted-foreground)) !important;
 	}
@@ -189,17 +186,17 @@ body {
 
 .el-checkbox {
 	font-family: var(--font-chinese) !important;
-
+	
 	.el-checkbox__label {
 		color: hsl(var(--foreground)) !important;
 	}
-
+	
 	.el-checkbox__inner {
 		background: hsl(var(--background)) !important;
 		border-color: hsl(var(--border)) !important;
 		border-radius: calc(var(--radius) - 4px) !important;
 	}
-
+	
 	&.is-checked .el-checkbox__inner {
 		background: hsl(var(--primary)) !important;
 		border-color: hsl(var(--primary)) !important;
@@ -209,12 +206,12 @@ body {
 .el-button {
 	font-family: var(--font-chinese) !important;
 	border-radius: calc(var(--radius) - 2px) !important;
-
+	
 	&--primary {
 		background: hsl(var(--primary)) !important;
 		border-color: hsl(var(--primary)) !important;
 		color: hsl(var(--primary-foreground)) !important;
-
+		
 		&:hover {
 			background: hsl(var(--primary)) !important;
 			opacity: 0.9;
@@ -226,18 +223,18 @@ body {
 	background: hsl(var(--card)) !important;
 	border: 1px solid hsl(var(--border)) !important;
 	border-radius: var(--radius) !important;
-
+	
 	.el-dialog__header {
 		border-bottom: 1px solid hsl(var(--border)) !important;
 		padding: 16px 20px !important;
 	}
-
+	
 	.el-dialog__title {
 		font-family: var(--font-chinese) !important;
 		font-weight: 600;
 		color: hsl(var(--foreground)) !important;
 	}
-
+	
 	.el-dialog__body {
 		padding: 20px !important;
 	}
@@ -251,15 +248,15 @@ body {
 	background: hsl(var(--popover)) !important;
 	border: 1px solid hsl(var(--border)) !important;
 	border-radius: calc(var(--radius) - 2px) !important;
-
+	
 	.el-select-dropdown__item {
 		font-family: var(--font-chinese) !important;
 		color: hsl(var(--foreground)) !important;
-
+		
 		&:hover {
 			background: hsl(var(--accent) / 0.5) !important;
 		}
-
+		
 		&.is-selected {
 			color: hsl(var(--primary)) !important;
 		}
@@ -272,13 +269,33 @@ body {
 }
 
 /* ===== 元素颜色工具类 ===== */
-.element-fire { color: hsl(var(--element-fire)); }
-.element-ice { color: hsl(var(--element-ice)); }
-.element-thunder { color: hsl(var(--element-thunder)); }
-.element-poison { color: hsl(var(--element-poison)); }
-.element-dark { color: hsl(var(--element-dark)); }
-.element-light { color: hsl(var(--element-light)); }
-.element-blade { color: hsl(var(--element-blade)); }
+.element-fire {
+	color: hsl(var(--element-fire));
+}
+
+.element-ice {
+	color: hsl(var(--element-ice));
+}
+
+.element-thunder {
+	color: hsl(var(--element-thunder));
+}
+
+.element-poison {
+	color: hsl(var(--element-poison));
+}
+
+.element-dark {
+	color: hsl(var(--element-dark));
+}
+
+.element-light {
+	color: hsl(var(--element-light));
+}
+
+.element-blade {
+	color: hsl(var(--element-blade));
+}
 
 /* 元素圆点 */
 .element-dot {
@@ -287,14 +304,34 @@ body {
 	height: 8px;
 	border-radius: 50%;
 	margin-right: 6px;
-
-	&--fire { background: hsl(var(--element-fire)); }
-	&--ice { background: hsl(var(--element-ice)); }
-	&--thunder { background: hsl(var(--element-thunder)); }
-	&--poison { background: hsl(var(--element-poison)); }
-	&--dark { background: hsl(var(--element-dark)); }
-	&--light { background: hsl(var(--element-light)); }
-	&--blade { background: hsl(var(--element-blade)); }
+	
+	&--fire {
+		background: hsl(var(--element-fire));
+	}
+	
+	&--ice {
+		background: hsl(var(--element-ice));
+	}
+	
+	&--thunder {
+		background: hsl(var(--element-thunder));
+	}
+	
+	&--poison {
+		background: hsl(var(--element-poison));
+	}
+	
+	&--dark {
+		background: hsl(var(--element-dark));
+	}
+	
+	&--light {
+		background: hsl(var(--element-light));
+	}
+	
+	&--blade {
+		background: hsl(var(--element-blade));
+	}
 }
 </style>
 

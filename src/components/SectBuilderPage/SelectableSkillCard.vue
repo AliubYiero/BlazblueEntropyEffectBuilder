@@ -90,12 +90,12 @@
 				<div class="sect-combo">
 					<span class="sect-tag">
 						<span :class="['element-dot', `element-dot--${styleMapper[detail.mainAttribute]}`]"></span>
-						{{ detail.mainSect }}
+						{{ getSkillDisplay(detail.mainSect) }}
 					</span>
 					<span class="sect-connector">+</span>
 					<span class="sect-tag">
 						<span :class="['element-dot', `element-dot--${styleMapper[detail.secondAttribute]}`]"></span>
-						{{ detail.secondSect }}
+						{{ getSkillDisplay(detail.secondSect) }}
 					</span>
 				</div>
 				<p class="skill-desc">{{ detail.description }}</p>
@@ -111,6 +111,7 @@ import { useSkillInfoStore } from '../../store/useSkillInfoStore.ts';
 import { useSkillCardInfoStore } from '../../store/useSkillCardInfoStore.ts';
 import { SkillInfoInterface } from '../../interfaces/SkillInfoInterface.ts';
 import { Attribute } from '../../interfaces/Attribute.ts';
+import { getSkillsBySect } from '../../config/sectConfig.ts';
 
 const props = defineProps<{ skillCardInfo: SkillCardInfo }>();
 const skillInfoStore = useSkillInfoStore();
@@ -127,5 +128,9 @@ const filterDetailList = computed<SkillInfoInterface[]>(() => {
 const styleMapper: Record<Attribute, string> = {
 	'火': 'fire', '冰': 'ice', '电': 'thunder',
 	'毒': 'poison', '暗': 'dark', '光': 'light', '刃': 'blade',
+};
+
+const getSkillDisplay = (sectName: string): string => {
+	return getSkillsBySect(sectName);
 };
 </script>
