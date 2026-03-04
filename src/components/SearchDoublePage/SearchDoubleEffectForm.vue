@@ -56,7 +56,7 @@
 	display: flex;
 	gap: 12px;
 	flex-wrap: wrap;
-
+	
 	&:not(:last-child) {
 		margin-bottom: 8px;
 	}
@@ -78,7 +78,7 @@
 	font-family: var(--font-chinese);
 	font-size: 14px;
 	color: hsl(var(--muted-foreground));
-
+	
 	.count-number {
 		font-weight: 600;
 		color: hsl(var(--foreground));
@@ -97,7 +97,7 @@
 	border-radius: var(--radius);
 	padding: 16px;
 	transition: all 0.15s ease;
-
+	
 	&:hover {
 		border-color: hsl(var(--ring));
 		background: hsl(var(--accent) / 0.3);
@@ -178,7 +178,7 @@
 	.page-container {
 		padding: 16px;
 	}
-
+	
 	.skills-grid {
 		grid-template-columns: 1fr;
 	}
@@ -190,66 +190,69 @@
 		<section class="filter-section">
 			<div class="filter-card">
 				<div class="filter-title">筛选条件</div>
-
+				
 				<div class="input-row">
 					<div class="input-group">
 						<label class="input-label">属性</label>
 						<el-autocomplete
 							v-model="attribute"
 							:fetch-suggestions="handleFetchAttributeSuggestions"
-							placeholder="选择或输入属性"
 							clearable
+							placeholder="选择或输入属性"
 						/>
 					</div>
-
+					
 					<div class="input-group">
 						<label class="input-label">流派</label>
 						<el-autocomplete
 							v-model="sect"
 							:fetch-suggestions="handleFetchSectSuggestions"
-							placeholder="选择或输入流派"
 							clearable
+							placeholder="选择或输入流派"
 						/>
 					</div>
 				</div>
-
+				
 				<div class="checkbox-section">
 					<div class="checkbox-row">
 						<span class="checkbox-label">流派</span>
 						<el-checkbox
 							v-for="item in sectCheckboxItems"
 							:key="item.key"
-							:model-value="item.value"
 							:label="item.label"
+							:model-value="item.value"
 							@change="(val: boolean) => handleSectCheckboxChange(item.key, val)"
 						/>
 					</div>
-
+					
 					<div class="checkbox-row">
 						<span class="checkbox-label">槽位</span>
 						<el-checkbox
 							v-for="item in triggerCheckboxItems"
 							:key="item.key"
-							:model-value="item.value"
 							:label="item.label"
+							:model-value="item.value"
 							@change="(val: boolean) => handleTriggerCheckboxChange(item.key, val)"
 						/>
 					</div>
 				</div>
 			</div>
 		</section>
-
+		
 		<div class="results-header">
 			<div class="results-count">
-				<span class="count-number">{{ filterSkillInfoList.length }}</span> 条双重策略
+				<span class="count-number">{{
+						filterSkillInfoList.length
+					}}</span>
+				条双重策略
 			</div>
 		</div>
-
+		
 		<div class="skills-grid">
 			<div v-if="filterSkillInfoList.length === 0" class="empty-state">
 				没有找到匹配的双重策略
 			</div>
-
+			
 			<div
 				v-for="skill in filterSkillInfoList"
 				:key="skill.name"
@@ -258,38 +261,51 @@
 				<div class="card-header">
 					<h3 class="skill-name">{{ skill.name }}</h3>
 					<div class="trigger-badges">
-						<span v-for="trigger in skill.trigger" :key="trigger" class="trigger-badge">{{ trigger }}</span>
+						<span v-for="trigger in skill.trigger" :key="trigger"
+						      class="trigger-badge">{{ trigger }}</span>
 					</div>
 				</div>
-
+				
 				<div class="sect-combo">
 					<div class="sect-item">
-						<span :class="['element-dot', `element-dot--${styleMapper[skill.mainAttribute]}`]"></span>
+						<span
+							:class="['element-dot', `element-dot--${styleMapper[skill.mainAttribute]}`]"></span>
 						<template v-if="getSkillDisplay(skill.mainSect)">
-							<el-tooltip :content="getSkillDisplay(skill.mainSect)" placement="top">
-								<span class="sect-name">{{ skill.mainSect }}</span>
+							<el-tooltip
+								:content="getSkillDisplay(skill.mainSect)"
+								placement="top">
+								<span class="sect-name">{{
+										skill.mainSect
+									}}</span>
 							</el-tooltip>
 						</template>
 						<template v-else>
 							<span class="sect-name">{{ skill.mainSect }}</span>
 						</template>
 					</div>
-
+					
 					<span class="sect-connector">+</span>
-
+					
 					<div class="sect-item">
-						<span :class="['element-dot', `element-dot--${styleMapper[skill.secondAttribute]}`]"></span>
+						<span
+							:class="['element-dot', `element-dot--${styleMapper[skill.secondAttribute]}`]"></span>
 						<template v-if="getSkillDisplay(skill.secondSect)">
-							<el-tooltip :content="getSkillDisplay(skill.secondSect)" placement="top">
-								<span class="sect-name">{{ skill.secondSect }}</span>
+							<el-tooltip
+								:content="getSkillDisplay(skill.secondSect)"
+								placement="top">
+								<span class="sect-name">{{
+										skill.secondSect
+									}}</span>
 							</el-tooltip>
 						</template>
 						<template v-else>
-							<span class="sect-name">{{ skill.secondSect }}</span>
+							<span class="sect-name">{{
+									skill.secondSect
+								}}</span>
 						</template>
 					</div>
 				</div>
-
+				
 				<p class="skill-description">{{ skill.description }}</p>
 			</div>
 		</div>
@@ -298,9 +314,13 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import { useFilterStore, getAttributeSuggestions, getSectSuggestions } from '../../domains/filter/index.ts';
-import { getSkillInfoList } from '../../domains/skill/repository.ts';
-import { sectConfig, getSkillsBySect } from '../../domains/config/index.ts';
+import {
+	getAttributeSuggestions,
+	getSectSuggestions,
+	useFilterStore,
+} from '../../domains/filter';
+import { getSkillInfoList } from '../../domains/skill';
+import { getSkillsBySect, sectConfig } from '../../domains/config';
 import type { Attribute } from '../../interfaces/Attribute.ts';
 import type { Trigger } from '../../interfaces/Trigger.ts';
 
@@ -309,52 +329,80 @@ const filterStore = useFilterStore();
 const skillInfoList = getSkillInfoList();
 
 // 双向绑定的筛选状态
-const attribute = computed({
+const attribute = computed( {
 	get: () => filterStore.attribute,
-	set: (val) => filterStore.setAttribute(val),
-});
+	set: ( val ) => filterStore.setAttribute( val ),
+} );
 
-const sect = computed({
+const sect = computed( {
 	get: () => filterStore.sect,
-	set: (val) => filterStore.setSect(val),
-});
+	set: ( val ) => filterStore.setSect( val ),
+} );
 
 // 复选框状态 - 转换为数组形式用于模板渲染
-const sectCheckboxItems = computed(() => [
-	{ key: 'main' as const, label: '主流派', value: filterStore.sectCheckboxes.main },
-	{ key: 'second' as const, label: '副流派', value: filterStore.sectCheckboxes.second },
-]);
+const sectCheckboxItems = computed( () => [
+	{
+		key: 'main' as const,
+		label: '主流派',
+		value: filterStore.sectCheckboxes.main,
+	},
+	{
+		key: 'second' as const,
+		label: '副流派',
+		value: filterStore.sectCheckboxes.second,
+	},
+] );
 
-const triggerCheckboxItems = computed(() => [
-	{ key: '普攻' as const, label: '普攻', value: filterStore.triggerCheckboxes.普攻 },
-	{ key: '技能' as const, label: '技能', value: filterStore.triggerCheckboxes.技能 },
-	{ key: '冲刺' as const, label: '冲刺', value: filterStore.triggerCheckboxes.冲刺 },
-	{ key: '召唤' as const, label: '召唤', value: filterStore.triggerCheckboxes.召唤 },
-	{ key: '传承' as const, label: '传承', value: filterStore.triggerCheckboxes.传承 },
-]);
+const triggerCheckboxItems = computed( () => [
+	{
+		key: '普攻' as const,
+		label: '普攻',
+		value: filterStore.triggerCheckboxes.普攻,
+	},
+	{
+		key: '技能' as const,
+		label: '技能',
+		value: filterStore.triggerCheckboxes.技能,
+	},
+	{
+		key: '冲刺' as const,
+		label: '冲刺',
+		value: filterStore.triggerCheckboxes.冲刺,
+	},
+	{
+		key: '召唤' as const,
+		label: '召唤',
+		value: filterStore.triggerCheckboxes.召唤,
+	},
+	{
+		key: '传承' as const,
+		label: '传承',
+		value: filterStore.triggerCheckboxes.传承,
+	},
+] );
 
 // 复选框切换处理
-const handleSectCheckboxChange = (key: 'main' | 'second', value: boolean) => {
-	filterStore.toggleSectCheckbox(key, value);
+const handleSectCheckboxChange = ( key: 'main' | 'second', value: boolean ) => {
+	filterStore.toggleSectCheckbox( key, value );
 };
 
-const handleTriggerCheckboxChange = (key: Trigger, value: boolean) => {
-	filterStore.toggleTriggerCheckbox(key, value);
+const handleTriggerCheckboxChange = ( key: Trigger, value: boolean ) => {
+	filterStore.toggleTriggerCheckbox( key, value );
 };
 
 // 自动完成建议
-const handleFetchAttributeSuggestions = (searchString: string, cb: Function) => {
-	const list = getAttributeSuggestions(skillInfoList.value, searchString);
-	cb(list);
+const handleFetchAttributeSuggestions = ( searchString: string, cb: Function ) => {
+	const list = getAttributeSuggestions( skillInfoList.value, searchString );
+	cb( list );
 };
 
-const handleFetchSectSuggestions = (searchString: string, cb: Function) => {
-	const list = getSectSuggestions(skillInfoList.value, attribute.value, searchString, sectConfig);
-	cb(list);
+const handleFetchSectSuggestions = ( searchString: string, cb: Function ) => {
+	const list = getSectSuggestions( skillInfoList.value, attribute.value, searchString, sectConfig );
+	cb( list );
 };
 
 // 筛选结果
-const filterSkillInfoList = computed(() => filterStore.filterResult.skills);
+const filterSkillInfoList = computed( () => filterStore.filterResult.skills );
 
 // 样式映射
 const styleMapper: Record<Attribute, string> = {
@@ -363,7 +411,7 @@ const styleMapper: Record<Attribute, string> = {
 };
 
 // 流派技能提示
-const getSkillDisplay = (sectName: string): string => {
-	return getSkillsBySect(sectName);
+const getSkillDisplay = ( sectName: string ): string => {
+	return getSkillsBySect( sectName );
 };
 </script>
