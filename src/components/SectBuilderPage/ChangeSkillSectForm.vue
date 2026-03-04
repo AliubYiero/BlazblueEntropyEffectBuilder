@@ -243,7 +243,7 @@ import type { Trigger } from '../../interfaces/Trigger.ts';
 import type { Attribute } from '../../interfaces/Attribute.ts';
 import type { SectValue } from '../../domains/config/types.ts';
 import { attributeList } from '../../domains/config/index.ts';
-import { filterByTrigger } from '../../domains/skill/repository.ts';
+import { filterByTrigger, getValidTriggersForSect } from '../../domains/skill/repository.ts';
 import {
 	type SkillCardInfo,
 	useBuilderStore,
