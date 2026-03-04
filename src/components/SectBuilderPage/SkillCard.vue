@@ -11,8 +11,9 @@
 	align-items: center;
 	justify-content: center;
 	cursor: pointer;
+	text-align: center;
 	transition: all 0.15s ease;
-
+	
 	&:hover {
 		border-color: hsl(var(--ring));
 		background: hsl(var(--accent) / 0.3);
@@ -29,7 +30,7 @@
 	align-items: center;
 	justify-content: center;
 	margin-bottom: 12px;
-
+	
 	.icon-inner {
 		width: 16px;
 		height: 16px;
@@ -51,7 +52,7 @@
 	font-size: 13px;
 	font-weight: 500;
 	color: hsl(var(--foreground));
-
+	
 	&--empty {
 		color: hsl(var(--muted-foreground));
 		font-weight: 400;
@@ -64,7 +65,7 @@
 		flex-direction: row;
 		justify-content: flex-start;
 		gap: 12px;
-
+		
 		.card-icon {
 			margin-bottom: 0;
 		}
@@ -77,11 +78,12 @@
 		<div class="card-icon">
 			<div class="icon-inner"></div>
 		</div>
-		<div>
+		<div class="skill-card-content">
 			<span class="card-trigger">{{ skillCardInfo.triggerName }}</span>
 			<br>
-			<span :class="['card-sect', { 'card-sect--empty': !skillCardInfo.sect }]">
-				{{ skillCardInfo.sect || '点击选择' }}
+			<span
+				:class="['card-sect', { 'card-sect--empty': !skillCardInfo.sect }]">
+				{{ skillCardInfo.sect ? skillCardInfo.sect : '点击选择' }}
 			</span>
 		</div>
 	</div>
@@ -92,7 +94,7 @@ import type { SkillCardInfo } from '../../domains/builder/types.ts';
 import type { Trigger } from '../../interfaces/Trigger.ts';
 
 const props = defineProps<{ skillCardInfo: SkillCardInfo }>();
-const emit = defineEmits<{ (event: 'openDialog', value: Trigger): void }>();
+const emit = defineEmits<{ ( event: 'openDialog', value: Trigger ): void }>();
 
-const handleClick = () => emit('openDialog', props.skillCardInfo.triggerName);
+const handleClick = () => emit( 'openDialog', props.skillCardInfo.triggerName );
 </script>

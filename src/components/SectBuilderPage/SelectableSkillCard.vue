@@ -5,6 +5,7 @@
 }
 
 .empty-state {
+	height: 100%;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -27,7 +28,7 @@
 	padding: 10px 12px;
 	cursor: pointer;
 	transition: all 0.15s ease;
-
+	
 	&:hover {
 		border-color: hsl(var(--ring));
 		background: hsl(var(--accent) / 0.3);
@@ -81,17 +82,21 @@
 		<div v-if="filterDetailList.length === 0" class="empty-state">
 			选择流派后显示可组合的双重策略
 		</div>
-
+		
 		<div v-else class="skills-grid">
-			<div v-for="detail in filterDetailList" :key="detail.name" class="skill-item">
+			<div v-for="detail in filterDetailList" :key="detail.name"
+			     class="skill-item">
 				<div class="item-header">
 					<span class="skill-name">{{ detail.name }}</span>
 				</div>
 				<div class="sect-combo">
 					<span class="sect-tag">
-						<span :class="['element-dot', `element-dot--${styleMapper[detail.mainAttribute]}`]"></span>
+						<span
+							:class="['element-dot', `element-dot--${styleMapper[detail.mainAttribute]}`]"></span>
 						<template v-if="getSkillDisplay(detail.mainSect)">
-							<el-tooltip :content="getSkillDisplay(detail.mainSect)" placement="top">
+							<el-tooltip
+								:content="getSkillDisplay(detail.mainSect)"
+								placement="top">
 								{{ detail.mainSect }}
 							</el-tooltip>
 						</template>
@@ -101,9 +106,12 @@
 					</span>
 					<span class="sect-connector">+</span>
 					<span class="sect-tag">
-						<span :class="['element-dot', `element-dot--${styleMapper[detail.secondAttribute]}`]"></span>
+						<span
+							:class="['element-dot', `element-dot--${styleMapper[detail.secondAttribute]}`]"></span>
 						<template v-if="getSkillDisplay(detail.secondSect)">
-							<el-tooltip :content="getSkillDisplay(detail.secondSect)" placement="top">
+							<el-tooltip
+								:content="getSkillDisplay(detail.secondSect)"
+								placement="top">
 								{{ detail.secondSect }}
 							</el-tooltip>
 						</template>
@@ -130,21 +138,21 @@ import type { SkillInfo } from '../../core/data/types.ts';
 const props = defineProps<{ skillCardInfo: SkillCardInfo }>();
 const builderStore = useBuilderStore();
 
-const filterDetailList = computed<SkillInfo[]>(() => {
+const filterDetailList = computed<SkillInfo[]>( () => {
 	const skillInfoList = getSkillInfoList().value;
-	let list = skillInfoList.filter(skill =>
-		props.skillCardInfo.sect && (skill.mainSect.includes(props.skillCardInfo.sect) || skill.secondSect.includes(props.skillCardInfo.sect))
+	let list = skillInfoList.filter( skill =>
+		props.skillCardInfo.sect && ( skill.mainSect.includes( props.skillCardInfo.sect ) || skill.secondSect.includes( props.skillCardInfo.sect ) ),
 	);
-	const existing = builderStore.skillCardInfoList.filter(c => c.sect || c.inherit).map(c => c.triggerName);
-	return list.filter(skill => skill.trigger.some(t => !existing.includes(t)));
-});
+	const existing = builderStore.skillCardInfoList.filter( c => c.sect || c.inherit ).map( c => c.triggerName );
+	return list.filter( skill => skill.trigger.some( t => !existing.includes( t ) ) );
+} );
 
 const styleMapper: Record<Attribute, string> = {
 	'火': 'fire', '冰': 'ice', '电': 'thunder',
 	'毒': 'poison', '暗': 'dark', '光': 'light', '刃': 'blade',
 };
 
-const getSkillDisplay = (sectName: string): string => {
-	return getSkillsBySect(sectName);
+const getSkillDisplay = ( sectName: string ): string => {
+	return getSkillsBySect( sectName );
 };
 </script>

@@ -16,6 +16,12 @@
 	display: block;
 }
 
+.label-hint {
+	font-weight: 400;
+	color: hsl(var(--muted-foreground) / 0.7);
+	margin-left: 4px;
+}
+
 .trigger-display {
 	display: flex;
 	align-items: center;
@@ -32,47 +38,101 @@
 	color: hsl(var(--secondary-foreground));
 }
 
-.input-row {
-	display: flex;
-	gap: 8px;
+.input-full {
+	width: 100%;
 }
 
-.input-main {
-	flex: 1;
-}
-
-.input-side {
-	width: 100px;
-}
-
-.sect-options {
-	margin-top: 12px;
-	max-height: 180px;
+.skill-options {
+	max-height: 280px;
 	overflow-y: auto;
-}
-
-.sect-option {
-	display: flex;
-	align-items: center;
-	gap: 8px;
-	padding: 8px;
 	border: 1px solid hsl(var(--border));
 	border-radius: calc(var(--radius) - 2px);
-	margin-bottom: 4px;
+	padding: 8px;
+}
+
+.skill-option {
+	padding: 10px;
+	border-bottom: 1px solid hsl(var(--border) / 0.5);
+	
+	&:last-child {
+		border-bottom: none;
+	}
+}
+
+.skill-info {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.skill-name {
+	font-family: var(--font-chinese);
+	font-size: 13px;
+	font-weight: 600;
+	color: hsl(var(--foreground));
+}
+
+.skill-sects {
+	display: flex;
+	gap: 8px;
+	flex-wrap: wrap;
+}
+
+.sect-tag {
 	cursor: pointer;
+	transition: all 0.15s ease;
+	display: flex;
+	align-items: center;
+	gap: 4px;
 	
 	&:hover {
-		background: hsl(var(--accent) / 0.3);
+		transform: translateY(-1px);
 	}
 	
 	&.is-selected {
-		border-color: hsl(var(--ring));
+		background: hsl(var(--primary));
+		color: hsl(var(--primary-foreground));
+		border-color: hsl(var(--primary));
 	}
 }
 
-.sect-name {
+.skill-desc {
+	font-family: var(--font-chinese);
+	font-size: 11px;
+	color: hsl(var(--muted-foreground));
+	line-height: 1.4;
+}
+
+.no-data {
+	padding: 24px;
+	text-align: center;
+	border: 1px dashed hsl(var(--border));
+	border-radius: calc(var(--radius) - 2px);
+}
+
+.no-data-text {
 	font-family: var(--font-chinese);
 	font-size: 12px;
+	color: hsl(var(--muted-foreground));
+}
+
+.selected-info {
+	padding: 10px 12px;
+	background: hsl(var(--accent) / 0.3);
+	border-radius: calc(var(--radius) - 2px);
+	margin-bottom: 16px;
+}
+
+.selected-label {
+	font-family: var(--font-chinese);
+	font-size: 12px;
+	color: hsl(var(--muted-foreground));
+}
+
+.selected-value {
+	font-family: var(--font-chinese);
+	font-size: 13px;
+	font-weight: 600;
 	color: hsl(var(--foreground));
 }
 
@@ -80,9 +140,21 @@
 	display: flex;
 	gap: 8px;
 	justify-content: flex-end;
-	margin-top: 24px;
 	padding-top: 16px;
 	border-top: 1px solid hsl(var(--border));
+}
+
+/* Element Plus 样式覆盖 */
+:deep(.el-tag) {
+	--el-tag-bg-color: hsl(var(--secondary));
+	--el-tag-border-color: hsl(var(--border));
+	--el-tag-text-color: hsl(var(--secondary-foreground));
+}
+
+:deep(.el-tag.is-selected) {
+	--el-tag-bg-color: hsl(var(--primary));
+	--el-tag-border-color: hsl(var(--primary));
+	--el-tag-text-color: hsl(var(--primary-foreground));
 }
 </style>
 
@@ -97,55 +169,88 @@
 			</div>
 			
 			<div class="form-group">
-				<label class="form-label">流派</label>
-				<div class="input-row">
-					<el-form-item class="input-main" prop="sect">
-						<el-autocomplete
-							v-model="formData.sect"
-							:fetch-suggestions="fetchSectListSuggestions"
-							clearable
-							placeholder="选择流派"
-						/>
-					</el-form-item>
-					<el-select v-model="formData.attribute" class="input-side"
-					           clearable placeholder="属性">
-						<el-option v-for="attr in attributeList" :key="attr"
-						           :value="attr"/>
-					</el-select>
+				<label class="form-label">属性筛选</label>
+				<el-select v-model="formData.attribute" class="input-full"
+				           clearable placeholder="全部属性">
+					<el-option v-for="attr in attributeList" :key="attr"
+					           :value="attr"/>
+				</el-select>
+			</div>
+			
+			<div class="form-group">
+				<label class="form-label">
+					关联双重策略
+					<span class="label-hint">(点击选择流派)</span>
+				</label>
+				<div v-if="filteredSkillList.length > 0" class="skill-options">
+					<div
+						v-for="skill in filteredSkillList"
+						:key="skill.name"
+						class="skill-option"
+					>
+						<div class="skill-info">
+							<div class="skill-name">{{ skill.name }}</div>
+							<div class="skill-sects">
+								<el-tag
+									:class="['sect-tag', 'sect-tag--main', { 'is-selected': formData.sect === skill.mainSect }]"
+									size="small"
+									@click="selectSect(skill.mainSect)"
+								>
+									<span
+										:class="['element-dot', `element-dot--${styleMapper[skill.mainAttribute]}`]"></span>
+									{{ skill.mainSect }}
+								</el-tag>
+								<el-tag
+									:class="['sect-tag', 'sect-tag--second', { 'is-selected': formData.sect === skill.secondSect }]"
+									size="small"
+									@click="selectSect(skill.secondSect)"
+								>
+									<span
+										:class="['element-dot', `element-dot--${styleMapper[skill.secondAttribute]}`]"></span>
+									{{ skill.secondSect }}
+								</el-tag>
+							</div>
+							<div class="skill-desc">{{
+									skill.description
+								}}
+							</div>
+						</div>
+					</div>
+				</div>
+				<div v-else class="no-data">
+					<span class="no-data-text">暂无匹配的双重策略</span>
 				</div>
 			</div>
 			
-			<div v-if="filterSectList.length > 0" class="sect-options">
-				<div
-					v-for="sect in filterSectList.slice(0, 6)"
-					:key="sect.name"
-					:class="['sect-option', { 'is-selected': formData.sect === sect.name }]"
-					@click="formData.sect = sect.name"
-				>
-					<span
-						:class="['element-dot', `element-dot--${styleMapper[sect.attribute]}`]"></span>
-					<span class="sect-name">{{ sect.name }}</span>
-				</div>
+			<div v-if="formData.sect" class="selected-info">
+				<span class="selected-label">已选择：</span>
+				<span class="selected-value">{{ formData.sect }}</span>
 			</div>
 			
 			<div class="button-group">
 				<el-button @click="handleCancel">取消</el-button>
-				<el-button type="primary" @click="handleSubmit">确定</el-button>
+				<el-button :disabled="!formData.sect" type="primary"
+				           @click="handleSubmit">确定
+				</el-button>
 			</div>
 		</el-form>
 	</div>
 </template>
 
 <script lang="ts" setup>
-import { computed, reactive, ref, watch } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import type { Trigger } from '../../interfaces/Trigger.ts';
 import type { Attribute } from '../../interfaces/Attribute.ts';
 import type { SectValue } from '../../domains/config/types.ts';
-import { sectConfig, attributeList } from '../../domains/config/index.ts';
-import { getTriggerInfoList, getAttributeBySectValue } from '../../domains/skill/repository.ts';
-import { useBuilderStore, type SkillCardInfo } from '../../domains/builder/index.ts';
-import { validateSect, validateAttributeMatch } from '../../shared/validation/index.ts';
+import { attributeList } from '../../domains/config/index.ts';
+import { filterByTrigger } from '../../domains/skill/repository.ts';
+import {
+	type SkillCardInfo,
+	useBuilderStore,
+} from '../../domains/builder/index.ts';
+import { validateSect } from '../../shared/validation/index.ts';
 import type { FormInstance, FormRules } from 'element-plus';
+import type { SkillInfo } from '../../core/data/types.ts';
 
 const props = defineProps<{ triggerName: Trigger }>();
 const emit = defineEmits<{ ( event: 'closeDialog' ): void }>();
@@ -175,7 +280,8 @@ const rules: FormRules = {
 				);
 				if ( !result.valid ) {
 					callback( new Error( result.message ) );
-				} else {
+				}
+				else {
 					callback();
 				}
 			},
@@ -185,62 +291,30 @@ const rules: FormRules = {
 };
 
 /**
- * 监听流派变化，自动设置属性
+ * 筛选占用当前触发位的双重策略
+ * 如果选择了属性，则进一步筛选包含该属性的策略
  * */
-watch(
-	() => formData.sect,
-	( val ) => {
-		if ( val ) {
-			const actualAttr = getAttributeBySectValue( val );
-			if ( actualAttr && actualAttr !== formData.attribute ) {
-				formData.attribute = actualAttr;
-			}
-		}
-	},
-);
-
-/**
- * 监听属性变化，验证与流派是否匹配
- * */
-watch(
-	() => formData.attribute,
-	( val ) => {
-		if ( val && formData.sect ) {
-			const isMatch = validateAttributeMatch( formData.sect, val );
-			if ( !isMatch ) {
-				formData.sect = '';
-			}
-		}
-	},
-);
-
-/**
- * 根据当前触发位和选中属性筛选可用流派
- * */
-const filterSectList = computed( () => {
-	const triggerInfoList = getTriggerInfoList();
-	const available = triggerInfoList.value.filter( ( t ) =>
-		t.trigger.includes( props.triggerName ),
-	);
-	const all: { name: SectValue; attribute: Attribute }[] = [];
-
-	for ( const attr of attributeList ) {
-		sectConfig[ attr ].forEach( ( sect ) => {
-			if ( available.find( ( t ) => t.name === sect ) ) {
-				all.push( { name: sect as SectValue, attribute: attr } );
-			}
-		} );
+const filteredSkillList = computed( (): SkillInfo[] => {
+	// 获取占用当前触发位的所有双重策略
+	const skillsByTrigger = filterByTrigger( props.triggerName );
+	let result = skillsByTrigger.value;
+	
+	// 如果选择了属性，筛选包含该属性的策略
+	if ( formData.attribute ) {
+		result = result.filter( ( skill ) =>
+			skill.mainAttribute === formData.attribute ||
+			skill.secondAttribute === formData.attribute,
+		);
 	}
-
-	return formData.attribute ? all.filter( ( s ) => s.attribute === formData.attribute ) : all;
+	
+	return result;
 } );
 
 /**
- * 流派搜索建议
+ * 选择流派
  * */
-const fetchSectListSuggestions = ( search: string, cb: Function ) => {
-	const list = filterSectList.value.map( ( s ) => ( { value: s.name } ) );
-	cb( search ? list.filter( ( s ) => s.value.includes( search ) ) : list );
+const selectSect = ( sect: SectValue ) => {
+	formData.sect = sect;
 };
 
 /**
