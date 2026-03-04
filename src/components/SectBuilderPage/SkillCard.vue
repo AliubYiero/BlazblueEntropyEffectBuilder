@@ -75,6 +75,16 @@
 
 <template>
 	<div class="skill-card" @click="handleClick">
+		<el-button
+			v-if="skillCardInfo.sect"
+			class="clear-btn"
+			type="danger"
+			circle
+			size="small"
+			@click.stop="handleClear"
+		>
+			<el-icon><CircleClose /></el-icon>
+		</el-button>
 		<div class="card-icon">
 			<div class="icon-inner"></div>
 		</div>
