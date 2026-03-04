@@ -358,7 +358,7 @@ const isSectAvailableForTrigger = ( sect: SectValue ): boolean => {
  * @param sect - 流派名称
  * @param skill - 所属双重策略信息（用于检查可用性）
  * */
-const selectSect = ( sect: SectValue, skill: SkillInfo ) => {
+const selectSect = ( sect: SectValue, _skill: SkillInfo ) => {
 	// 检查流派是否支持当前触发位
 	if ( !isSectAvailableForTrigger( sect ) ) {
 		return;
