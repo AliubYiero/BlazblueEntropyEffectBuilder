@@ -10,43 +10,241 @@ import type { SectInfo, SectConfigMap, AttributeList, TriggerList } from './type
  * 完整流派列表（36个流派）
  */
 export const sectList: SectInfo[] = [
-  { attribute: '火', sect: '燃烧', skill: ['普攻燃烧', '技能燃烧', '冲刺燃烧'] },
-  { attribute: '火', sect: '火弹', skill: ['技能火弹', '传承技火弹'] },
-  { attribute: '火', sect: '火环', skill: ['传承技火环'] },
-  { attribute: '火', sect: '地雷', skill: ['放置地雷'] },
-  { attribute: '火', sect: '火精灵', skill: ['火精灵助战'] },
-  { attribute: '冰', sect: '寒冷', skill: ['普攻寒冷', '技能寒冷'] },
-  { attribute: '冰', sect: '寒冷 (寒气爆发)', skill: ['普攻寒冷 (寒气爆发)', '技能寒冷 (寒气爆发)'] },
-  { attribute: '冰', sect: '寒冷 (聚寒成冰)', skill: ['普攻寒冷 (聚寒成冰)', '技能寒冷 (聚寒成冰)'] },
-  { attribute: '冰', sect: '冰锥', skill: ['冲刺冰锥', '传承技冰锥'] },
-  { attribute: '冰', sect: '冰刺', skill: ['召唤冰刺'] },
-  { attribute: '冰', sect: '冰雹', skill: ['技能冰雹', '传承技冰雹'] },
-  { attribute: '冰', sect: '玄冰剑刃', skill: ['玄冰剑刃'] },
-  { attribute: '电', sect: '感电', skill: ['技能感电', '传承技感电'] },
-  { attribute: '电', sect: '闪电链', skill: ['普攻闪电', '技能闪电', '电闪雷鸣'] },
-  { attribute: '电', sect: '落雷', skill: ['冲刺落雷'] },
-  { attribute: '电', sect: '电球', skill: ['环绕电球'] },
-  { attribute: '电', sect: '电桩', skill: ['传承技电桩'] },
-  { attribute: '毒', sect: '中毒', skill: ['普攻淬毒', '技能毒环'] },
-  { attribute: '毒', sect: '史莱姆', skill: ['召唤史莱姆'] },
-  { attribute: '毒', sect: '毒弹', skill: ['冲刺毒弹'] },
-  { attribute: '毒', sect: '毒液', skill: ['技能毒液', '传承技毒液'] },
-  { attribute: '毒', sect: '毒泡河豚', skill: ['传承技河豚'] },
-  { attribute: '暗', sect: '触手', skill: ['召唤触手'] },
-  { attribute: '暗', sect: '影子', skill: ['冲刺影子'] },
-  { attribute: '暗', sect: '影刺', skill: ['普攻影刺', '技能影刺'] },
-  { attribute: '暗', sect: '黑洞', skill: ['传承技黑洞'] },
-  { attribute: '暗', sect: '暗影标记', skill: ['普攻影标', '技能影标'] },
-  { attribute: '光', sect: '光枪', skill: ['技能光枪', '传承技光枪'] },
-  { attribute: '光', sect: '闪光', skill: ['传承技闪光'] },
-  { attribute: '光', sect: '光波', skill: ['普攻光波'] },
-  { attribute: '光', sect: '光阵', skill: ['召唤光阵'] },
-  { attribute: '光', sect: '圣光标记', skill: ['圣光标记'] },
-  { attribute: '刃', sect: '飞剑', skill: ['冲刺飞剑'] },
-  { attribute: '刃', sect: '撕裂', skill: ['普攻撕裂', '技能撕裂'] },
-  { attribute: '刃', sect: '刃环', skill: ['召唤刃环'] },
-  { attribute: '刃', sect: '刀刃风暴', skill: ['技能风暴', '传承技风暴'] },
-  { attribute: '刃', sect: '飞刃', skill: ['普攻飞刃'] },
+  {
+    attribute: '火',
+    sect: '燃烧',
+    skill: [
+      { name: '普攻燃烧', trigger: '普攻' },
+      { name: '技能燃烧', trigger: '技能' },
+      { name: '冲刺燃烧', trigger: '冲刺' },
+    ],
+  },
+  {
+    attribute: '火',
+    sect: '火弹',
+    skill: [
+      { name: '技能火弹', trigger: '技能' },
+      { name: '传承技火弹', trigger: '传承' },
+    ],
+  },
+  {
+    attribute: '火',
+    sect: '火环',
+    skill: [{ name: '传承技火环', trigger: '传承' }],
+  },
+  {
+    attribute: '火',
+    sect: '地雷',
+    skill: [{ name: '放置地雷', trigger: '召唤' }],
+  },
+  {
+    attribute: '火',
+    sect: '火精灵',
+    skill: [{ name: '火精灵助战', trigger: '普攻' }],
+  },
+  {
+    attribute: '冰',
+    sect: '寒冷',
+    skill: [
+      { name: '普攻寒冷', trigger: '普攻' },
+      { name: '技能寒冷', trigger: '技能' },
+    ],
+  },
+  {
+    attribute: '冰',
+    sect: '寒冷 (寒气爆发)',
+    skill: [
+      { name: '普攻寒冷 (寒气爆发)', trigger: '普攻' },
+      { name: '技能寒冷 (寒气爆发)', trigger: '技能' },
+    ],
+  },
+  {
+    attribute: '冰',
+    sect: '寒冷 (聚寒成冰)',
+    skill: [
+      { name: '普攻寒冷 (聚寒成冰)', trigger: '普攻' },
+      { name: '技能寒冷 (聚寒成冰)', trigger: '技能' },
+    ],
+  },
+  {
+    attribute: '冰',
+    sect: '冰锥',
+    skill: [
+      { name: '冲刺冰锥', trigger: '冲刺' },
+      { name: '传承技冰锥', trigger: '传承' },
+    ],
+  },
+  {
+    attribute: '冰',
+    sect: '冰刺',
+    skill: [{ name: '召唤冰刺', trigger: '召唤' }],
+  },
+  {
+    attribute: '冰',
+    sect: '冰雹',
+    skill: [
+      { name: '技能冰雹', trigger: '技能' },
+      { name: '传承技冰雹', trigger: '传承' },
+    ],
+  },
+  {
+    attribute: '冰',
+    sect: '玄冰剑刃',
+    skill: [{ name: '玄冰剑刃', trigger: '普攻' }],
+  },
+  {
+    attribute: '电',
+    sect: '感电',
+    skill: [
+      { name: '技能感电', trigger: '技能' },
+      { name: '传承技感电', trigger: '传承' },
+    ],
+  },
+  {
+    attribute: '电',
+    sect: '闪电链',
+    skill: [
+      { name: '普攻闪电', trigger: '普攻' },
+      { name: '技能闪电', trigger: '技能' },
+      { name: '电闪雷鸣', trigger: '传承' },
+    ],
+  },
+  {
+    attribute: '电',
+    sect: '落雷',
+    skill: [{ name: '冲刺落雷', trigger: '冲刺' }],
+  },
+  {
+    attribute: '电',
+    sect: '电球',
+    skill: [{ name: '环绕电球', trigger: '召唤' }],
+  },
+  {
+    attribute: '电',
+    sect: '电桩',
+    skill: [{ name: '传承技电桩', trigger: '传承' }],
+  },
+  {
+    attribute: '毒',
+    sect: '中毒',
+    skill: [
+      { name: '普攻淬毒', trigger: '普攻' },
+      { name: '技能毒环', trigger: '技能' },
+    ],
+  },
+  {
+    attribute: '毒',
+    sect: '史莱姆',
+    skill: [{ name: '召唤史莱姆', trigger: '召唤' }],
+  },
+  {
+    attribute: '毒',
+    sect: '毒弹',
+    skill: [{ name: '冲刺毒弹', trigger: '冲刺' }],
+  },
+  {
+    attribute: '毒',
+    sect: '毒液',
+    skill: [
+      { name: '技能毒液', trigger: '技能' },
+      { name: '传承技毒液', trigger: '传承' },
+    ],
+  },
+  {
+    attribute: '毒',
+    sect: '毒泡河豚',
+    skill: [{ name: '传承技河豚', trigger: '传承' }],
+  },
+  {
+    attribute: '暗',
+    sect: '触手',
+    skill: [{ name: '召唤触手', trigger: '召唤' }],
+  },
+  {
+    attribute: '暗',
+    sect: '影子',
+    skill: [{ name: '冲刺影子', trigger: '冲刺' }],
+  },
+  {
+    attribute: '暗',
+    sect: '影刺',
+    skill: [
+      { name: '普攻影刺', trigger: '普攻' },
+      { name: '技能影刺', trigger: '技能' },
+    ],
+  },
+  {
+    attribute: '暗',
+    sect: '黑洞',
+    skill: [{ name: '传承技黑洞', trigger: '传承' }],
+  },
+  {
+    attribute: '暗',
+    sect: '暗影标记',
+    skill: [
+      { name: '普攻影标', trigger: '普攻' },
+      { name: '技能影标', trigger: '技能' },
+    ],
+  },
+  {
+    attribute: '光',
+    sect: '光枪',
+    skill: [
+      { name: '技能光枪', trigger: '技能' },
+      { name: '传承技光枪', trigger: '传承' },
+    ],
+  },
+  {
+    attribute: '光',
+    sect: '闪光',
+    skill: [{ name: '传承技闪光', trigger: '传承' }],
+  },
+  {
+    attribute: '光',
+    sect: '光波',
+    skill: [{ name: '普攻光波', trigger: '普攻' }],
+  },
+  {
+    attribute: '光',
+    sect: '光阵',
+    skill: [{ name: '召唤光阵', trigger: '召唤' }],
+  },
+  {
+    attribute: '光',
+    sect: '圣光标记',
+    skill: [{ name: '圣光标记', trigger: '冲刺' }],
+  },
+  {
+    attribute: '刃',
+    sect: '飞剑',
+    skill: [{ name: '冲刺飞剑', trigger: '冲刺' }],
+  },
+  {
+    attribute: '刃',
+    sect: '撕裂',
+    skill: [
+      { name: '普攻撕裂', trigger: '普攻' },
+      { name: '技能撕裂', trigger: '技能' },
+    ],
+  },
+  {
+    attribute: '刃',
+    sect: '刃环',
+    skill: [{ name: '召唤刃环', trigger: '召唤' }],
+  },
+  {
+    attribute: '刃',
+    sect: '刀刃风暴',
+    skill: [
+      { name: '技能风暴', trigger: '技能' },
+      { name: '传承技风暴', trigger: '传承' },
+    ],
+  },
+  {
+    attribute: '刃',
+    sect: '飞刃',
+    skill: [{ name: '普攻飞刃', trigger: '普攻' }],
+  },
 ];
 
 /**

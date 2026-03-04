@@ -1,12 +1,23 @@
 # 数据流模块化重构实施计划
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
+>
+*
+*For
+Claude:
+** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
-**Goal:** 将现有代码按功能域重新组织，实现清晰的分层架构（数据层 → 领域层 → UI 层）
+*
+*Goal:
+** 将现有代码按功能域重新组织，实现清晰的分层架构（数据层 → 领域层 → UI 层）
 
-**Architecture:** 按 domains 组织代码，每个业务域包含 types、store、service；UI 组件只负责渲染和调用 store actions
+*
+*Architecture:
+** 按 domains 组织代码，每个业务域包含 types、store、service；UI 组件只负责渲染和调用 store actions
 
-**Tech Stack:** Vue 3 + Pinia + TypeScript + Vite
+*
+*Tech
+Stack:
+** Vue 3 + Pinia + TypeScript + Vite
 
 ---
 
@@ -29,10 +40,18 @@
 
 ### Task 1: 创建 core/data/types.ts
 
-**Files:**
-- Create: `src/core/data/types.ts`
+*
+*Files:
+**
 
-**Step 1: 创建目录和类型文件**
+- Create:
+  `src/core/data/types.ts`
+
+*
+*Step
+1:
+创建目录和类型文件
+**
 
 ```typescript
 // src/core/data/types.ts
@@ -72,12 +91,21 @@ export type DataLoadResult<T> =
   | { success: false; error: Error };
 ```
 
-**Step 2: 验证类型编译通过**
+*
+*Step
+2:
+验证类型编译通过
+**
 
-Run: `pnpm exec tsc --noEmit`
+Run:
+`pnpm exec tsc --noEmit`
 Expected: 无类型错误
 
-**Step 3: 提交**
+*
+*Step
+3:
+提交
+**
 
 ```bash
 git add src/core/data/types.ts
@@ -88,10 +116,18 @@ git commit -m "feat(core): add core data types"
 
 ### Task 2: 创建 core/data/loader.ts
 
-**Files:**
-- Create: `src/core/data/loader.ts`
+*
+*Files:
+**
 
-**Step 1: 创建数据加载器**
+- Create:
+  `src/core/data/loader.ts`
+
+*
+*Step
+1:
+创建数据加载器
+**
 
 ```typescript
 // src/core/data/loader.ts
@@ -100,7 +136,11 @@ git commit -m "feat(core): add core data types"
  * @description 负责加载和冻结 JSON 数据
  */
 
-import type { SkillInfo, FrozenSkillInfoList, DataLoadResult } from './types.ts';
+import type {
+	SkillInfo,
+	FrozenSkillInfoList,
+	DataLoadResult
+} from './types.ts';
 
 /**
  * 数据加载状态
@@ -110,67 +150,86 @@ let cachedData: FrozenSkillInfoList | null = null;
 /**
  * 深度冻结对象
  */
-function deepFreeze<T>(obj: T): Readonly<T> {
-  if (obj === null || typeof obj !== 'object') {
-    return obj as Readonly<T>;
-  }
-
-  Object.freeze(obj);
-
-  for (const key of Object.keys(obj)) {
-    const value = (obj as Record<string, unknown>)[key];
-    if (value && typeof value === 'object' && !Object.isFrozen(value)) {
-      deepFreeze(value);
-    }
-  }
-
-  return obj as Readonly<T>;
+function deepFreeze<T>( obj: T ): Readonly<T> {
+	if ( obj === null || typeof obj !== 'object' ) {
+		return obj as Readonly<T>;
+	}
+	
+	Object.freeze( obj );
+	
+	for ( const key of Object.keys( obj ) ) {
+		const value = ( obj as Record<string, unknown> )[ key ];
+		if ( value && typeof value === 'object' && !Object.isFrozen( value ) ) {
+			deepFreeze( value );
+		}
+	}
+	
+	return obj as Readonly<T>;
 }
 
 /**
  * 加载技能数据
  */
 export async function loadSkillData(): Promise<DataLoadResult<FrozenSkillInfoList>> {
-  // 返回缓存数据
-  if (cachedData !== null) {
-    return { success: true, data: cachedData };
-  }
-
-  try {
-    const module = await import('../../data/SkillInfoList.json');
-    const data = module.default as SkillInfo[];
-    cachedData = deepFreeze([...data]) as FrozenSkillInfoList;
-    
-    console.log('[core/data/loader] 数据加载成功');
-    return { success: true, data: cachedData };
-  } catch (error) {
-    const err = error instanceof Error ? error : new Error(String(error));
-    console.error('[core/data/loader] 数据加载失败:', err);
-    return { success: false, error: err };
-  }
+	// 返回缓存数据
+	if ( cachedData !== null ) {
+		return {
+			success: true,
+			data: cachedData
+		};
+	}
+	
+	try {
+		const module = await import('../../data/DoubleSkillInfoList.json');
+		const data = module.default as SkillInfo[];
+		cachedData = deepFreeze( [ ...data ] ) as FrozenSkillInfoList;
+		
+		console.log( '[core/data/loader] 数据加载成功' );
+		return {
+			success: true,
+			data: cachedData
+		};
+	}
+	catch ( error ) {
+		const err = error instanceof Error ? error : new Error( String( error ) );
+		console.error( '[core/data/loader] 数据加载失败:', err );
+		return {
+			success: false,
+			error: err
+		};
+	}
 }
 
 /**
  * 获取缓存的数据（同步）
  */
 export function getCachedSkillData(): FrozenSkillInfoList | null {
-  return cachedData;
+	return cachedData;
 }
 
 /**
  * 重置缓存（用于测试）
  */
 export function resetCache(): void {
-  cachedData = null;
+	cachedData = null;
 }
 ```
 
-**Step 2: 验证类型编译通过**
+*
+*Step
+2:
+验证类型编译通过
+**
 
-Run: `pnpm exec tsc --noEmit`
+Run:
+`pnpm exec tsc --noEmit`
 Expected: 无类型错误
 
-**Step 3: 提交**
+*
+*Step
+3:
+提交
+**
 
 ```bash
 git add src/core/data/loader.ts
@@ -181,10 +240,18 @@ git commit -m "feat(core): add data loader with freeze support"
 
 ### Task 3: 创建 core/data/index.ts
 
-**Files:**
-- Create: `src/core/data/index.ts`
+*
+*Files:
+**
 
-**Step 1: 创建模块导出**
+- Create:
+  `src/core/data/index.ts`
+
+*
+*Step
+1:
+创建模块导出
+**
 
 ```typescript
 // src/core/data/index.ts
@@ -197,12 +264,21 @@ export * from './types.ts';
 export * from './loader.ts';
 ```
 
-**Step 2: 验证类型编译通过**
+*
+*Step
+2:
+验证类型编译通过
+**
 
-Run: `pnpm exec tsc --noEmit`
+Run:
+`pnpm exec tsc --noEmit`
 Expected: 无类型错误
 
-**Step 3: 提交**
+*
+*Step
+3:
+提交
+**
 
 ```bash
 git add src/core/data/index.ts
@@ -215,10 +291,18 @@ git commit -m "feat(core): add core data module exports"
 
 ### Task 4: 创建 domains/config/types.ts
 
-**Files:**
-- Create: `src/domains/config/types.ts`
+*
+*Files:
+**
 
-**Step 1: 创建配置类型定义**
+- Create:
+  `src/domains/config/types.ts`
+
+*
+*Step
+1:
+创建配置类型定义
+**
 
 ```typescript
 // src/domains/config/types.ts
@@ -244,12 +328,21 @@ export interface SectInfo {
 export type SectConfigMap = Record<Attribute, SectValue[]>;
 ```
 
-**Step 2: 验证类型编译通过**
+*
+*Step
+2:
+验证类型编译通过
+**
 
-Run: `pnpm exec tsc --noEmit`
+Run:
+`pnpm exec tsc --noEmit`
 Expected: 无类型错误
 
-**Step 3: 提交**
+*
+*Step
+3:
+提交
+**
 
 ```bash
 git add src/domains/config/types.ts
@@ -260,10 +353,18 @@ git commit -m "feat(domains/config): add config types"
 
 ### Task 5: 创建 domains/config/constants.ts
 
-**Files:**
-- Create: `src/domains/config/constants.ts`
+*
+*Files:
+**
 
-**Step 1: 迁移配置常量**
+- Create:
+  `src/domains/config/constants.ts`
+
+*
+*Step
+1:
+迁移配置常量
+**
 
 ```typescript
 // src/domains/config/constants.ts
@@ -345,12 +446,21 @@ export const sectConfig: SectConfigMap = {
 };
 ```
 
-**Step 2: 验证类型编译通过**
+*
+*Step
+2:
+验证类型编译通过
+**
 
-Run: `pnpm exec tsc --noEmit`
+Run:
+`pnpm exec tsc --noEmit`
 Expected: 无类型错误
 
-**Step 3: 提交**
+*
+*Step
+3:
+提交
+**
 
 ```bash
 git add src/domains/config/constants.ts
@@ -361,10 +471,18 @@ git commit -m "feat(domains/config): add config constants"
 
 ### Task 6: 创建 domains/config/utils.ts
 
-**Files:**
-- Create: `src/domains/config/utils.ts`
+*
+*Files:
+**
 
-**Step 1: 创建配置工具函数**
+- Create:
+  `src/domains/config/utils.ts`
+
+*
+*Step
+1:
+创建配置工具函数
+**
 
 ```typescript
 // src/domains/config/utils.ts
@@ -414,12 +532,21 @@ export function getAllSectNames(): SectValue[] {
 }
 ```
 
-**Step 2: 验证类型编译通过**
+*
+*Step
+2:
+验证类型编译通过
+**
 
-Run: `pnpm exec tsc --noEmit`
+Run:
+`pnpm exec tsc --noEmit`
 Expected: 无类型错误
 
-**Step 3: 提交**
+*
+*Step
+3:
+提交
+**
 
 ```bash
 git add src/domains/config/utils.ts
@@ -430,10 +557,18 @@ git commit -m "feat(domains/config): add config utility functions"
 
 ### Task 7: 创建 domains/config/index.ts
 
-**Files:**
-- Create: `src/domains/config/index.ts`
+*
+*Files:
+**
 
-**Step 1: 创建模块导出**
+- Create:
+  `src/domains/config/index.ts`
+
+*
+*Step
+1:
+创建模块导出
+**
 
 ```typescript
 // src/domains/config/index.ts
@@ -446,12 +581,21 @@ export * from './constants.ts';
 export * from './utils.ts';
 ```
 
-**Step 2: 验证类型编译通过**
+*
+*Step
+2:
+验证类型编译通过
+**
 
-Run: `pnpm exec tsc --noEmit`
+Run:
+`pnpm exec tsc --noEmit`
 Expected: 无类型错误
 
-**Step 3: 提交**
+*
+*Step
+3:
+提交
+**
 
 ```bash
 git add src/domains/config/index.ts
@@ -464,10 +608,18 @@ git commit -m "feat(domains/config): add module exports"
 
 ### Task 8: 创建 domains/skill/types.ts
 
-**Files:**
-- Create: `src/domains/skill/types.ts`
+*
+*Files:
+**
 
-**Step 1: 创建技能域类型**
+- Create:
+  `src/domains/skill/types.ts`
+
+*
+*Step
+1:
+创建技能域类型
+**
 
 ```typescript
 // src/domains/skill/types.ts
@@ -502,12 +654,21 @@ export interface SkillFilter {
 export type SectAttributeMap = Map<SectValue, Attribute>;
 ```
 
-**Step 2: 验证类型编译通过**
+*
+*Step
+2:
+验证类型编译通过
+**
 
-Run: `pnpm exec tsc --noEmit`
+Run:
+`pnpm exec tsc --noEmit`
 Expected: 无类型错误
 
-**Step 3: 提交**
+*
+*Step
+3:
+提交
+**
 
 ```bash
 git add src/domains/skill/types.ts
@@ -518,10 +679,18 @@ git commit -m "feat(domains/skill): add skill domain types"
 
 ### Task 9: 创建 domains/skill/repository.ts
 
-**Files:**
-- Create: `src/domains/skill/repository.ts`
+*
+*Files:
+**
 
-**Step 1: 创建技能数据仓库**
+- Create:
+  `src/domains/skill/repository.ts`
+
+*
+*Step
+1:
+创建技能数据仓库
+**
 
 ```typescript
 // src/domains/skill/repository.ts
@@ -685,12 +854,21 @@ export function getAttributeBySect(sect: SectValue): Attribute | undefined {
 }
 ```
 
-**Step 2: 验证类型编译通过**
+*
+*Step
+2:
+验证类型编译通过
+**
 
-Run: `pnpm exec tsc --noEmit`
+Run:
+`pnpm exec tsc --noEmit`
 Expected: 无类型错误
 
-**Step 3: 提交**
+*
+*Step
+3:
+提交
+**
 
 ```bash
 git add src/domains/skill/repository.ts
@@ -701,10 +879,18 @@ git commit -m "feat(domains/skill): add skill repository"
 
 ### Task 10: 创建 domains/skill/index.ts
 
-**Files:**
-- Create: `src/domains/skill/index.ts`
+*
+*Files:
+**
 
-**Step 1: 创建模块导出**
+- Create:
+  `src/domains/skill/index.ts`
+
+*
+*Step
+1:
+创建模块导出
+**
 
 ```typescript
 // src/domains/skill/index.ts
@@ -716,12 +902,21 @@ export * from './types.ts';
 export * from './repository.ts';
 ```
 
-**Step 2: 验证类型编译通过**
+*
+*Step
+2:
+验证类型编译通过
+**
 
-Run: `pnpm exec tsc --noEmit`
+Run:
+`pnpm exec tsc --noEmit`
 Expected: 无类型错误
 
-**Step 3: 提交**
+*
+*Step
+3:
+提交
+**
 
 ```bash
 git add src/domains/skill/index.ts
@@ -734,10 +929,18 @@ git commit -m "feat(domains/skill): add module exports"
 
 ### Task 11: 创建 domains/filter/types.ts
 
-**Files:**
-- Create: `src/domains/filter/types.ts`
+*
+*Files:
+**
 
-**Step 1: 创建筛选域类型**
+- Create:
+  `src/domains/filter/types.ts`
+
+*
+*Step
+1:
+创建筛选域类型
+**
 
 ```typescript
 // src/domains/filter/types.ts
@@ -777,12 +980,21 @@ export interface FilterResult {
 }
 ```
 
-**Step 2: 验证类型编译通过**
+*
+*Step
+2:
+验证类型编译通过
+**
 
-Run: `pnpm exec tsc --noEmit`
+Run:
+`pnpm exec tsc --noEmit`
 Expected: 无类型错误
 
-**Step 3: 提交**
+*
+*Step
+3:
+提交
+**
 
 ```bash
 git add src/domains/filter/types.ts
@@ -793,10 +1005,19 @@ git commit -m "feat(domains/filter): add filter domain types"
 
 ### Task 12: 创建 domains/filter/store.ts
 
-**Files:**
-- Create: `src/domains/filter/store.ts`
+*
+*Files:
+**
 
-**Step 1: 创建筛选状态 Store**
+- Create:
+  `src/domains/filter/store.ts`
+
+*
+*Step
+1:
+创建筛选状态
+Store
+**
 
 ```typescript
 // src/domains/filter/store.ts
@@ -907,12 +1128,21 @@ export const useFilterStore = defineStore('filter', () => {
 });
 ```
 
-**Step 2: 验证类型编译通过**
+*
+*Step
+2:
+验证类型编译通过
+**
 
-Run: `pnpm exec tsc --noEmit`
+Run:
+`pnpm exec tsc --noEmit`
 Expected: 无类型错误
 
-**Step 3: 提交**
+*
+*Step
+3:
+提交
+**
 
 ```bash
 git add src/domains/filter/store.ts
@@ -923,10 +1153,18 @@ git commit -m "feat(domains/filter): add filter store"
 
 ### Task 13: 创建 domains/filter/service.ts
 
-**Files:**
-- Create: `src/domains/filter/service.ts`
+*
+*Files:
+**
 
-**Step 1: 创建筛选逻辑服务**
+- Create:
+  `src/domains/filter/service.ts`
+
+*
+*Step
+1:
+创建筛选逻辑服务
+**
 
 ```typescript
 // src/domains/filter/service.ts
@@ -1013,12 +1251,23 @@ export function getSectSuggestions(
 }
 ```
 
-**Step 2: 验证类型编译通过**
+*
+*Step
+2:
+验证类型编译通过
+**
 
-Run: `pnpm exec tsc --noEmit`
+Run:
+`pnpm exec tsc --noEmit`
 Expected: 无类型错误
 
-**Step 3: 修复 async 问题**
+*
+*Step
+3:
+修复
+async
+问题
+**
 
 ```typescript
 // src/domains/filter/service.ts (修正版)
@@ -1104,12 +1353,21 @@ export function getSectSuggestions(
 }
 ```
 
-**Step 4: 验证类型编译通过**
+*
+*Step
+4:
+验证类型编译通过
+**
 
-Run: `pnpm exec tsc --noEmit`
+Run:
+`pnpm exec tsc --noEmit`
 Expected: 无类型错误
 
-**Step 5: 提交**
+*
+*Step
+5:
+提交
+**
 
 ```bash
 git add src/domains/filter/service.ts
@@ -1120,10 +1378,18 @@ git commit -m "feat(domains/filter): add filter service"
 
 ### Task 14: 创建 domains/filter/index.ts
 
-**Files:**
-- Create: `src/domains/filter/index.ts`
+*
+*Files:
+**
 
-**Step 1: 创建模块导出**
+- Create:
+  `src/domains/filter/index.ts`
+
+*
+*Step
+1:
+创建模块导出
+**
 
 ```typescript
 // src/domains/filter/index.ts
@@ -1136,12 +1402,21 @@ export * from './store.ts';
 export * from './service.ts';
 ```
 
-**Step 2: 验证类型编译通过**
+*
+*Step
+2:
+验证类型编译通过
+**
 
-Run: `pnpm exec tsc --noEmit`
+Run:
+`pnpm exec tsc --noEmit`
 Expected: 无类型错误
 
-**Step 3: 提交**
+*
+*Step
+3:
+提交
+**
 
 ```bash
 git add src/domains/filter/index.ts
@@ -1154,10 +1429,18 @@ git commit -m "feat(domains/filter): add module exports"
 
 ### Task 15: 创建 domains/builder/types.ts
 
-**Files:**
-- Create: `src/domains/builder/types.ts`
+*
+*Files:
+**
 
-**Step 1: 创建构建域类型**
+- Create:
+  `src/domains/builder/types.ts`
+
+*
+*Step
+1:
+创建构建域类型
+**
 
 ```typescript
 // src/domains/builder/types.ts
@@ -1198,12 +1481,21 @@ export interface ActivatedSkillResult {
 }
 ```
 
-**Step 2: 验证类型编译通过**
+*
+*Step
+2:
+验证类型编译通过
+**
 
-Run: `pnpm exec tsc --noEmit`
+Run:
+`pnpm exec tsc --noEmit`
 Expected: 无类型错误
 
-**Step 3: 提交**
+*
+*Step
+3:
+提交
+**
 
 ```bash
 git add src/domains/builder/types.ts
@@ -1214,10 +1506,19 @@ git commit -m "feat(domains/builder): add builder domain types"
 
 ### Task 16: 创建 domains/builder/store.ts
 
-**Files:**
-- Create: `src/domains/builder/store.ts`
+*
+*Files:
+**
 
-**Step 1: 创建构建状态 Store**
+- Create:
+  `src/domains/builder/store.ts`
+
+*
+*Step
+1:
+创建构建状态
+Store
+**
 
 ```typescript
 // src/domains/builder/store.ts
@@ -1322,12 +1623,21 @@ export const useBuilderStore = defineStore('builder', () => {
 });
 ```
 
-**Step 2: 验证类型编译通过**
+*
+*Step
+2:
+验证类型编译通过
+**
 
-Run: `pnpm exec tsc --noEmit`
+Run:
+`pnpm exec tsc --noEmit`
 Expected: 无类型错误
 
-**Step 3: 提交**
+*
+*Step
+3:
+提交
+**
 
 ```bash
 git add src/domains/builder/store.ts
@@ -1338,10 +1648,18 @@ git commit -m "feat(domains/builder): add builder store"
 
 ### Task 17: 创建 domains/builder/service.ts
 
-**Files:**
-- Create: `src/domains/builder/service.ts`
+*
+*Files:
+**
 
-**Step 1: 创建构建逻辑服务**
+- Create:
+  `src/domains/builder/service.ts`
+
+*
+*Step
+1:
+创建构建逻辑服务
+**
 
 ```typescript
 // src/domains/builder/service.ts
@@ -1391,12 +1709,21 @@ export function checkDuplicateSect(
 }
 ```
 
-**Step 2: 验证类型编译通过**
+*
+*Step
+2:
+验证类型编译通过
+**
 
-Run: `pnpm exec tsc --noEmit`
+Run:
+`pnpm exec tsc --noEmit`
 Expected: 无类型错误
 
-**Step 3: 提交**
+*
+*Step
+3:
+提交
+**
 
 ```bash
 git add src/domains/builder/service.ts
@@ -1407,10 +1734,18 @@ git commit -m "feat(domains/builder): add builder service"
 
 ### Task 18: 创建 domains/builder/index.ts
 
-**Files:**
-- Create: `src/domains/builder/index.ts`
+*
+*Files:
+**
 
-**Step 1: 创建模块导出**
+- Create:
+  `src/domains/builder/index.ts`
+
+*
+*Step
+1:
+创建模块导出
+**
 
 ```typescript
 // src/domains/builder/index.ts
@@ -1423,12 +1758,21 @@ export * from './store.ts';
 export * from './service.ts';
 ```
 
-**Step 2: 验证类型编译通过**
+*
+*Step
+2:
+验证类型编译通过
+**
 
-Run: `pnpm exec tsc --noEmit`
+Run:
+`pnpm exec tsc --noEmit`
 Expected: 无类型错误
 
-**Step 3: 提交**
+*
+*Step
+3:
+提交
+**
 
 ```bash
 git add src/domains/builder/index.ts
@@ -1441,10 +1785,18 @@ git commit -m "feat(domains/builder): add module exports"
 
 ### Task 19: 创建 shared/validation/sect.ts
 
-**Files:**
-- Create: `src/shared/validation/sect.ts`
+*
+*Files:
+**
 
-**Step 1: 创建流派验证函数**
+- Create:
+  `src/shared/validation/sect.ts`
+
+*
+*Step
+1:
+创建流派验证函数
+**
 
 ```typescript
 // src/shared/validation/sect.ts
@@ -1543,12 +1895,21 @@ export function validateSect(
 }
 ```
 
-**Step 2: 验证类型编译通过**
+*
+*Step
+2:
+验证类型编译通过
+**
 
-Run: `pnpm exec tsc --noEmit`
+Run:
+`pnpm exec tsc --noEmit`
 Expected: 无类型错误
 
-**Step 3: 提交**
+*
+*Step
+3:
+提交
+**
 
 ```bash
 git add src/shared/validation/sect.ts
@@ -1559,10 +1920,18 @@ git commit -m "feat(shared/validation): add sect validation functions"
 
 ### Task 20: 创建 shared/validation/index.ts
 
-**Files:**
-- Create: `src/shared/validation/index.ts`
+*
+*Files:
+**
 
-**Step 1: 创建模块导出**
+- Create:
+  `src/shared/validation/index.ts`
+
+*
+*Step
+1:
+创建模块导出
+**
 
 ```typescript
 // src/shared/validation/index.ts
@@ -1573,12 +1942,21 @@ git commit -m "feat(shared/validation): add sect validation functions"
 export * from './sect.ts';
 ```
 
-**Step 2: 验证类型编译通过**
+*
+*Step
+2:
+验证类型编译通过
+**
 
-Run: `pnpm exec tsc --noEmit`
+Run:
+`pnpm exec tsc --noEmit`
 Expected: 无类型错误
 
-**Step 3: 提交**
+*
+*Step
+3:
+提交
+**
 
 ```bash
 git add src/shared/validation/index.ts
@@ -1591,12 +1969,21 @@ git commit -m "feat(shared/validation): add module exports"
 
 ### Task 21: 更新 SearchDoubleEffectForm.vue
 
-**Files:**
-- Modify: `src/components/SearchDoublePage/SearchDoubleEffectForm.vue`
+*
+*Files:
+**
 
-**Step 1: 更新导入和状态管理**
+- Modify:
+  `src/components/SearchDoublePage/SearchDoubleEffectForm.vue`
 
-修改 `<script>` 部分，使用新的 domain 模块：
+*
+*Step
+1:
+更新导入和状态管理
+**
+
+修改
+`<script>` 部分，使用新的 domain 模块：
 
 ```typescript
 // 更新导入
@@ -1643,17 +2030,31 @@ const handleFetchSectSuggestions = (searchString: string, cb: Function) => {
 };
 ```
 
-**Step 2: 验证编译通过**
+*
+*Step
+2:
+验证编译通过
+**
 
-Run: `pnpm exec tsc --noEmit`
+Run:
+`pnpm exec tsc --noEmit`
 Expected: 无类型错误
 
-**Step 3: 验证应用运行**
+*
+*Step
+3:
+验证应用运行
+**
 
-Run: `pnpm dev`
+Run:
+`pnpm dev`
 Expected: 应用正常启动，筛选功能正常
 
-**Step 4: 提交**
+*
+*Step
+4:
+提交
+**
 
 ```bash
 git add src/components/SearchDoublePage/SearchDoubleEffectForm.vue
@@ -1664,12 +2065,21 @@ git commit -m "refactor(SearchDoublePage): migrate to use filter domain"
 
 ### Task 22: 更新 SectBuilderPage.vue
 
-**Files:**
-- Modify: `src/views/SectBuilderPage.vue`
+*
+*Files:
+**
 
-**Step 1: 更新导入和状态管理**
+- Modify:
+  `src/views/SectBuilderPage.vue`
 
-修改 `<script>` 部分：
+*
+*Step
+1:
+更新导入和状态管理
+**
+
+修改
+`<script>` 部分：
 
 ```typescript
 // 更新导入
@@ -1705,17 +2115,31 @@ const toggleInherit = (trigger: Trigger, value: boolean) => {
 };
 ```
 
-**Step 2: 验证编译通过**
+*
+*Step
+2:
+验证编译通过
+**
 
-Run: `pnpm exec tsc --noEmit`
+Run:
+`pnpm exec tsc --noEmit`
 Expected: 无类型错误
 
-**Step 3: 验证应用运行**
+*
+*Step
+3:
+验证应用运行
+**
 
-Run: `pnpm dev`
+Run:
+`pnpm dev`
 Expected: 应用正常启动，构建功能正常
 
-**Step 4: 提交**
+*
+*Step
+4:
+提交
+**
 
 ```bash
 git add src/views/SectBuilderPage.vue
@@ -1726,12 +2150,21 @@ git commit -m "refactor(SectBuilderPage): migrate to use builder domain"
 
 ### Task 23: 更新 ChangeSkillSectForm.vue
 
-**Files:**
-- Modify: `src/components/SectBuilderPage/ChangeSkillSectForm.vue`
+*
+*Files:
+**
 
-**Step 1: 更新导入和验证逻辑**
+- Modify:
+  `src/components/SectBuilderPage/ChangeSkillSectForm.vue`
 
-修改 `<script>` 部分：
+*
+*Step
+1:
+更新导入和验证逻辑
+**
+
+修改
+`<script>` 部分：
 
 ```typescript
 // 更新导入
@@ -1842,17 +2275,31 @@ const handleCancel = () => {
 };
 ```
 
-**Step 2: 验证编译通过**
+*
+*Step
+2:
+验证编译通过
+**
 
-Run: `pnpm exec tsc --noEmit`
+Run:
+`pnpm exec tsc --noEmit`
 Expected: 无类型错误
 
-**Step 3: 验证应用运行**
+*
+*Step
+3:
+验证应用运行
+**
 
-Run: `pnpm dev`
+Run:
+`pnpm dev`
 Expected: 应用正常启动，表单验证正常
 
-**Step 4: 提交**
+*
+*Step
+4:
+提交
+**
 
 ```bash
 git add src/components/SectBuilderPage/ChangeSkillSectForm.vue
@@ -1865,10 +2312,18 @@ git commit -m "refactor(ChangeSkillSectForm): migrate to use validation module"
 
 ### Task 24: 更新 sectConfig.ts 为重导出
 
-**Files:**
-- Modify: `src/config/sectConfig.ts`
+*
+*Files:
+**
 
-**Step 1: 修改为重导出模块**
+- Modify:
+  `src/config/sectConfig.ts`
+
+*
+*Step
+1:
+修改为重导出模块
+**
 
 ```typescript
 // src/config/sectConfig.ts
@@ -1886,17 +2341,31 @@ export {
 } from '../domains/config/index.ts';
 ```
 
-**Step 2: 验证编译通过**
+*
+*Step
+2:
+验证编译通过
+**
 
-Run: `pnpm exec tsc --noEmit`
+Run:
+`pnpm exec tsc --noEmit`
 Expected: 无类型错误
 
-**Step 3: 验证应用运行**
+*
+*Step
+3:
+验证应用运行
+**
 
-Run: `pnpm dev`
+Run:
+`pnpm dev`
 Expected: 应用正常启动
 
-**Step 4: 提交**
+*
+*Step
+4:
+提交
+**
 
 ```bash
 git add src/config/sectConfig.ts
@@ -1907,18 +2376,34 @@ git commit -m "refactor(config): convert sectConfig to re-export module"
 
 ### Task 25: 删除废弃文件
 
-**Files:**
-- Delete: `src/composables/useSkillData.ts`
-- Delete: `src/composables/useSectValidation.ts`
-- Delete: `src/store/useSkillInfoStore.ts`
-- Delete: `src/store/useSkillCardInfoStore.ts`
+*
+*Files:
+**
 
-**Step 1: 确认无引用**
+- Delete:
+  `src/composables/useSkillData.ts`
+- Delete:
+  `src/composables/useSectValidation.ts`
+- Delete:
+  `src/store/useSkillInfoStore.ts`
+- Delete:
+  `src/store/useSkillCardInfoStore.ts`
 
-Run: `pnpm exec tsc --noEmit`
+*
+*Step
+1:
+确认无引用
+**
+
+Run:
+`pnpm exec tsc --noEmit`
 Expected: 无类型错误（如果有引用，会报错）
 
-**Step 2: 删除文件**
+*
+*Step
+2:
+删除文件
+**
 
 ```bash
 git rm src/composables/useSkillData.ts
@@ -1927,12 +2412,21 @@ git rm src/store/useSkillInfoStore.ts
 git rm src/store/useSkillCardInfoStore.ts
 ```
 
-**Step 3: 验证应用运行**
+*
+*Step
+3:
+验证应用运行
+**
 
-Run: `pnpm dev`
+Run:
+`pnpm dev`
 Expected: 应用正常启动
 
-**Step 4: 提交**
+*
+*Step
+4:
+提交
+**
 
 ```bash
 git commit -m "refactor: remove deprecated composables and stores"
@@ -1944,27 +2438,40 @@ git commit -m "refactor: remove deprecated composables and stores"
 
 完成后执行以下验证：
 
-1. **类型检查**
-   ```bash
-   pnpm exec tsc --noEmit
-   ```
+1.
+*
+*类型检查
+**
+```bash
+pnpm exec tsc --noEmit
+```
 
-2. **构建测试**
-   ```bash
-   pnpm build
-   ```
+2.
+*
+*构建测试
+**
+```bash
+pnpm build
+```
 
-3. **功能验证**
-   - 双重词条筛选页：属性/流派筛选、复选框切换
-   - 流派构建页：技能位配置、激活策略显示、继承切换
-   - 表单验证：流派选择、重复检测
+3.
+*
+*功能验证
+**
+    - 双重词条筛选页：属性/流派筛选、复选框切换
+    - 流派构建页：技能位配置、激活策略显示、继承切换
+    - 表单验证：流派选择、重复检测
 
-4. **清理提交**
-   ```bash
-   git status
-   git log --oneline -n 10
-   ```
+4.
+*
+*清理提交
+**
+```bash
+git status
+git log --oneline -n 10
+```
 
 ---
 
-*计划生成日期: 2026-03-04*
+*计划生成日期:
+2026-03-04*

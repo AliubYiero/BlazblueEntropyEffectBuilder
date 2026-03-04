@@ -5,7 +5,7 @@
  */
 
 import type { Attribute } from '../../interfaces/Attribute.ts';
-import type { SectValue } from './types.ts';
+import type { SectValue, SectSkill } from './types.ts';
 import { sectList, sectConfig } from './constants.ts';
 
 /**
@@ -15,7 +15,7 @@ import { sectList, sectConfig } from './constants.ts';
  */
 export function getSkillsBySect(sectName: SectValue): string {
   const sect = sectList.find(s => s.sect === sectName);
-  return sect ? sect.skill.join(' / ') : sectName;
+  return sect ? sect.skill.map(s => s.name).join(' / ') : sectName;
 }
 
 /**
@@ -59,6 +59,6 @@ export function getAllSectNames(): SectValue[] {
  * @param sect - 流派名称
  * @returns 流派信息对象，如果未找到则返回 undefined
  */
-export function getSectInfo(sect: SectValue): { attribute: Attribute; sect: SectValue; skill: string[] } | undefined {
+export function getSectInfo(sect: SectValue): { attribute: Attribute; sect: SectValue; skill: SectSkill[] } | undefined {
   return sectList.find(s => s.sect === sect);
 }

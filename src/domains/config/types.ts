@@ -17,12 +17,20 @@ export type SectValue = string;
  * 流派信息接口
  */
 export interface SectInfo {
-  /** 属性 */
-  attribute: Attribute;
-  /** 流派名称 */
-  sect: SectValue;
-  /** 技能列表 */
-  skill: string[];
+	/** 属性 */
+	attribute: Attribute;
+	/** 流派名称 */
+	sect: SectValue;
+	/** 技能列表 */
+	skill: SectSkill[];
+}
+
+/**
+ * 流派技能信息
+ */
+export interface SectSkill {
+	name: string;
+	trigger: '普攻' | '技能' | '冲刺' | '传承' | '召唤';
 }
 
 /**

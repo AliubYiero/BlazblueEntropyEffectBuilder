@@ -5,9 +5,9 @@
  */
 
 export {
-  sectList,
-  sectConfig,
-  getSkillsBySect,
-  type SectInfo,
-  type SectConfigMap,
+	sectList,
+	sectConfig,
+	getSkillsBySect,
+	type SectInfo,
+	type SectConfigMap,
 } from '../domains/config/index.ts';
