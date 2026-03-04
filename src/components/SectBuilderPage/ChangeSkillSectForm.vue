@@ -313,6 +313,17 @@ const filteredSkillList = computed( (): SkillInfo[] => {
 /**
  * 选择流派
  * */
+/**
+ * 判断流派是否支持当前触发位
+ * @param sect - 流派名称
+ * @returns 是否可用
+ */
+const isSectAvailableForTrigger = ( sect: SectValue ): boolean => {
+	if ( !sect ) return false;
+	const validTriggers = getValidTriggersForSect( sect );
+	return validTriggers.includes( props.triggerName );
+};
+
 const selectSect = ( sect: SectValue ) => {
 	formData.sect = sect;
 };
