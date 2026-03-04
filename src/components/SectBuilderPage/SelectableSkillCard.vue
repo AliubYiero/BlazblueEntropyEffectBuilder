@@ -62,6 +62,10 @@
 	font-family: var(--font-chinese);
 	font-size: 11px;
 	color: hsl(var(--foreground));
+	max-width: 180px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .sect-connector {
