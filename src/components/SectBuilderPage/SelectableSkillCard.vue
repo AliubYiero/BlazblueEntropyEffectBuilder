@@ -94,12 +94,26 @@
 				<div class="sect-combo">
 					<span class="sect-tag">
 						<span :class="['element-dot', `element-dot--${styleMapper[detail.mainAttribute]}`]"></span>
-						{{ getSkillDisplay(detail.mainSect) }}
+						<template v-if="getSkillDisplay(detail.mainSect)">
+							<el-tooltip :content="getSkillDisplay(detail.mainSect)" placement="top">
+								{{ detail.mainSect }}
+							</el-tooltip>
+						</template>
+						<template v-else>
+							{{ detail.mainSect }}
+						</template>
 					</span>
 					<span class="sect-connector">+</span>
 					<span class="sect-tag">
 						<span :class="['element-dot', `element-dot--${styleMapper[detail.secondAttribute]}`]"></span>
-						{{ getSkillDisplay(detail.secondSect) }}
+						<template v-if="getSkillDisplay(detail.secondSect)">
+							<el-tooltip :content="getSkillDisplay(detail.secondSect)" placement="top">
+								{{ detail.secondSect }}
+							</el-tooltip>
+						</template>
+						<template v-else>
+							{{ detail.secondSect }}
+						</template>
 					</span>
 				</div>
 				<p class="skill-desc">{{ detail.description }}</p>
