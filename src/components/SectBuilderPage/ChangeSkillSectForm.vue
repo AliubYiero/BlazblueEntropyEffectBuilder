@@ -202,25 +202,42 @@
 						<div class="skill-info">
 							<div class="skill-name">{{ skill.name }}</div>
 							<div class="skill-sects">
-								<el-tag
-																:class="['sect-tag', 'sect-tag--main', { 'is-selected': formData.sect === skill.mainSect }]"
-																:disabled="!isSectAvailableForTrigger(skill.mainSect)"
-																size="small"
-																@click="selectSect(skill.mainSect, skill)"
-															>
-																<span
-																	:class="['element-dot', `element-dot--${styleMapper[skill.mainAttribute]}`]"></span>
-																{{ skill.mainSect }}
-															</el-tag>								<el-tag
-									:class="['sect-tag', 'sect-tag--second', { 'is-selected': formData.sect === skill.secondSect }]"
-									:disabled="!isSectAvailableForTrigger(skill.secondSect)"
-									size="small"
-									@click="selectSect(skill.secondSect, skill)"
+								<el-tooltip
+									:disabled="isSectAvailableForTrigger(skill.mainSect)"
+									:content="`该流派不支持${props.triggerName}位`"
+									placement="top"
 								>
-									<span
-										:class="['element-dot', `element-dot--${styleMapper[skill.secondAttribute]}`]"></span>
-									{{ skill.secondSect }}
-								</el-tag>
+									<el-tag
+										:class="['sect-tag', 'sect-tag--main', {
+											'is-selected': formData.sect === skill.mainSect,
+											'is-disabled': !isSectAvailableForTrigger(skill.mainSect)
+										}]"
+										:disabled="!isSectAvailableForTrigger(skill.mainSect)"
+										size="small"
+										@click="selectSect(skill.mainSect, skill)"
+									>
+										<span :class="['element-dot', `element-dot--${styleMapper[skill.mainAttribute]}`]"></span>
+										{{ skill.mainSect }}
+									</el-tag>
+								</el-tooltip>
+								<el-tooltip
+									:disabled="isSectAvailableForTrigger(skill.secondSect)"
+									:content="`该流派不支持${props.triggerName}位`"
+									placement="top"
+								>
+									<el-tag
+										:class="['sect-tag', 'sect-tag--second', {
+											'is-selected': formData.sect === skill.secondSect,
+											'is-disabled': !isSectAvailableForTrigger(skill.secondSect)
+										}]"
+										:disabled="!isSectAvailableForTrigger(skill.secondSect)"
+										size="small"
+										@click="selectSect(skill.secondSect, skill)"
+									>
+										<span :class="['element-dot', `element-dot--${styleMapper[skill.secondAttribute]}`]"></span>
+										{{ skill.secondSect }}
+									</el-tag>
+								</el-tooltip>
 							</div>
 							<div class="skill-desc">{{
 									skill.description
