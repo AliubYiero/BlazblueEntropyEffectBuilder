@@ -63,12 +63,16 @@ src/
 │   │   └── SearchDoubleEffectForm.vue
 │   └── SectBuilderPage/         # 流派构建页组件
 │       ├── ChangeSkillSectForm.vue   # 修改流派对话框
-
 │       ├── SelectableSkillCard.vue   # 可选择技能卡片
 │       └── SkillCard.vue             # 技能位卡片
+├── composables/         # 组合式函数
+│   ├── useSkillData.ts          # 技能数据管理（优化版）
+│   ├── useSectValidation.ts     # 表单验证逻辑
+│   └── useTheme.ts              # 主题管理
 ├── config/
 │   └── sectConfig.ts    # 属性到流派的映射配置
 ├── data/                # 数据文件目录
+│   └── SkillInfoList.json       # 双重策略数据（73条）
 ├── interfaces/          # TypeScript 类型定义
 │   ├── Attribute.ts     # 属性类型：火/冰/电/毒/暗/光/刃
 │   ├── Sect.ts          # 流派接口
@@ -77,7 +81,7 @@ src/
 ├── router/
 │   └── index.ts         # 路由配置（Hash模式）
 ├── store/               # Pinia 状态管理
-│   ├── useSkillInfoStore.ts      # 技能数据存储（73条双重技能）
+│   ├── useSkillInfoStore.ts      # 技能数据查询（使用 useSkillData）
 │   └── useSkillCardInfoStore.ts  # 技能位配置存储
 ├── views/               # 页面视图
 │   ├── SearchDoublePage.vue      # 双重词条筛选页（路径：/）
@@ -106,7 +110,14 @@ src/
 
 ### 流派（36种）
 
-每个属性下有多个流派，例如火系有：`燃烧`、`火弹`、`火环`、`地雷`、`火精灵`
+每个属性下有多个流派：
+- **火系**：`燃烧`、`火弹`、`火环`、`地雷`、`火精灵`
+- **冰系**：`寒冷`、`寒冷 (寒气爆发)`、`寒冷 (聚寒成冰)`、`冰锥`、`冰刺`、`冰雹`、`玄冰剑刃`
+- **电系**：`感电`、`闪电链`、`落雷`、`电球`、`电桩`
+- **毒系**：`中毒`、`史莱姆`、`毒弹`、`毒液`、`毒泡河豚`
+- **暗系**：`触手`、`影子`、`影刺`、`黑洞`、`暗影标记`
+- **光系**：`光枪`、`闪光`、`光波`、`光阵`、`圣光标记`
+- **刃系**：`飞剑`、`撕裂`、`刃环`、`刀刃风暴`、`飞刃`
 
 ### 双重策略
 
@@ -114,19 +125,61 @@ src/
 
 ---
 
+## 架构设计
+
+### 数据流架构
+
+```
+src/data/SkillInfoList.json
+       ↓
+useSkillData (Object.freeze + shallowRef)
+       ↓
+   ┌───┴───┐
+   ↓       ↓
+useSkillInfoStore   useSectValidation
+   ↓               ↓
+   └───────┬───────┘
+           ↓
+      各组件使用
+```
+
+### 性能优化策略
+
+1. **数据层**：使用 `Object.freeze()` 冻结 JSON 数据，避免 Vue 深度响应式代理
+2. **Store 层**：使用 `shallowRef` 替代 `reactive`，只监听引用变化
+3. **计算层**：使用 `computed` 缓存派生数据（如 sectMapper、triggerInfoList）
+
+---
+
 ## 状态管理
+
+### useSkillData（新增）
+
+数据管理 Composable，提供优化的数据访问。
+
+**核心数据：**
+- `skillInfoList`: 冻结的技能数据列表（来自 JSON）
+- `triggerInfoList`: 派生的流派触发位映射
+- `sectMapper`: 流派到属性的映射表
+
+**主要方法：**
+- `getAttributeBySect(sect)`: 根据流派获取属性
+- `getValidTriggersForSect(sect)`: 获取流派支持的触发位
+- `isValidSect(sect)`: 验证流派是否有效
 
 ### useSkillInfoStore
 
-存储所有双重技能的基础数据（73条），提供筛选和查询功能。
+技能数据查询 Store，从 useSkillData 获取数据。
 
-**核心数据：**
-- `skillInfoList`: 双重技能列表
-- `triggerInfoList`: 流派触发位映射
+**主要方法：**
+- `filterSkillsByAttribute(attribute)`: 按属性筛选
+- `filterSkillsBySect(sect)`: 按流派筛选
+- `filterSkillsByTrigger(trigger)`: 按触发位筛选
+- `filterSkills(filters)`: 多条件组合筛选
 
 ### useSkillCardInfoStore
 
-管理用户在流派构建页的5个技能位配置。
+管理流派构建页的5个技能位配置。
 
 **核心数据：**
 - `skillCardInfoList`: 5个技能位的流派配置（含继承状态）
@@ -134,6 +187,18 @@ src/
 **主要方法：**
 - `updateSkillCardInfo(trigger, sect)`: 更新技能位流派
 - `updateSkillCardInfoInherit(trigger, inherit)`: 更新继承状态
+- `resetAllSkillCards()`: 重置所有配置
+- `getSkillCardByTrigger(trigger)`: 获取指定位置配置
+
+### useSectValidation（新增）
+
+表单验证 Composable，提供 Element Plus 验证规则。
+
+**验证规则：**
+- 流派必填验证
+- 流派与触发位匹配验证
+- 流派与属性匹配验证
+- 重复流派检测
 
 ---
 
@@ -168,6 +233,14 @@ src/
 - 使用 Pinia 管理全局状态
 - Store 命名使用 `useXxxStore` 规范
 - 读写分离：组件读取 Store，通过 Store 方法更新
+- 性能优化：使用 `shallowRef` 替代 `reactive`
+
+### Composables 开发
+
+- 使用驼峰命名法，以 `use` 开头
+- 单一职责原则，每个 composable 只处理一个关注点
+- 使用 JSDoc 添加文档注释
+- 导出类型定义，便于 TypeScript 推断
 
 ---
 
@@ -192,15 +265,20 @@ src/
 - 36种具体流派
 - 73种双重策略（含触发位、解锁条件、效果描述）
 
-数据存储在 `src/data/SkillInfoList.json` 中，通过 `useSkillData` composable 动态加载。
+**数据存储**：`src/data/SkillInfoList.json`
+
+**数据加载**：通过 `useSkillData` composable 动态导入并冻结，避免 Vue 深度响应式代理带来的性能开销。
 
 ---
 
 ## 待办事项
 
 - [x] 筛选页：根据选择(属性/流派)筛选符合条件的双重词条
+- [x] 性能优化：使用 shallowRef 和 Object.freeze 优化响应式性能
+- [x] 数据重构：从硬编码改为 JSON 数据源
+- [x] 表单验证：增强流派选择的验证逻辑
 - [ ] 筛选页：添加技能位选择器，能根据对应技能位筛选
-- [ ] 构建页：保存流派到技能位，自动过滤相斥流派
+- [ ] 构建页：保存流派配置到本地存储
 
 ---
 
@@ -208,16 +286,55 @@ src/
 
 ### 如何添加新的双重策略？
 
-1. 在 `useSkillInfoStore.ts` 中的 `skillInfoList` 数组添加新条目
-2. 如果涉及新流派，同步更新 `triggerInfoList`
+1. 在 `src/data/SkillInfoList.json` 中添加新条目，格式如下：
+```json
+{
+  "name": "策略名称",
+  "mainSect": "主流派",
+  "mainAttribute": "火",
+  "secondSect": "副流派",
+  "secondAttribute": "冰",
+  "trigger": ["普攻", "技能"],
+  "description": "策略效果描述"
+}
+```
+2. 如果涉及新流派，同步更新 `src/config/sectConfig.ts`
 3. 在 `docs/策略大全.md` 中同步更新文档
 
 ### 如何修改技能位？
 
 技能位是固定的5个（普攻/技能/冲刺/传承/召唤），如需修改需要：
-1. 修改 `useSkillCardInfoStore.ts` 中的初始化逻辑
+1. 修改 `src/store/useSkillCardInfoStore.ts` 中的初始化逻辑
 2. 修改相关组件中的触发位复选框
+3. 更新 `src/interfaces/Trigger.ts` 类型定义
+
+### 如何调试数据加载问题？
+
+`useSkillData` 会在控制台输出加载状态：
+- 成功加载：`[useSkillData] 数据加载成功`
+- 加载失败：`[useSkillData] 数据加载失败: [错误信息]`
 
 ---
 
-*文档生成时间: 2026-03-03*
+## 性能优化记录
+
+### 2026-03-03 优化
+
+1. **Store 重构**
+   - `useSkillInfoStore` 移除硬编码数据，改用 `useSkillData` 加载 JSON
+   - `useSkillCardInfoStore` 使用 `shallowRef` 替代 `reactive`
+
+2. **数据优化**
+   - 使用 `Object.freeze()` 冻结 JSON 数据
+   - 使用计算属性缓存派生数据（sectMapper、triggerInfoList）
+
+3. **组件清理**
+   - 删除废弃的 `EnabledDoubleSkill.vue` 组件
+
+4. **验证增强**
+   - 新增 `useSectValidation` composable
+   - 支持流派-触发位匹配验证、重复检测
+
+---
+
+*文档更新时间: 2026-03-04*
