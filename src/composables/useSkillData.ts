@@ -8,9 +8,9 @@
 import { shallowRef, computed, readonly, type Ref } from 'vue';
 import type { SkillInfoInterface } from '../interfaces/SkillInfoInterface.ts';
 import type { SectValue } from '../interfaces/SectValue.ts';
-import type { Attribute } from '../interfaces/Attribute.ts';
 import type { Trigger } from '../interfaces/Trigger.ts';
-import { sectConfig } from '../config/sectConfig.ts';
+import { sectConfig, sectList, getSkillsBySect } from '../config/sectConfig.ts';
+import type { Attribute } from '../config/sectConfig.ts';
 
 /**
  * 触发位信息接口
@@ -103,6 +103,8 @@ export const useSkillData = () => {
 		getAttributeBySect,
 		getValidTriggersForSect,
 		isValidSect,
+		getSkillsBySect,
+		sectList,
 	};
 };
 
