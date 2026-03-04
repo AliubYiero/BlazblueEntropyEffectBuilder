@@ -108,5 +108,14 @@ import { CircleClose } from '@element-plus/icons-vue';
 const props = defineProps<{ skillCardInfo: SkillCardInfo }>();
 const emit = defineEmits<{ ( event: 'openDialog', value: Trigger ): void }>();
 
+const builderStore = useBuilderStore();
+
 const handleClick = () => emit( 'openDialog', props.skillCardInfo.triggerName );
+
+/**
+ * 清除流派选择
+ * */
+const handleClear = () => {
+	builderStore.updateSkillCardInfo( props.skillCardInfo.triggerName, '' );
+};
 </script>
