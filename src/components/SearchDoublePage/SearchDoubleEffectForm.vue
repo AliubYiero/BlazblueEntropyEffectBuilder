@@ -216,12 +216,24 @@
 				<div class="checkbox-section">
 					<div class="checkbox-row">
 						<span class="checkbox-label">流派</span>
-						<el-checkbox v-for="item in sectCheckboxes" :key="item.key" v-model="item.value" :label="item.label" />
+						<el-checkbox
+							v-for="item in sectCheckboxItems"
+							:key="item.key"
+							:model-value="item.value"
+							:label="item.label"
+							@change="(val: boolean) => handleSectCheckboxChange(item.key, val)"
+						/>
 					</div>
 
 					<div class="checkbox-row">
 						<span class="checkbox-label">槽位</span>
-						<el-checkbox v-for="item in triggerCheckboxes" :key="item.key" v-model="item.value" :label="item.label" />
+						<el-checkbox
+							v-for="item in triggerCheckboxItems"
+							:key="item.key"
+							:model-value="item.value"
+							:label="item.label"
+							@change="(val: boolean) => handleTriggerCheckboxChange(item.key, val)"
+						/>
 					</div>
 				</div>
 			</div>
@@ -285,80 +297,72 @@
 </template>
 
 <script lang="ts" setup>
-import { useSkillInfoStore } from '../../store/useSkillInfoStore.ts';
-import { Attribute } from '../../interfaces/Attribute.ts';
-import { computed, ref, reactive } from 'vue';
-import { Sect } from '../../interfaces/Sect.ts';
-import { SectValue } from '../../interfaces/SectValue.ts';
-import { sectConfig, getSkillsBySect } from '../../config/sectConfig.ts';
-import { Trigger } from '../../interfaces/Trigger.ts';
+import { computed } from 'vue';
+import { useFilterStore, getAttributeSuggestions, getSectSuggestions } from '../../domains/filter/index.ts';
+import { getSkillInfoList } from '../../domains/skill/repository.ts';
+import { sectConfig, getSkillsBySect } from '../../domains/config/index.ts';
+import type { Attribute } from '../../interfaces/Attribute.ts';
+import type { Trigger } from '../../interfaces/Trigger.ts';
 
-const skillInfoStore = useSkillInfoStore();
+// 初始化 Store
+const filterStore = useFilterStore();
+const skillInfoList = getSkillInfoList();
 
-const attribute = ref<Attribute | ''>('');
-const sect = ref<Sect[keyof Sect] | ''>('');
+// 双向绑定的筛选状态
+const attribute = computed({
+	get: () => filterStore.attribute,
+	set: (val) => filterStore.setAttribute(val),
+});
 
-const sectCheckboxes = reactive([
-	{ key: 'main', label: '主流派', value: true },
-	{ key: 'second', label: '副流派', value: true },
+const sect = computed({
+	get: () => filterStore.sect,
+	set: (val) => filterStore.setSect(val),
+});
+
+// 复选框状态 - 转换为数组形式用于模板渲染
+const sectCheckboxItems = computed(() => [
+	{ key: 'main' as const, label: '主流派', value: filterStore.sectCheckboxes.main },
+	{ key: 'second' as const, label: '副流派', value: filterStore.sectCheckboxes.second },
 ]);
 
-const triggerCheckboxes = reactive([
-	{ key: 'attack', label: '普攻', value: true },
-	{ key: 'skill', label: '技能', value: true },
-	{ key: 'sprint', label: '冲刺', value: true },
-	{ key: 'call', label: '召唤', value: true },
-	{ key: 'inherit', label: '传承', value: true },
+const triggerCheckboxItems = computed(() => [
+	{ key: '普攻' as const, label: '普攻', value: filterStore.triggerCheckboxes.普攻 },
+	{ key: '技能' as const, label: '技能', value: filterStore.triggerCheckboxes.技能 },
+	{ key: '冲刺' as const, label: '冲刺', value: filterStore.triggerCheckboxes.冲刺 },
+	{ key: '召唤' as const, label: '召唤', value: filterStore.triggerCheckboxes.召唤 },
+	{ key: '传承' as const, label: '传承', value: filterStore.triggerCheckboxes.传承 },
 ]);
 
+// 复选框切换处理
+const handleSectCheckboxChange = (key: 'main' | 'second', value: boolean) => {
+	filterStore.toggleSectCheckbox(key, value);
+};
+
+const handleTriggerCheckboxChange = (key: Trigger, value: boolean) => {
+	filterStore.toggleTriggerCheckbox(key, value);
+};
+
+// 自动完成建议
 const handleFetchAttributeSuggestions = (searchString: string, cb: Function) => {
-	const attributeSet: Set<Attribute> = new Set();
-	skillInfoStore.skillInfoList.forEach(item => attributeSet.add(item.mainAttribute));
-	const list = Array.from(attributeSet).map(item => ({ value: item }));
-	cb(searchString ? list.filter(item => item.value.includes(searchString)) : list);
+	const list = getAttributeSuggestions(skillInfoList.value, searchString);
+	cb(list);
 };
 
 const handleFetchSectSuggestions = (searchString: string, cb: Function) => {
-	const sectSet: Set<SectValue> = new Set();
-	skillInfoStore.skillInfoList.forEach(item => sectSet.add(item.mainSect));
-	let list: { value: SectValue }[] = Array.from(sectSet).map(item => ({ value: item }));
-
-	if (attribute.value.trim()) {
-		list = sectConfig[<Attribute>attribute.value.trim()].map(item => ({ value: item as SectValue }));
-	}
-
-	cb(searchString ? list.filter(item => item.value.includes(searchString)) : list);
+	const list = getSectSuggestions(skillInfoList.value, attribute.value, searchString, sectConfig);
+	cb(list);
 };
 
-const filterSkillInfoList = computed(() => {
-	return skillInfoStore.skillInfoList.filter(skillInfo => {
-		const isMain = sectCheckboxes[0].value
-			&& skillInfo.mainAttribute.includes(attribute.value)
-			&& skillInfo.mainSect.includes(sect.value);
+// 筛选结果
+const filterSkillInfoList = computed(() => filterStore.filterResult.skills);
 
-		const isSecond = sectCheckboxes[1].value
-			&& skillInfo.secondAttribute.includes(attribute.value)
-			&& skillInfo.secondSect.includes(sect.value);
-
-		const uncheckedTriggers: Trigger[] = [
-			triggerCheckboxes[0].value || '普攻',
-			triggerCheckboxes[1].value || '技能',
-			triggerCheckboxes[2].value || '冲刺',
-			triggerCheckboxes[3].value || '召唤',
-			triggerCheckboxes[4].value || '传承',
-		].filter(item => item !== true) as Trigger[];
-
-		const isTrigger = skillInfo.trigger.every(t => uncheckedTriggers.includes(t));
-
-		return (isMain || isSecond) && !isTrigger;
-	});
-});
-
+// 样式映射
 const styleMapper: Record<Attribute, string> = {
 	'火': 'fire', '冰': 'ice', '电': 'thunder',
 	'毒': 'poison', '暗': 'dark', '光': 'light', '刃': 'blade',
 };
 
+// 流派技能提示
 const getSkillDisplay = (sectName: string): string => {
 	return getSkillsBySect(sectName);
 };
