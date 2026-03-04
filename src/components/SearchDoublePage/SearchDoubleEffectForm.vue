@@ -151,10 +151,6 @@
 	font-size: 13px;
 	font-weight: 500;
 	color: hsl(var(--foreground));
-	max-width: 200px;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
 }
 
 .sect-connector {
