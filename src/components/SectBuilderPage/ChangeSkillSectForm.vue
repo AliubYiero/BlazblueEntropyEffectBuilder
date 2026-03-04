@@ -204,7 +204,7 @@
 							<div class="skill-sects">
 								<el-tooltip
 									:content="`该流派不支持${props.triggerName}位`"
-									:disabled="!isSectAvailableForTrigger(skill.mainSect)"
+									:disabled="isSectAvailableForTrigger(skill.mainSect)"
 									placement="top"
 								>
 									<el-tag
@@ -223,7 +223,7 @@
 								</el-tooltip>
 								<el-tooltip
 									:content="`该流派不支持${props.triggerName}位`"
-									:disabled="!isSectAvailableForTrigger(skill.secondSect)"
+									:disabled="isSectAvailableForTrigger(skill.secondSect)"
 									placement="top"
 								>
 									<el-tag
@@ -378,7 +378,6 @@ const handleSubmit = async () => {
 	if ( !formRef.value ) return;
 	await formRef.value.validate( ( valid ) => {
 		if ( valid && formData.sect ) {
-			console.log( props.triggerName, formData.sect );
 			builderStore.updateSkillCardInfo( props.triggerName, formData.sect );
 			handleCancel();
 		}
