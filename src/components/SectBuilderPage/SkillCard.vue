@@ -92,6 +92,8 @@
 <script lang="ts" setup>
 import type { SkillCardInfo } from '../../domains/builder/types.ts';
 import type { Trigger } from '../../interfaces/Trigger.ts';
+import { useBuilderStore } from '../../domains/builder/index.ts';
+import { CircleClose } from '@element-plus/icons-vue';
 
 const props = defineProps<{ skillCardInfo: SkillCardInfo }>();
 const emit = defineEmits<{ ( event: 'openDialog', value: Trigger ): void }>();
