@@ -257,14 +257,28 @@
 				<div class="sect-combo">
 					<div class="sect-item">
 						<span :class="['element-dot', `element-dot--${styleMapper[skill.mainAttribute]}`]"></span>
-						<span class="sect-name">{{ getSkillDisplay(skill.mainSect) }}</span>
+						<template v-if="getSkillDisplay(skill.mainSect)">
+							<el-tooltip :content="getSkillDisplay(skill.mainSect)" placement="top">
+								<span class="sect-name">{{ skill.mainSect }}</span>
+							</el-tooltip>
+						</template>
+						<template v-else>
+							<span class="sect-name">{{ skill.mainSect }}</span>
+						</template>
 					</div>
 
 					<span class="sect-connector">+</span>
 
 					<div class="sect-item">
 						<span :class="['element-dot', `element-dot--${styleMapper[skill.secondAttribute]}`]"></span>
-						<span class="sect-name">{{ getSkillDisplay(skill.secondSect) }}</span>
+						<template v-if="getSkillDisplay(skill.secondSect)">
+							<el-tooltip :content="getSkillDisplay(skill.secondSect)" placement="top">
+								<span class="sect-name">{{ skill.secondSect }}</span>
+							</el-tooltip>
+						</template>
+						<template v-else>
+							<span class="sect-name">{{ skill.secondSect }}</span>
+						</template>
 					</div>
 				</div>
 
