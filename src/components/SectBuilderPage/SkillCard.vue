@@ -1,5 +1,6 @@
 <style lang="scss" scoped>
 .skill-card {
+	position: relative;
 	flex-shrink: 0;
 	width: 120px;
 	background: hsl(var(--card));
@@ -17,6 +18,18 @@
 	&:hover {
 		border-color: hsl(var(--ring));
 		background: hsl(var(--accent) / 0.3);
+	}
+}
+
+.clear-btn {
+	position: absolute;
+	top: 8px;
+	right: 8px;
+	opacity: 0.6;
+	transition: opacity 0.15s ease;
+	
+	&:hover {
+		opacity: 1;
 	}
 }
 
