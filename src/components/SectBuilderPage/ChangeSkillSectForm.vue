@@ -203,8 +203,8 @@
 							<div class="skill-name">{{ skill.name }}</div>
 							<div class="skill-sects">
 								<el-tooltip
-									:disabled="isSectAvailableForTrigger(skill.mainSect)"
 									:content="`该流派不支持${props.triggerName}位`"
+									:disabled="!isSectAvailableForTrigger(skill.mainSect)"
 									placement="top"
 								>
 									<el-tag
@@ -216,13 +216,14 @@
 										size="small"
 										@click="selectSect(skill.mainSect, skill)"
 									>
-										<span :class="['element-dot', `element-dot--${styleMapper[skill.mainAttribute]}`]"></span>
+										<span
+											:class="['element-dot', `element-dot--${styleMapper[skill.mainAttribute]}`]"></span>
 										{{ skill.mainSect }}
 									</el-tag>
 								</el-tooltip>
 								<el-tooltip
-									:disabled="isSectAvailableForTrigger(skill.secondSect)"
 									:content="`该流派不支持${props.triggerName}位`"
+									:disabled="!isSectAvailableForTrigger(skill.secondSect)"
 									placement="top"
 								>
 									<el-tag
@@ -234,7 +235,8 @@
 										size="small"
 										@click="selectSect(skill.secondSect, skill)"
 									>
-										<span :class="['element-dot', `element-dot--${styleMapper[skill.secondAttribute]}`]"></span>
+										<span
+											:class="['element-dot', `element-dot--${styleMapper[skill.secondAttribute]}`]"></span>
 										{{ skill.secondSect }}
 									</el-tag>
 								</el-tooltip>
@@ -272,7 +274,8 @@ import type { Trigger } from '../../interfaces/Trigger.ts';
 import type { Attribute } from '../../interfaces/Attribute.ts';
 import type { SectValue } from '../../domains/config/types.ts';
 import { attributeList } from '../../domains/config/index.ts';
-import { filterByTrigger, getValidTriggersForSect } from '../../domains/skill/repository.ts';
+import { filterByTrigger } from '../../domains/skill/repository.ts';
+import { getSectInfo } from '../../domains/config/utils.ts';
 import {
 	type SkillCardInfo,
 	useBuilderStore,
@@ -349,8 +352,10 @@ const filteredSkillList = computed( (): SkillInfo[] => {
  */
 const isSectAvailableForTrigger = ( sect: SectValue ): boolean => {
 	if ( !sect ) return false;
-	const validTriggers = getValidTriggersForSect( sect );
-	return validTriggers.includes( props.triggerName );
+	const sectInfo = getSectInfo( sect );
+	if ( !sectInfo ) return false;
+	// 检查该流派的任意技能是否支持当前触发位
+	return sectInfo.skill.some( s => s.trigger === props.triggerName );
 };
 
 /**
