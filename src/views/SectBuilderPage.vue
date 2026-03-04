@@ -211,36 +211,25 @@ import { computed, ref } from 'vue';
 import SkillCard from '../components/SectBuilderPage/SkillCard.vue';
 import SelectableSkillCard from '../components/SectBuilderPage/SelectableSkillCard.vue';
 import ChangeSkillSectForm from '../components/SectBuilderPage/ChangeSkillSectForm.vue';
-import { useSkillCardInfoStore } from '../store/useSkillCardInfoStore.ts';
-import { useSkillInfoStore } from '../store/useSkillInfoStore.ts';
-import { SkillCardInfoTuple } from '../interfaces/SkillCardInfoTuple.ts';
-import { SkillInfoInterface } from '../interfaces/SkillInfoInterface.ts';
-import { Trigger } from '../interfaces/Trigger.ts';
-import { Attribute } from '../interfaces/Attribute.ts';
+import { useBuilderStore, type SkillCardInfoTuple } from '../domains/builder/index.ts';
+import { triggerList } from '../domains/config/index.ts';
+import type { Trigger } from '../interfaces/Trigger.ts';
+import type { Attribute } from '../interfaces/Attribute.ts';
 
-const skillCardInfoStore = useSkillCardInfoStore();
-const skillInfoStore = useSkillInfoStore();
+const builderStore = useBuilderStore();
 
-const skillCardInfoList = computed<SkillCardInfoTuple>(() => skillCardInfoStore.skillCardInfoList);
-const triggerList: Trigger[] = ['普攻', '技能', '冲刺', '传承', '召唤'];
+const skillCardInfoList = computed<SkillCardInfoTuple>(() => builderStore.skillCardInfoList as SkillCardInfoTuple);
 
 const isInheritChecked = (trigger: Trigger) => {
-	const card = skillCardInfoStore.skillCardInfoList.find(c => c.triggerName === trigger);
+	const card = builderStore.getSkillCardByTrigger(trigger);
 	return card?.inherit || false;
 };
 
 const toggleInherit = (trigger: Trigger, value: boolean) => {
-	skillCardInfoStore.updateSkillCardInfoInherit(trigger, value);
+	builderStore.updateSkillCardInherit(trigger, value);
 };
 
-const activatedSkills = computed<SkillInfoInterface[]>(() => {
-	const sectList = skillCardInfoStore.skillCardInfoList
-		.filter(card => card.sect)
-		.map(card => card.sect);
-	return skillInfoStore.skillInfoList.filter(skill =>
-		sectList.includes(skill.mainSect) && sectList.includes(skill.secondSect)
-	);
-});
+const activatedSkills = computed(() => builderStore.activatedSkills.skills);
 
 const styleMapper: Record<Attribute, string> = {
 	'火': 'fire', '冰': 'ice', '电': 'thunder',

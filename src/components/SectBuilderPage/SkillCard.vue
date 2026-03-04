@@ -88,8 +88,8 @@
 </template>
 
 <script lang="ts" setup>
-import { SkillCardInfo } from '../../interfaces/SkillCardInfo.ts';
-import { Trigger } from '../../interfaces/Trigger.ts';
+import type { SkillCardInfo } from '../../domains/builder/types.ts';
+import type { Trigger } from '../../interfaces/Trigger.ts';
 
 const props = defineProps<{ skillCardInfo: SkillCardInfo }>();
 const emit = defineEmits<{ (event: 'openDialog', value: Trigger): void }>();

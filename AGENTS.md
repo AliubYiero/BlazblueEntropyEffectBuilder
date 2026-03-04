@@ -24,7 +24,7 @@
 | 样式 | SCSS | ^1.74.1 |
 | 语言 | TypeScript | ^5.2.2 |
 
-**浏览器兼容性**：支持 IE11+ (通过 `@vitejs/plugin-legacy`)
+**浏览器兼容性**：现代浏览器（Chrome, Firefox, Safari, Edge）
 
 ---
 
@@ -58,9 +58,9 @@ pnpm preview
 src/
 ├── components/           # 组件目录
 │   ├── Public/          # 公共组件
-│   │   └── PageHeader.vue       # 页面导航头部
+│   │   └── PageHeader.vue       # 页面导航头部（含主题切换）
 │   ├── SearchDoublePage/        # 双重词条页组件
-│   │   └── SearchDoubleEffectForm.vue
+│   │   └── SearchDoubleEffectForm.vue  # 筛选表单与结果展示
 │   └── SectBuilderPage/         # 流派构建页组件
 │       ├── ChangeSkillSectForm.vue   # 修改流派对话框
 │       ├── SelectableSkillCard.vue   # 可选择技能卡片
@@ -68,15 +68,16 @@ src/
 ├── composables/         # 组合式函数
 │   ├── useSkillData.ts          # 技能数据管理（优化版）
 │   ├── useSectValidation.ts     # 表单验证逻辑
-│   └── useTheme.ts              # 主题管理
+│   └── useTheme.ts              # 主题管理（深色/浅色模式）
 ├── config/
-│   └── sectConfig.ts    # 属性到流派的映射配置
+│   └── sectConfig.ts    # 流派配置（36个流派+技能列表）
 ├── data/                # 数据文件目录
 │   └── SkillInfoList.json       # 双重策略数据（73条）
 ├── interfaces/          # TypeScript 类型定义
 │   ├── Attribute.ts     # 属性类型：火/冰/电/毒/暗/光/刃
 │   ├── Sect.ts          # 流派接口
 │   ├── SkillInfoInterface.ts  # 双重技能信息接口
+│   ├── Trigger.ts       # 触发位类型
 │   └── ...
 ├── router/
 │   └── index.ts         # 路由配置（Hash模式）
@@ -86,7 +87,7 @@ src/
 ├── views/               # 页面视图
 │   ├── SearchDoublePage.vue      # 双重词条筛选页（路径：/）
 │   └── SectBuilderPage.vue       # 流派构建页（路径：/builder）
-├── App.vue              # 根组件
+├── App.vue              # 根组件（shadcn风格UI主题）
 └── main.ts              # 应用入口
 ```
 
@@ -110,7 +111,8 @@ src/
 
 ### 流派（36种）
 
-每个属性下有多个流派：
+每个属性下有多个流派，每个流派包含特定技能列表：
+
 - **火系**：`燃烧`、`火弹`、`火环`、`地雷`、`火精灵`
 - **冰系**：`寒冷`、`寒冷 (寒气爆发)`、`寒冷 (聚寒成冰)`、`冰锥`、`冰刺`、`冰雹`、`玄冰剑刃`
 - **电系**：`感电`、`闪电链`、`落雷`、`电球`、`电桩`
@@ -149,11 +151,19 @@ useSkillInfoStore   useSectValidation
 2. **Store 层**：使用 `shallowRef` 替代 `reactive`，只监听引用变化
 3. **计算层**：使用 `computed` 缓存派生数据（如 sectMapper、triggerInfoList）
 
+### UI设计系统
+
+采用 **shadcn/ui** 风格设计系统：
+
+- **CSS变量**：使用 HSL 格式定义颜色，支持深色/浅色主题切换
+- **主题切换**：通过 `useTheme` composable 实现，偏好存储在 localStorage
+- **Element Plus 覆盖**：自定义样式覆盖 Element Plus 默认主题
+
 ---
 
 ## 状态管理
 
-### useSkillData（新增）
+### useSkillData
 
 数据管理 Composable，提供优化的数据访问。
 
@@ -190,7 +200,7 @@ useSkillInfoStore   useSectValidation
 - `resetAllSkillCards()`: 重置所有配置
 - `getSkillCardByTrigger(trigger)`: 获取指定位置配置
 
-### useSectValidation（新增）
+### useSectValidation
 
 表单验证 Composable，提供 Element Plus 验证规则。
 
@@ -199,6 +209,16 @@ useSkillInfoStore   useSectValidation
 - 流派与触发位匹配验证
 - 流派与属性匹配验证
 - 重复流派检测
+
+### useTheme
+
+主题管理 Composable，支持深色/浅色模式切换。
+
+**特性：**
+- 自动检测系统主题偏好
+- 本地存储主题选择
+- 全局单例状态管理
+- 引用计数生命周期管理
 
 ---
 
@@ -242,6 +262,13 @@ useSkillInfoStore   useSectValidation
 - 使用 JSDoc 添加文档注释
 - 导出类型定义，便于 TypeScript 推断
 
+### 样式规范
+
+- 使用 SCSS 预处理器
+- 采用 shadcn/ui 风格 CSS 变量系统
+- 组件样式使用 scoped 属性
+- 颜色使用 HSL 格式：`hsl(var(--variable))`
+
 ---
 
 ## 配置文件
@@ -249,7 +276,6 @@ useSkillInfoStore   useSectValidation
 ### vite.config.ts
 
 - `base: './'` - 使用相对路径，支持任意目录部署
-- 包含 legacy 插件配置，支持 IE11
 
 ### tsconfig.json
 
@@ -277,6 +303,9 @@ useSkillInfoStore   useSectValidation
 - [x] 性能优化：使用 shallowRef 和 Object.freeze 优化响应式性能
 - [x] 数据重构：从硬编码改为 JSON 数据源
 - [x] 表单验证：增强流派选择的验证逻辑
+- [x] UI重构：采用 shadcn/ui 风格设计系统
+- [x] 主题切换：实现深色/浅色模式切换
+- [x] 技能提示：添加流派技能列表 Tooltip 提示
 - [ ] 筛选页：添加技能位选择器，能根据对应技能位筛选
 - [ ] 构建页：保存流派配置到本地存储
 
@@ -314,11 +343,29 @@ useSkillInfoStore   useSectValidation
 - 成功加载：`[useSkillData] 数据加载成功`
 - 加载失败：`[useSkillData] 数据加载失败: [错误信息]`
 
+### 如何自定义主题颜色？
+
+在 `src/App.vue` 中修改 CSS 变量：
+- `:root` 中定义浅色模式变量
+- `.dark` 中定义深色模式变量
+- 元素颜色在 `--element-*` 变量中定义
+
 ---
 
-## 性能优化记录
+## 更新日志
 
-### 2026-03-03 优化
+### 2026-03-04
+
+1. **UI重构完成**
+   - 采用 shadcn/ui 风格设计系统
+   - 实现深色/浅色主题切换
+   - 添加 Element Plus 主题覆盖
+
+2. **技能提示增强**
+   - 添加流派技能列表 Tooltip 提示
+   - 在 `sectConfig.ts` 中定义完整技能列表
+
+### 2026-03-03
 
 1. **Store 重构**
    - `useSkillInfoStore` 移除硬编码数据，改用 `useSkillData` 加载 JSON

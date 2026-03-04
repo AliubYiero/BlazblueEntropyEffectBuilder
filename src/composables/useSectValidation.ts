@@ -28,7 +28,7 @@ interface FormData {
 export const useSectValidation = ( triggerName: Trigger ) => {
 	const skillData = useSkillData();
 	const skillCardStore = useSkillCardInfoStore();
-
+	
 	/**
 	 * Element Plus 表单验证规则
 	 * */
@@ -39,7 +39,7 @@ export const useSectValidation = ( triggerName: Trigger ) => {
 			{ validator: validateDuplicateSect, trigger: 'change' },
 		],
 	};
-
+	
 	/**
 	 * 验证流派是否支持当前触发位
 	 * */
@@ -52,15 +52,17 @@ export const useSectValidation = ( triggerName: Trigger ) => {
 			callback();
 			return;
 		}
-
+		
 		const validTriggers = skillData.getValidTriggersForSect( value );
+		console.log( value, validTriggers );
 		if ( !validTriggers.includes( triggerName ) ) {
 			callback( new Error( `该流派无法在【${ triggerName }】位使用` ) );
-		} else {
+		}
+		else {
 			callback();
 		}
 	}
-
+	
 	/**
 	 * 验证流派是否已在其他位置配置
 	 * */
@@ -73,20 +75,21 @@ export const useSectValidation = ( triggerName: Trigger ) => {
 			callback();
 			return;
 		}
-
+		
 		const existingCard = skillCardStore.skillCardInfoList.find(
 			( card ) => card.sect === value && card.triggerName !== triggerName,
 		);
-
+		
 		if ( existingCard ) {
 			callback(
 				new Error( `该流派已在【${ existingCard.triggerName }】位配置` ),
 			);
-		} else {
+		}
+		else {
 			callback();
 		}
 	}
-
+	
 	/**
 	 * 验证流派与属性是否匹配
 	 * @param sect - 流派名称
@@ -101,7 +104,7 @@ export const useSectValidation = ( triggerName: Trigger ) => {
 		const actualAttribute = skillData.getAttributeBySect( sect );
 		return actualAttribute === attribute;
 	};
-
+	
 	return {
 		rules,
 		validateAttributeMatch,

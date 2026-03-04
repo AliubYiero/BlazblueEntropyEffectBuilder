@@ -120,22 +120,22 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue';
-import { SkillCardInfo } from '../../interfaces/SkillCardInfo.ts';
-import { useSkillInfoStore } from '../../store/useSkillInfoStore.ts';
-import { useSkillCardInfoStore } from '../../store/useSkillCardInfoStore.ts';
-import { SkillInfoInterface } from '../../interfaces/SkillInfoInterface.ts';
-import { Attribute } from '../../interfaces/Attribute.ts';
-import { getSkillsBySect } from '../../config/sectConfig.ts';
+import type { SkillCardInfo } from '../../domains/builder/types.ts';
+import { useBuilderStore } from '../../domains/builder/index.ts';
+import { getSkillInfoList } from '../../domains/skill/repository.ts';
+import type { Attribute } from '../../interfaces/Attribute.ts';
+import { getSkillsBySect } from '../../domains/config/index.ts';
+import type { SkillInfo } from '../../core/data/types.ts';
 
 const props = defineProps<{ skillCardInfo: SkillCardInfo }>();
-const skillInfoStore = useSkillInfoStore();
-const skillCardInfoStore = useSkillCardInfoStore();
+const builderStore = useBuilderStore();
 
-const filterDetailList = computed<SkillInfoInterface[]>(() => {
-	let list = skillInfoStore.skillInfoList.filter(skill =>
+const filterDetailList = computed<SkillInfo[]>(() => {
+	const skillInfoList = getSkillInfoList().value;
+	let list = skillInfoList.filter(skill =>
 		props.skillCardInfo.sect && (skill.mainSect.includes(props.skillCardInfo.sect) || skill.secondSect.includes(props.skillCardInfo.sect))
 	);
-	const existing = skillCardInfoStore.skillCardInfoList.filter(c => c.sect || c.inherit).map(c => c.triggerName);
+	const existing = builderStore.skillCardInfoList.filter(c => c.sect || c.inherit).map(c => c.triggerName);
 	return list.filter(skill => skill.trigger.some(t => !existing.includes(t)));
 });
 
