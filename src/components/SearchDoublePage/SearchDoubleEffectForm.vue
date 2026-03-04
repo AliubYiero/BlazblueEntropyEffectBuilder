@@ -253,14 +253,14 @@
 				<div class="sect-combo">
 					<div class="sect-item">
 						<span :class="['element-dot', `element-dot--${styleMapper[skill.mainAttribute]}`]"></span>
-						<span class="sect-name">{{ skill.mainSect }}</span>
+						<span class="sect-name">{{ getSkillDisplay(skill.mainSect) }}</span>
 					</div>
 
 					<span class="sect-connector">+</span>
 
 					<div class="sect-item">
 						<span :class="['element-dot', `element-dot--${styleMapper[skill.secondAttribute]}`]"></span>
-						<span class="sect-name">{{ skill.secondSect }}</span>
+						<span class="sect-name">{{ getSkillDisplay(skill.secondSect) }}</span>
 					</div>
 				</div>
 
@@ -276,7 +276,7 @@ import { Attribute } from '../../interfaces/Attribute.ts';
 import { computed, ref, reactive } from 'vue';
 import { Sect } from '../../interfaces/Sect.ts';
 import { SectValue } from '../../interfaces/SectValue.ts';
-import { sectConfig } from '../../config/sectConfig.ts';
+import { sectConfig, getSkillsBySect } from '../../config/sectConfig.ts';
 import { Trigger } from '../../interfaces/Trigger.ts';
 
 const skillInfoStore = useSkillInfoStore();
@@ -343,5 +343,9 @@ const filterSkillInfoList = computed(() => {
 const styleMapper: Record<Attribute, string> = {
 	'火': 'fire', '冰': 'ice', '电': 'thunder',
 	'毒': 'poison', '暗': 'dark', '光': 'light', '刃': 'blade',
+};
+
+const getSkillDisplay = (sectName: string): string => {
+	return getSkillsBySect(sectName);
 };
 </script>
