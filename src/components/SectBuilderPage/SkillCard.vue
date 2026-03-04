@@ -103,7 +103,7 @@
 			<br>
 			<span
 				:class="['card-sect', { 'card-sect--empty': !skillCardInfo.sect }]">
-				{{ skillCardInfo.sect ? skillCardInfo.sect : '点击选择' }}
+				{{ displaySkillName || '点击选择' }}
 			</span>
 		</div>
 	</div>
@@ -114,6 +114,8 @@ import type { SkillCardInfo } from '../../domains/builder/types.ts';
 import type { Trigger } from '../../interfaces/Trigger.ts';
 import { useBuilderStore } from '../../domains/builder/index.ts';
 import { CircleClose } from '@element-plus/icons-vue';
+import { computed } from 'vue';
+import { sectList } from '../../domains/config/constants.ts';
 
 const props = defineProps<{ skillCardInfo: SkillCardInfo }>();
 const emit = defineEmits<{ ( event: 'openDialog', value: Trigger ): void }>();
@@ -128,4 +130,27 @@ const handleClick = () => emit( 'openDialog', props.skillCardInfo.triggerName );
 const handleClear = () => {
 	builderStore.updateSkillCardInfo( props.skillCardInfo.triggerName, '' );
 };
+
+/**
+ * 根据流派和触发位计算要显示的技能名
+ * */
+const displaySkillName = computed( () => {
+	if ( !props.skillCardInfo.sect ) {
+		return '';
+	}
+
+	// 查找流派信息
+	const sectInfo = sectList.find( s => s.sect === props.skillCardInfo.sect );
+	if ( !sectInfo ) {
+		return props.skillCardInfo.sect;
+	}
+
+	// 查找当前触发位对应的技能
+	const skill = sectInfo.skill.find(
+		s => s.trigger === props.skillCardInfo.triggerName
+	);
+
+	// 返回技能名，找不到则返回流派名作为回退
+	return skill ? skill.name : props.skillCardInfo.sect;
+} );
 </script>
