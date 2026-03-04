@@ -4,8 +4,6 @@
  * @description 流派、属性、触发位的常量数据
  */
 
-import type { Attribute } from '../../interfaces/Attribute.ts';
-import type { Trigger } from '../../interfaces/Trigger.ts';
 import type { SectInfo, SectConfigMap, AttributeList, TriggerList } from './types.ts';
 
 /**
