@@ -5,7 +5,7 @@
  */
 
 import type { Attribute } from '../../interfaces/Attribute.ts';
-import type { SectValue } from '../../interfaces/SectValue.ts';
+import type { SectValue } from './types.ts';
 import { sectList, sectConfig } from './constants.ts';
 
 /**
