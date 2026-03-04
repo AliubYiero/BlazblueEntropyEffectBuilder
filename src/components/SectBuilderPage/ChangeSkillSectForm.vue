@@ -192,18 +192,19 @@
 							<div class="skill-name">{{ skill.name }}</div>
 							<div class="skill-sects">
 								<el-tag
-									:class="['sect-tag', 'sect-tag--main', { 'is-selected': formData.sect === skill.mainSect }]"
-									size="small"
-									@click="selectSect(skill.mainSect)"
-								>
-									<span
-										:class="['element-dot', `element-dot--${styleMapper[skill.mainAttribute]}`]"></span>
-									{{ skill.mainSect }}
-								</el-tag>
-								<el-tag
+																:class="['sect-tag', 'sect-tag--main', { 'is-selected': formData.sect === skill.mainSect }]"
+																:disabled="!isSectAvailableForTrigger(skill.mainSect)"
+																size="small"
+																@click="selectSect(skill.mainSect, skill)"
+															>
+																<span
+																	:class="['element-dot', `element-dot--${styleMapper[skill.mainAttribute]}`]"></span>
+																{{ skill.mainSect }}
+															</el-tag>								<el-tag
 									:class="['sect-tag', 'sect-tag--second', { 'is-selected': formData.sect === skill.secondSect }]"
+									:disabled="!isSectAvailableForTrigger(skill.secondSect)"
 									size="small"
-									@click="selectSect(skill.secondSect)"
+									@click="selectSect(skill.secondSect, skill)"
 								>
 									<span
 										:class="['element-dot', `element-dot--${styleMapper[skill.secondAttribute]}`]"></span>
@@ -324,7 +325,16 @@ const isSectAvailableForTrigger = ( sect: SectValue ): boolean => {
 	return validTriggers.includes( props.triggerName );
 };
 
-const selectSect = ( sect: SectValue ) => {
+/**
+ * 选择流派
+ * @param sect - 流派名称
+ * @param skill - 所属双重策略信息（用于检查可用性）
+ * */
+const selectSect = ( sect: SectValue, skill: SkillInfo ) => {
+	// 检查流派是否支持当前触发位
+	if ( !isSectAvailableForTrigger( sect ) ) {
+		return;
+	}
 	formData.sect = sect;
 };
 
