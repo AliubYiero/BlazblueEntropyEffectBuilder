@@ -17,13 +17,13 @@
 	font-family: var(--font-chinese);
 	font-size: 14px;
 	font-weight: 600;
-	color: hsl(var(--foreground));
+	color: var(--foreground);
 }
 
 .section-count {
 	font-family: var(--font-chinese);
 	font-size: 12px;
-	color: hsl(var(--muted-foreground));
+	color: var(--muted-foreground);
 }
 
 .activated-section {
@@ -47,9 +47,9 @@
 	grid-column: 1 / -1;
 	text-align: center;
 	padding: 32px;
-	border: 1px dashed hsl(var(--border));
+	border: 1px dashed var(--border);
 	border-radius: var(--radius);
-	color: hsl(var(--muted-foreground));
+	color: var(--muted-foreground);
 }
 
 .builder-section {
