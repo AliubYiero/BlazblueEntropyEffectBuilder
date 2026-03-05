@@ -1,26 +1,49 @@
 # UI Redesign v2 Implementation Plan
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
+>
+*
+*For
+Claude:
+** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
-**Goal:** 根据 design-v2.html 重新设计UI，优化顶部导航为一级分段控制器样式，优化流派配置对话框的视觉层次和交互，整体页面更加紧凑
+*
+*Goal:
+** 根据 design-v2.html 重新设计UI，优化顶部导航为一级分段控制器样式，优化流派配置对话框的视觉层次和交互，整体页面更加紧凑
 
-**Architecture:** 
+*
+*Architecture:
+**
+
 1. 修改 PageHeader 组件，将 el-menu 替换为自定义分段控制器导航
 2. 重写 ChangeSkillSectForm 组件，采用玻璃拟态设计，优化属性选择器和流派网格布局
 3. 调整全局样式变量和页面间距，使布局更紧凑
 
-**Tech Stack:** Vue 3 + Element Plus + SCSS
+*
+*Tech
+Stack:
+** Vue 3 + Element Plus + SCSS
 
 ---
 
 ## Reference Design
 
-设计文档位置: `docs/ui/design-v2.html`
+设计文档位置:
+`docs/ui/design-v2.html`
 
 关键设计变更:
-- **顶部导航**: 高度从 64px 减少到 52px，使用分段控制器样式（圆角胶囊背景+渐变激活状态）
-- **对话框**: 玻璃拟态背景，章节标题使用装饰条+大写字母样式，属性选择器7列网格，流派3列网格
-- **紧凑布局**: 卡片内边距从 16px 减少到 12px，页面边距减少，字体大小微调
+
+-
+*
+*顶部导航
+**: 高度从 64px 减少到 52px，使用分段控制器样式（圆角胶囊背景+渐变激活状态）
+-
+*
+*对话框
+**: 玻璃拟态背景，章节标题使用装饰条+大写字母样式，属性选择器7列网格，流派3列网格
+-
+*
+*紧凑布局
+**: 卡片内边距从 16px 减少到 12px，页面边距减少，字体大小微调
 
 ---
 
@@ -36,15 +59,26 @@ pnpm dev
 
 ## Task 1: 更新全局CSS变量 (App.vue)
 
-**Files:**
-- Modify: `src/App.vue:1-100`
+*
+*Files:
+**
 
-**变更说明:**
+- Modify:
+  `src/App.vue:1-100`
+
+*
+*变更说明:
+**
 添加新的CSS变量支持玻璃拟态设计，保持原有变量兼容
 
-**Step 1: 添加新的深色主题变量**
+*
+*Step
+1:
+添加新的深色主题变量
+**
 
-在 `:root` 中添加新的设计系统变量:
+在
+`:root` 中添加新的设计系统变量:
 
 ```scss
 :root {
@@ -75,11 +109,20 @@ pnpm dev
 }
 ```
 
-**Step 2: 验证CSS变量生效**
+*
+*Step
+2:
+验证CSS变量生效
+**
 
-在浏览器 DevTools 中检查 `:root` 是否包含新变量
+在浏览器 DevTools 中检查
+`:root` 是否包含新变量
 
-**Step 3: Commit**
+*
+*Step
+3:
+Commit
+**
 
 ```bash
 git add src/App.vue
@@ -90,13 +133,23 @@ git commit -m "feat: add dark theme CSS variables for glass morphism design"
 
 ## Task 2: 重构顶部导航组件 (PageHeader.vue)
 
-**Files:**
-- Modify: `src/components/Public/PageHeader.vue`
+*
+*Files:
+**
 
-**变更说明:**
+- Modify:
+  `src/components/Public/PageHeader.vue`
+
+*
+*变更说明:
+**
 将 el-menu 替换为自定义分段控制器导航，高度从 64px 减少到 52px
 
-**Step 1: 完整替换组件代码**
+*
+*Step
+1:
+完整替换组件代码
+**
 
 ```vue
 <style lang="scss" scoped>
@@ -234,15 +287,24 @@ const isActive = (path: string) => {
 </script>
 ```
 
-**Step 2: 验证导航渲染**
+*
+*Step
+2:
+验证导航渲染
+**
 
 运行开发服务器，检查:
+
 1. 导航高度为 52px
 2. 分段控制器样式正确（圆角胶囊背景）
 3. 激活状态有渐变背景
 4. 切换页面时激活状态正确更新
 
-**Step 3: Commit**
+*
+*Step
+3:
+Commit
+**
 
 ```bash
 git add src/components/Public/PageHeader.vue
@@ -253,13 +315,25 @@ git commit -m "feat: redesign header with segmented control navigation"
 
 ## Task 3: 更新主布局样式 (App.vue)
 
-**Files:**
-- Modify: `src/App.vue:80-120`
+*
+*Files:
+**
 
-**变更说明:**
+- Modify:
+  `src/App.vue:80-120`
+
+*
+*变更说明:
+**
 调整主内容区域的上边距，从 64px+24px 减少到 52px+16px
 
-**Step 1: 修改 main-content 样式**
+*
+*Step
+1:
+修改
+main-content
+样式
+**
 
 ```scss
 .main-content {
@@ -271,11 +345,19 @@ git commit -m "feat: redesign header with segmented control navigation"
 }
 ```
 
-**Step 2: 验证布局**
+*
+*Step
+2:
+验证布局
+**
 
 检查页面内容是否与顶部导航有合适的间距（约 68px）
 
-**Step 3: Commit**
+*
+*Step
+3:
+Commit
+**
 
 ```bash
 git add src/App.vue
@@ -286,13 +368,23 @@ git commit -m "style: reduce main content top padding for compact layout"
 
 ## Task 4: 重构流派配置对话框 (ChangeSkillSectForm.vue)
 
-**Files:**
-- Modify: `src/components/SectBuilderPage/ChangeSkillSectForm.vue`
+*
+*Files:
+**
 
-**变更说明:**
+- Modify:
+  `src/components/SectBuilderPage/ChangeSkillSectForm.vue`
+
+*
+*变更说明:
+**
 完全重写样式，采用玻璃拟态设计，属性选择器使用7列网格，流派使用3列网格
 
-**Step 1: 完整替换组件代码**
+*
+*Step
+1:
+完整替换组件代码
+**
 
 ```vue
 <style lang="scss" scoped>
@@ -702,7 +794,13 @@ watch(() => formData.attribute, () => {
 </script>
 ```
 
-**Step 2: 更新 SkillCard.vue 中的对话框样式**
+*
+*Step
+2:
+更新
+SkillCard.vue
+中的对话框样式
+**
 
 修改 SkillCard.vue 中的 el-dialog，添加自定义类名:
 
@@ -717,19 +815,28 @@ watch(() => formData.attribute, () => {
 >
 ```
 
-**Step 3: 验证对话框样式**
+*
+*Step
+3:
+验证对话框样式
+**
 
 检查:
+
 1. 属性选择器是7列网格，每个属性有正确的渐变背景
 2. 流派网格是3列，样式符合设计
 3. 章节标题有装饰条和大写字母样式
 4. 按钮有渐变背景
 
-**Step 4: Commit**
+*
+*Step
+4:
+Commit
+**
 
 ```bash
 git add src/components/SectBuilderPage/ChangeSkillSectForm.vue
-git add src/components/SectBuilderPage/SkillCard.vue
+git add src/components/SectBuilderPage/SelectSkillCard.vue
 git commit -m "feat: redesign ChangeSkillSectForm with glass morphism and compact grid layout"
 ```
 
@@ -737,15 +844,27 @@ git commit -m "feat: redesign ChangeSkillSectForm with glass morphism and compac
 
 ## Task 5: 更新对话框全局样式 (App.vue)
 
-**Files:**
-- Modify: `src/App.vue:100-200`
+*
+*Files:
+**
 
-**变更说明:**
+- Modify:
+  `src/App.vue:100-200`
+
+*
+*变更说明:
+**
 添加 Element Plus 对话框的自定义样式，实现玻璃拟态效果
 
-**Step 1: 添加对话框覆盖样式**
+*
+*Step
+1:
+添加对话框覆盖样式
+**
 
-在 `App.vue` 的 `<style lang="scss">` 部分添加:
+在
+`App.vue` 的
+`<style lang="scss">` 部分添加:
 
 ```scss
 // Element Plus Dialog 自定义样式
@@ -814,14 +933,23 @@ git commit -m "feat: redesign ChangeSkillSectForm with glass morphism and compac
 }
 ```
 
-**Step 2: 验证对话框外观**
+*
+*Step
+2:
+验证对话框外观
+**
 
 打开流派配置对话框，检查:
+
 1. 对话框有深色半透明背景
 2. 边框和圆角符合设计
 3. 遮罩层有模糊效果
 
-**Step 3: Commit**
+*
+*Step
+3:
+Commit
+**
 
 ```bash
 git add src/App.vue
@@ -832,13 +960,23 @@ git commit -m "style: add custom dialog styles for glass morphism effect"
 
 ## Task 6: 优化流派构建页面布局 (SectBuilderPage.vue)
 
-**Files:**
-- Modify: `src/views/SectBuilderPage.vue`
+*
+*Files:
+**
 
-**变更说明:**
+- Modify:
+  `src/views/SectBuilderPage.vue`
+
+*
+*变更说明:
+**
 调整页面间距，使其更紧凑
 
-**Step 1: 更新页面样式**
+*
+*Step
+1:
+更新页面样式
+**
 
 ```vue
 <style lang="scss" scoped>
@@ -939,15 +1077,24 @@ git commit -m "style: add custom dialog styles for glass morphism effect"
 </template>
 ```
 
-**Step 2: 验证页面布局**
+*
+*Step
+2:
+验证页面布局
+**
 
 检查:
+
 1. 页面标题更紧凑
 2. 卡片间距减少到 10px
 3. 卡片内边距减少到 12px
 4. 悬停效果正确
 
-**Step 3: Commit**
+*
+*Step
+3:
+Commit
+**
 
 ```bash
 git add src/views/SectBuilderPage.vue
@@ -958,13 +1105,23 @@ git commit -m "style: optimize SectBuilderPage layout for compact design"
 
 ## Task 7: 优化双重词条筛选页面 (SearchDoublePage.vue)
 
-**Files:**
-- Modify: `src/views/SearchDoublePage.vue`
+*
+*Files:
+**
 
-**变更说明:**
+- Modify:
+  `src/views/SearchDoublePage.vue`
+
+*
+*变更说明:
+**
 调整页面间距，与构建页保持一致
 
-**Step 1: 更新页面样式**
+*
+*Step
+1:
+更新页面样式
+**
 
 ```vue
 <style lang="scss" scoped>
@@ -1003,7 +1160,11 @@ git commit -m "style: optimize SectBuilderPage layout for compact design"
 </template>
 ```
 
-**Step 2: Commit**
+*
+*Step
+2:
+Commit
+**
 
 ```bash
 git add src/views/SearchDoublePage.vue
@@ -1014,7 +1175,11 @@ git commit -m "style: optimize SearchDoublePage layout for compact design"
 
 ## Task 8: 运行测试和构建验证
 
-**Step 1: 运行类型检查**
+*
+*Step
+1:
+运行类型检查
+**
 
 ```bash
 pnpm vue-tsc --noEmit
@@ -1022,7 +1187,11 @@ pnpm vue-tsc --noEmit
 
 Expected: 无类型错误
 
-**Step 2: 运行构建**
+*
+*Step
+2:
+运行构建
+**
 
 ```bash
 pnpm build
@@ -1030,7 +1199,11 @@ pnpm build
 
 Expected: 构建成功，无错误
 
-**Step 3: 最终提交**
+*
+*Step
+3:
+最终提交
+**
 
 ```bash
 git add .
@@ -1043,13 +1216,37 @@ git commit -m "feat: complete UI redesign v2 - compact layout, glass morphism, s
 
 此实施计划包含8个任务，将 design-v2.html 的设计变更应用到代码中:
 
-1. **全局变量** - 添加深色主题和玻璃拟态CSS变量
-2. **顶部导航** - 重构为分段控制器样式，高度52px
-3. **主布局** - 调整内容区域上边距
-4. **配置对话框** - 完全重写，7列属性选择器+3列流派网格
-5. **对话框样式** - 全局玻璃拟态对话框样式
-6. **构建页面** - 紧凑布局，减少间距
-7. **筛选页面** - 紧凑布局，与构建页一致
-8. **验证** - 类型检查和构建验证
+1.
+*
+*全局变量
+** - 添加深色主题和玻璃拟态CSS变量
+2.
+*
+*顶部导航
+** - 重构为分段控制器样式，高度52px
+3.
+*
+*主布局
+** - 调整内容区域上边距
+4.
+*
+*配置对话框
+** - 完全重写，7列属性选择器+3列流派网格
+5.
+*
+*对话框样式
+** - 全局玻璃拟态对话框样式
+6.
+*
+*构建页面
+** - 紧凑布局，减少间距
+7.
+*
+*筛选页面
+** - 紧凑布局，与构建页一致
+8.
+*
+*验证
+** - 类型检查和构建验证
 
 所有变更保持与原有功能的兼容性，仅修改样式和布局。

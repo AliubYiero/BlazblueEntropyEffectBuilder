@@ -1,21 +1,43 @@
 # UI 主题重构实施计划
 
-> **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
+>
+*
+*For
+Claude:
+** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
-**Goal:** 将赛博朋克风格 UI 重构为 shadcn 风格，并添加浅色/深色模式切换功能
+*
+*Goal:
+** 将赛博朋克风格 UI 重构为 shadcn 风格，并添加浅色/深色模式切换功能
 
-**Architecture:** 使用 CSS 变量定义两套主题（浅色/深色），通过 Vue Composition API 管理主题状态，localStorage 持久化用户偏好
+*
+*Architecture:
+** 使用 CSS 变量定义两套主题（浅色/深色），通过 Vue Composition API 管理主题状态，localStorage 持久化用户偏好
 
-**Tech Stack:** Vue 3 Composition API, SCSS, CSS Variables, localStorage
+*
+*Tech
+Stack:
+** Vue 3 Composition API, SCSS, CSS Variables, localStorage
 
 ---
 
 ## Task 1: 创建主题管理 Composable
 
-**Files:**
-- Create: `src/composables/useTheme.ts`
+*
+*Files:
+**
 
-**Step 1: 创建 composables 目录和 useTheme.ts**
+- Create:
+  `src/composables/useTheme.ts`
+
+*
+*Step
+1:
+创建
+composables
+目录和
+useTheme.ts
+**
 
 ```typescript
 // src/composables/useTheme.ts
@@ -108,12 +130,22 @@ export function useTheme() {
 }
 ```
 
-**Step 2: 验证文件创建成功**
+*
+*Step
+2:
+验证文件创建成功
+**
 
-Run: `ls src/composables/`
-Expected: `useTheme.ts` 文件存在
+Run:
+`ls src/composables/`
+Expected:
+`useTheme.ts` 文件存在
 
-**Step 3: Commit**
+*
+*Step
+3:
+Commit
+**
 
 ```bash
 git add src/composables/useTheme.ts
@@ -124,12 +156,25 @@ git commit -m "feat: add useTheme composable for theme management"
 
 ## Task 2: 重构 App.vue CSS 变量为 shadcn 风格
 
-**Files:**
-- Modify: `src/App.vue`
+*
+*Files:
+**
 
-**Step 1: 替换 CSS 变量为 shadcn 风格**
+- Modify:
+  `src/App.vue`
 
-将 `:root` 中的 CSS 变量替换为以下内容：
+*
+*Step
+1:
+替换
+CSS
+变量为
+shadcn
+风格
+**
+
+将
+`:root` 中的 CSS 变量替换为以下内容：
 
 ```scss
 <style lang="scss">
@@ -455,12 +500,21 @@ import PageHeader from './components/Public/PageHeader.vue';
 </script>
 ```
 
-**Step 2: 验证编译成功**
+*
+*Step
+2:
+验证编译成功
+**
 
-Run: `pnpm build`
+Run:
+`pnpm build`
 Expected: 构建成功，无错误
 
-**Step 3: Commit**
+*
+*Step
+3:
+Commit
+**
 
 ```bash
 git add src/App.vue
@@ -471,10 +525,22 @@ git commit -m "refactor: convert CSS variables to shadcn style with light/dark m
 
 ## Task 3: 重构 PageHeader.vue 添加主题切换按钮
 
-**Files:**
-- Modify: `src/components/Public/PageHeader.vue`
+*
+*Files:
+**
 
-**Step 1: 重写 PageHeader.vue 为 shadcn 风格**
+- Modify:
+  `src/components/Public/PageHeader.vue`
+
+*
+*Step
+1:
+重写
+PageHeader.vue
+为
+shadcn
+风格
+**
 
 ```vue
 <style lang="scss" scoped>
@@ -668,12 +734,21 @@ const handleNavigate = (path: string) => {
 </script>
 ```
 
-**Step 2: 验证编译成功**
+*
+*Step
+2:
+验证编译成功
+**
 
-Run: `pnpm build`
+Run:
+`pnpm build`
 Expected: 构建成功，无错误
 
-**Step 3: Commit**
+*
+*Step
+3:
+Commit
+**
 
 ```bash
 git add src/components/Public/PageHeader.vue
@@ -684,10 +759,20 @@ git commit -m "refactor: redesign PageHeader to shadcn style with theme toggle"
 
 ## Task 4: 重构 SearchDoubleEffectForm.vue
 
-**Files:**
-- Modify: `src/components/SearchDoublePage/SearchDoubleEffectForm.vue`
+*
+*Files:
+**
 
-**Step 1: 重写为 shadcn 风格**
+- Modify:
+  `src/components/SearchDoublePage/SearchDoubleEffectForm.vue`
+
+*
+*Step
+1:
+重写为
+shadcn
+风格
+**
 
 ```vue
 <style lang="scss" scoped>
@@ -1057,12 +1142,21 @@ const styleMapper: Record<Attribute, string> = {
 </script>
 ```
 
-**Step 2: 验证编译成功**
+*
+*Step
+2:
+验证编译成功
+**
 
-Run: `pnpm build`
+Run:
+`pnpm build`
 Expected: 构建成功，无错误
 
-**Step 3: Commit**
+*
+*Step
+3:
+Commit
+**
 
 ```bash
 git add src/components/SearchDoublePage/SearchDoubleEffectForm.vue
@@ -1073,291 +1167,378 @@ git commit -m "refactor: redesign SearchDoubleEffectForm to shadcn style"
 
 ## Task 5: 重构 SectBuilderPage.vue 及子组件
 
-**Files:**
-- Modify: `src/views/SectBuilderPage.vue`
-- Modify: `src/components/SectBuilderPage/SkillCard.vue`
-- Modify: `src/components/SectBuilderPage/SelectableSkillCard.vue`
-- Modify: `src/components/SectBuilderPage/ChangeSkillSectForm.vue`
+*
+*Files:
+**
 
-**Step 1: 重写 SectBuilderPage.vue**
+- Modify:
+  `src/views/SectBuilderPage.vue`
+- Modify:
+  `src/components/SectBuilderPage/SkillCard.vue`
+- Modify:
+  `src/components/SectBuilderPage/SelectableSkillCard.vue`
+- Modify:
+  `src/components/SectBuilderPage/ChangeSkillSectForm.vue`
+
+*
+*Step
+1:
+重写
+SectBuilderPage.vue
+**
 
 ```vue
-<style lang="scss" scoped>
-/* ============================================
-   流派构建页 - shadcn 风格
-   ============================================ */
 
-.page-container {
-  min-height: calc(100vh - 60px);
-  padding: 24px;
-  max-width: 1280px;
-  margin: 0 auto;
-}
-
-/* 区域标题 */
-.section-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
-}
-
-.section-title {
-  font-family: var(--font-chinese);
-  font-size: 14px;
-  font-weight: 600;
-  color: hsl(var(--foreground));
-}
-
-.section-count {
-  font-family: var(--font-chinese);
-  font-size: 12px;
-  color: hsl(var(--muted-foreground));
-}
-
-/* 已激活策略区域 */
-.activated-section {
-  margin-bottom: 32px;
-}
-
-.activated-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 12px;
-}
-
-.activated-card {
-  background: hsl(var(--card));
-  border: 1px solid hsl(var(--border));
-  border-radius: var(--radius);
-  padding: 12px;
-}
-
-.activated-card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-}
-
-.activated-name {
-  font-family: var(--font-chinese);
-  font-size: 13px;
-  font-weight: 600;
-  color: hsl(var(--foreground));
-}
-
-.activated-triggers {
-  display: flex;
-  gap: 4px;
-}
-
-.activated-trigger-tag {
-  font-family: var(--font-chinese);
-  font-size: 10px;
-  padding: 2px 6px;
-  border-radius: calc(var(--radius) - 4px);
-  background: hsl-a(secondary, 1);
-  color: hsl(var(--secondary-foreground));
-}
-
-.activated-sects {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-  margin-bottom: 6px;
-}
-
-.activated-sect {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-family: var(--font-chinese);
-  font-size: 12px;
-  color: hsl(var(--foreground));
-}
-
-.activated-connector {
-  color: hsl(var(--muted-foreground));
-  font-size: 10px;
-}
-
-.activated-desc {
-  font-family: var(--font-chinese);
-  font-size: 12px;
-  color: hsl(var(--muted-foreground));
-}
-
-/* 继承筛选 */
-.inherit-filters {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-bottom: 12px;
-}
-
-/* 空状态 */
-.empty-activated {
-  grid-column: 1 / -1;
-  text-align: center;
-  padding: 32px;
-  border: 1px dashed hsl(var(--border));
-  border-radius: var(--radius);
-  color: hsl(var(--muted-foreground));
-}
-
-/* 构建区域 */
-.builder-section {
-  margin-top: 24px;
-}
-
-.builder-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.slot-row {
-  display: flex;
-  gap: 16px;
-  align-items: stretch;
-}
-
-/* 响应式 */
-@media (max-width: 768px) {
-  .page-container {
-    padding: 16px;
-  }
-  
-  .slot-row {
-    flex-direction: column;
-  }
-}
+<style
+	lang="scss"
+	scoped>
+	/* ============================================
+       流派构建页 - shadcn 风格
+       ============================================ */
+	
+	.page-container {
+		min-height: calc(100vh - 60px);
+		padding: 24px;
+		max-width: 1280px;
+		margin: 0 auto;
+	}
+	
+	/* 区域标题 */
+	.section-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin-bottom: 16px;
+	}
+	
+	.section-title {
+		font-family: var(--font-chinese);
+		font-size: 14px;
+		font-weight: 600;
+		color: hsl(var(--foreground));
+	}
+	
+	.section-count {
+		font-family: var(--font-chinese);
+		font-size: 12px;
+		color: hsl(var(--muted-foreground));
+	}
+	
+	/* 已激活策略区域 */
+	.activated-section {
+		margin-bottom: 32px;
+	}
+	
+	.activated-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+		gap: 12px;
+	}
+	
+	.activated-card {
+		background: hsl(var(--card));
+		border: 1px solid hsl(var(--border));
+		border-radius: var(--radius);
+		padding: 12px;
+	}
+	
+	.activated-card-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 8px;
+	}
+	
+	.activated-name {
+		font-family: var(--font-chinese);
+		font-size: 13px;
+		font-weight: 600;
+		color: hsl(var(--foreground));
+	}
+	
+	.activated-triggers {
+		display: flex;
+		gap: 4px;
+	}
+	
+	.activated-trigger-tag {
+		font-family: var(--font-chinese);
+		font-size: 10px;
+		padding: 2px 6px;
+		border-radius: calc(var(--radius) - 4px);
+		background: hsl-a(secondary, 1);
+		color: hsl(var(--secondary-foreground));
+	}
+	
+	.activated-sects {
+		display: flex;
+		gap: 6px;
+		align-items: center;
+		margin-bottom: 6px;
+	}
+	
+	.activated-sect {
+		display: flex;
+		align-items: center;
+		gap: 4px;
+		font-family: var(--font-chinese);
+		font-size: 12px;
+		color: hsl(var(--foreground));
+	}
+	
+	.activated-connector {
+		color: hsl(var(--muted-foreground));
+		font-size: 10px;
+	}
+	
+	.activated-desc {
+		font-family: var(--font-chinese);
+		font-size: 12px;
+		color: hsl(var(--muted-foreground));
+	}
+	
+	/* 继承筛选 */
+	.inherit-filters {
+		display: flex;
+		gap: 8px;
+		flex-wrap: wrap;
+		margin-bottom: 12px;
+	}
+	
+	/* 空状态 */
+	.empty-activated {
+		grid-column: 1 / -1;
+		text-align: center;
+		padding: 32px;
+		border: 1px dashed hsl(var(--border));
+		border-radius: var(--radius);
+		color: hsl(var(--muted-foreground));
+	}
+	
+	/* 构建区域 */
+	.builder-section {
+		margin-top: 24px;
+	}
+	
+	.builder-grid {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+	}
+	
+	.slot-row {
+		display: flex;
+		gap: 16px;
+		align-items: stretch;
+	}
+	
+	/* 响应式 */
+	@media (max-width: 768px) {
+		.page-container {
+			padding: 16px;
+		}
+		
+		.slot-row {
+			flex-direction: column;
+		}
+	}
 </style>
 
 <template>
-  <div class="page-container">
-    <!-- 已激活的双重策略 -->
-    <section class="activated-section">
-      <div class="section-header">
-        <h2 class="section-title">已激活策略</h2>
-        <span class="section-count">共 {{ activatedSkills.length }} 条</span>
-      </div>
-      
-      <div class="inherit-filters">
-        <el-checkbox 
-          v-for="trigger in triggerList" 
-          :key="trigger"
-          :model-value="isInheritChecked(trigger)"
-          @change="(val: boolean) => toggleInherit(trigger, val)"
-          :label="trigger"
-        />
-      </div>
-      
-      <div class="activated-grid">
-        <div v-if="activatedSkills.length === 0" class="empty-activated">
-          选择流派以激活双重策略
-        </div>
-        
-        <div v-for="skill in activatedSkills" :key="skill.name" class="activated-card">
-          <div class="activated-card-header">
-            <span class="activated-name">{{ skill.name }}</span>
-            <div class="activated-triggers">
-              <span v-for="trigger in skill.trigger" :key="trigger" class="activated-trigger-tag">{{ trigger }}</span>
-            </div>
-          </div>
-          <div class="activated-sects">
-            <span class="activated-sect">
-              <span :class="['element-dot', `element-dot--${styleMapper[skill.mainAttribute]}`]"></span>
+	<div
+		class="page-container">
+		<!-- 已激活的双重策略 -->
+		<section
+			class="activated-section">
+			<div
+				class="section-header">
+				<h2 class="section-title">
+					已激活策略</h2>
+				<span
+					class="section-count">共 {{ activatedSkills.length }} 条</span>
+			</div>
+			
+			<div
+				class="inherit-filters">
+				<el-checkbox
+					v-for="trigger in triggerList"
+					:key="trigger"
+					:model-value="isInheritChecked(trigger)"
+					@change="(val: boolean) => toggleInherit(trigger, val)"
+					:label="trigger"
+				/>
+			</div>
+			
+			<div
+				class="activated-grid">
+				<div
+					v-if="activatedSkills.length === 0"
+					class="empty-activated">
+					选择流派以激活双重策略
+				</div>
+				
+				<div
+					v-for="skill in activatedSkills"
+					:key="skill.name"
+					class="activated-card">
+					<div
+						class="activated-card-header">
+						<span
+							class="activated-name">{{ skill.name }}</span>
+						<div
+							class="activated-triggers">
+							<span
+								v-for="trigger in skill.trigger"
+								:key="trigger"
+								class="activated-trigger-tag">{{ trigger }}</span>
+						</div>
+					</div>
+					<div
+						class="activated-sects">
+            <span
+	            class="activated-sect">
+              <span
+	              :class="['element-dot', `element-dot--${styleMapper[skill.mainAttribute]}`]"></span>
               {{ skill.mainSect }}
             </span>
-            <span class="activated-connector">+</span>
-            <span class="activated-sect">
-              <span :class="['element-dot', `element-dot--${styleMapper[skill.secondAttribute]}`]"></span>
+						<span
+							class="activated-connector">+</span>
+						<span
+							class="activated-sect">
+              <span
+	              :class="['element-dot', `element-dot--${styleMapper[skill.secondAttribute]}`]"></span>
               {{ skill.secondSect }}
             </span>
-          </div>
-          <p class="activated-desc">{{ skill.description }}</p>
-        </div>
-      </div>
-    </section>
-    
-    <!-- 技能槽位构建 -->
-    <section class="builder-section">
-      <div class="section-header">
-        <h2 class="section-title">流派配置</h2>
-      </div>
-      
-      <div class="builder-grid">
-        <div v-for="skillCard in skillCardInfoList" :key="skillCard.triggerName" class="slot-row">
-          <skill-card :skillCardInfo="skillCard" @open-dialog="openDialog"/>
-          <selectable-skill-card :skillCardInfo="skillCard"/>
-        </div>
-      </div>
-    </section>
-    
-    <el-dialog v-model="isShowDialog" title="修改技能流派" width="400px">
-      <change-skill-sect-form :trigger-name="currentTrigger" @close-dialog="closeDialog"/>
-    </el-dialog>
-  </div>
+					</div>
+					<p class="activated-desc">
+						{{
+						skill.description
+						}}</p>
+				</div>
+			</div>
+		</section>
+		
+		<!-- 技能槽位构建 -->
+		<section
+			class="builder-section">
+			<div
+				class="section-header">
+				<h2 class="section-title">
+					流派配置</h2>
+			</div>
+			
+			<div
+				class="builder-grid">
+				<div
+					v-for="skillCard in skillCardInfoList"
+					:key="skillCard.triggerName"
+					class="slot-row">
+					<skill-card
+						:skillCardInfo="skillCard"
+						@open-dialog="openDialog"/>
+					<selectable-skill-card
+						:skillCardInfo="skillCard"/>
+				</div>
+			</div>
+		</section>
+		
+		<el-dialog
+			v-model="isShowDialog"
+			title="修改技能流派"
+			width="400px">
+			<change-skill-sect-form
+				:trigger-name="currentTrigger"
+				@close-dialog="closeDialog"/>
+		</el-dialog>
+	</div>
 </template>
 
-<script lang="ts" setup>
-import { computed, ref } from 'vue';
-import SkillCard from '../components/SectBuilderPage/SkillCard.vue';
-import SelectableSkillCard from '../components/SectBuilderPage/SelectableSkillCard.vue';
-import ChangeSkillSectForm from '../components/SectBuilderPage/ChangeSkillSectForm.vue';
-import { useSkillCardInfoStore } from '../store/useSkillCardInfoStore.ts';
-import { useSkillInfoStore } from '../store/useSkillInfoStore.ts';
-import { SkillCardInfoTuple } from '../interfaces/SkillCardInfoTuple.ts';
-import { SkillInfoInterface } from '../interfaces/SkillInfoInterface.ts';
-import { Trigger } from '../interfaces/Trigger.ts';
-import { Attribute } from '../interfaces/Attribute.ts';
-
-const skillCardInfoStore = useSkillCardInfoStore();
-const skillInfoStore = useSkillInfoStore();
-
-const skillCardInfoList = computed<SkillCardInfoTuple>(() => skillCardInfoStore.skillCardInfoList);
-const triggerList: Trigger[] = ['普攻', '技能', '冲刺', '传承', '召唤'];
-
-const isInheritChecked = (trigger: Trigger) => {
-  const card = skillCardInfoStore.skillCardInfoList.find(c => c.triggerName === trigger);
-  return card?.inherit || false;
-};
-
-const toggleInherit = (trigger: Trigger, value: boolean) => {
-  skillCardInfoStore.updateSkillCardInfoInherit(trigger, value);
-};
-
-const activatedSkills = computed<SkillInfoInterface[]>(() => {
-  const sectList = skillCardInfoStore.skillCardInfoList
-    .filter(card => card.sect)
-    .map(card => card.sect);
-  return skillInfoStore.skillInfoList.filter(skill =>
-    sectList.includes(skill.mainSect) && sectList.includes(skill.secondSect)
-  );
-});
-
-const styleMapper: Record<Attribute, string> = {
-  '火': 'fire', '冰': 'ice', '电': 'thunder',
-  '毒': 'poison', '暗': 'dark', '光': 'light', '刃': 'blade',
-};
-
-const isShowDialog = ref(false);
-const currentTrigger = ref<Trigger>('普攻');
-
-const openDialog = (trigger: Trigger) => {
-  currentTrigger.value = trigger;
-  isShowDialog.value = true;
-};
-
-const closeDialog = () => {
-  isShowDialog.value = false;
-};
+<script
+	lang="ts"
+	setup>
+	import {
+		computed,
+		ref
+	} from 'vue';
+	import SkillCard
+		from '../components/SectBuilderPage/SelectSkillCard.vue';
+	import SelectableSkillCard
+		from '../components/SectBuilderPage/SelectableSkillCard.vue';
+	import ChangeSkillSectForm
+		from '../components/SectBuilderPage/ChangeSkillSectForm.vue';
+	import {
+		useSkillCardInfoStore
+	} from '../store/useSkillCardInfoStore.ts';
+	import {
+		useSkillInfoStore
+	} from '../store/useSkillInfoStore.ts';
+	import {
+		SkillCardInfoTuple
+	} from '../interfaces/SkillCardInfoTuple.ts';
+	import {
+		SkillInfoInterface
+	} from '../interfaces/SkillInfoInterface.ts';
+	import {
+		Trigger
+	} from '../interfaces/Trigger.ts';
+	import {
+		Attribute
+	} from '../interfaces/Attribute.ts';
+	
+	const skillCardInfoStore = useSkillCardInfoStore();
+	const skillInfoStore = useSkillInfoStore();
+	
+	const skillCardInfoList = computed<SkillCardInfoTuple>( () => skillCardInfoStore.skillCardInfoList );
+	const triggerList: Trigger[] = [ '普攻', '技能', '冲刺', '传承', '召唤' ];
+	
+	const isInheritChecked = ( trigger: Trigger ) => {
+		const card = skillCardInfoStore.skillCardInfoList.find( c => c.triggerName === trigger );
+		return card?.inherit || false;
+	};
+	
+	const toggleInherit = ( trigger: Trigger, value: boolean ) => {
+		skillCardInfoStore.updateSkillCardInfoInherit( trigger, value );
+	};
+	
+	const activatedSkills = computed<SkillInfoInterface[]>( () => {
+		const sectList = skillCardInfoStore.skillCardInfoList
+			.filter( card => card.sect )
+			.map( card => card.sect );
+		return skillInfoStore.skillInfoList.filter( skill =>
+			sectList.includes( skill.mainSect ) && sectList.includes( skill.secondSect )
+		);
+	} );
+	
+	const styleMapper: Record<Attribute, string> = {
+		'火': 'fire',
+		'冰': 'ice',
+		'电': 'thunder',
+		'毒': 'poison',
+		'暗': 'dark',
+		'光': 'light',
+		'刃': 'blade',
+	};
+	
+	const isShowDialog = ref( false );
+	const currentTrigger = ref<Trigger>( '普攻' );
+	
+	const openDialog = ( trigger: Trigger ) => {
+		currentTrigger.value = trigger;
+		isShowDialog.value = true;
+	};
+	
+	const closeDialog = () => {
+		isShowDialog.value = false;
+	};
 </script>
 ```
 
-**Step 2: 重写 SkillCard.vue**
+*
+*Step
+2:
+重写
+SkillCard.vue
+**
 
 ```vue
 <style lang="scss" scoped>
@@ -1460,7 +1641,12 @@ const handleClick = () => emit('openDialog', props.skillCardInfo.triggerName);
 </script>
 ```
 
-**Step 3: 重写 SelectableSkillCard.vue**
+*
+*Step
+3:
+重写
+SelectableSkillCard.vue
+**
 
 ```vue
 <style lang="scss" scoped>
@@ -1599,7 +1785,12 @@ const styleMapper: Record<Attribute, string> = {
 </script>
 ```
 
-**Step 4: 重写 ChangeSkillSectForm.vue**
+*
+*Step
+4:
+重写
+ChangeSkillSectForm.vue
+**
 
 ```vue
 <style lang="scss" scoped>
@@ -1810,12 +2001,21 @@ const styleMapper: Record<Attribute, string> = {
 </script>
 ```
 
-**Step 5: 验证编译成功**
+*
+*Step
+5:
+验证编译成功
+**
 
-Run: `pnpm build`
+Run:
+`pnpm build`
 Expected: 构建成功，无错误
 
-**Step 6: Commit**
+*
+*Step
+6:
+Commit
+**
 
 ```bash
 git add src/views/SectBuilderPage.vue src/components/SectBuilderPage/
@@ -1826,22 +2026,41 @@ git commit -m "refactor: redesign SectBuilderPage and child components to shadcn
 
 ## Task 6: 前端测试验证
 
-**Files:**
-- Test: `http://localhost:5174/`
+*
+*Files:
+**
 
-**Step 1: 启动开发服务器**
+- Test:
+  `http://localhost:5174/`
 
-Run: `pnpm dev`
+*
+*Step
+1:
+启动开发服务器
+**
+
+Run:
+`pnpm dev`
 Expected: 服务器启动成功
 
-**Step 2: 使用 frontend-tester 验证**
+*
+*Step
+2:
+使用
+frontend-tester
+验证
+**
 
 - 访问首页，验证浅色模式显示正确
 - 点击主题切换按钮，验证深色模式切换正常
 - 刷新页面，验证主题持久化
 - 导航到流派构建页，验证功能正常
 
-**Step 3: Commit**
+*
+*Step
+3:
+Commit
+**
 
 ```bash
 git add -A

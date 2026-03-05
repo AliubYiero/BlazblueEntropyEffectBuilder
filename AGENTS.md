@@ -58,15 +58,18 @@ pnpm preview
 src/
 ├── components/           # 组件目录
 │   ├── Public/          # 公共组件
-│   │   └── PageHeader.vue       # 页面导航头部（含主题切换）
+│   │   ├── PageHeader.vue       # 页面导航头部（含主题切换）
+│   │   └── SkillCard.vue        # 技能卡片组件（展示技能位信息）
 │   ├── SearchDoublePage/        # 双重词条页组件
 │   │   └── SearchDoubleEffectForm.vue  # 筛选表单与结果展示
 │   └── SectBuilderPage/         # 流派构建页组件
 │       ├── ChangeSkillSectForm.vue   # 修改流派对话框
 │       ├── SelectableSkillCard.vue   # 可选择技能卡片
-│       └── SkillCard.vue             # 技能位卡片
+│       └── SelectSkillCard.vue       # 技能选择卡片
 ├── composables/         # 组合式函数
 │   └── useTheme.ts              # 主题管理（深色/浅色模式）
+├── config/              # 配置目录（向后兼容保留）
+│   └── sectConfig.ts            # 流派配置映射
 ├── core/                # 核心层
 │   └── data/                    # 数据基础设施
 │       ├── index.ts             # 统一导出
@@ -93,24 +96,28 @@ src/
 │       ├── repository.ts        # 技能数据仓库
 │       └── types.ts             # 技能类型
 ├── interfaces/          # TypeScript 类型定义
-│   ├── Attribute.ts     # 属性类型：火/冰/电/毒/暗/光/刃
-│   ├── Sect.ts          # 流派接口
-│   ├── SectValue.ts     # 流派值类型
-│   ├── SkillInfoInterface.ts  # 双重技能信息接口
-│   ├── SkillCardInfo.ts # 技能位信息接口
-│   ├── Trigger.ts       # 触发位类型
-│   └── ...
+│   ├── Attribute.ts             # 属性类型：火/冰/电/毒/暗/光/刃
+│   ├── DoubleSkillName.ts       # 双重技能名称类型
+│   ├── Nullable.ts              # 可空类型工具
+│   ├── Sect.ts                  # 流派接口
+│   ├── SectParmaInterface.ts    # 流派参数接口
+│   ├── SectValue.ts             # 流派值类型
+│   ├── SkillCardInfo.ts         # 技能位信息接口
+│   ├── SkillCardInfoTuple.ts    # 技能位信息元组类型
+│   ├── SkillInfoInterface.ts    # 双重技能信息接口
+│   └── Trigger.ts               # 触发位类型
 ├── shared/              # 共享工具
 │   └── validation/              # 验证逻辑
 │       ├── index.ts             # 验证导出
 │       └── sect.ts              # 流派验证函数
+├── store/               # 状态目录（已迁移至domains，保留空目录）
 ├── router/
 │   └── index.ts         # 路由配置（Hash模式）
 ├── views/               # 页面视图
 │   ├── SearchDoublePage.vue      # 双重词条筛选页（路径：/）
 │   └── SectBuilderPage.vue       # 流派构建页（路径：/builder）
 ├── data/                # 数据文件目录
-│   └── SkillInfoList.json       # 双重策略数据（73条）
+│   └── DoubleSkillInfoList.json  # 双重策略数据（73条）
 ├── App.vue              # 根组件（shadcn风格UI主题）
 └── main.ts              # 应用入口
 ```
@@ -178,7 +185,7 @@ src/
 ### 数据流架构
 
 ```
-src/data/SkillInfoList.json
+src/data/DoubleSkillInfoList.json
        ↓
 core/data/loader.ts (异步加载 + deepFreeze)
        ↓
@@ -322,6 +329,7 @@ domains/filter   domains/builder
 - 使用 Composition API 组织逻辑
 - 组件命名使用 PascalCase
 - 组件文件放在对应页面目录下
+- 公共组件放在 `components/Public/` 目录
 
 ### 类型定义
 
@@ -373,7 +381,7 @@ domains/filter   domains/builder
 - 36种具体流派
 - 73种双重策略（含触发位、解锁条件、效果描述）
 
-**数据存储**：`src/data/SkillInfoList.json`
+**数据存储**：`src/data/DoubleSkillInfoList.json`
 
 **数据加载**：通过 `core/data/loader.ts` 异步导入并深度冻结
 
@@ -389,6 +397,7 @@ domains/filter   domains/builder
 - [x] 主题切换：实现深色/浅色模式切换
 - [x] 技能提示：添加流派技能列表 Tooltip 提示
 - [x] 架构重构：采用领域驱动设计（DDD）
+- [x] 组件重构：提取 SkillCard 公共组件
 - [ ] 筛选页：添加技能位选择器，能根据对应技能位筛选
 - [ ] 构建页：保存流派配置到本地存储
 
@@ -398,7 +407,7 @@ domains/filter   domains/builder
 
 ### 如何添加新的双重策略？
 
-1. 在 `src/data/SkillInfoList.json` 中添加新条目，格式如下：
+1. 在 `src/data/DoubleSkillInfoList.json` 中添加新条目，格式如下：
 ```json
 {
   "name": "策略名称",
@@ -438,6 +447,20 @@ domains/filter   domains/builder
 
 ## 更新日志
 
+### 2026-03-05
+
+1. **组件重构**
+   - 提取 `SkillCard.vue` 为公共组件，移至 `components/Public/` 目录
+   - 新增 `SelectSkillCard.vue` 组件用于技能选择
+
+2. **CSS变量重构**
+   - 采用 HSL 格式的 CSS 变量系统
+   - 优化主题切换实现
+
+3. **技能卡显示优化**
+   - 技能卡片现在显示流派对应的技能名称
+   - 使用 Tooltip 展示完整技能列表
+
 ### 2026-03-04
 
 1. **架构重构完成**
@@ -445,7 +468,7 @@ domains/filter   domains/builder
    - 新增 `core/data` 核心数据层
    - 新增 `domains` 领域层（builder/filter/skill/config）
    - 新增 `shared/validation` 共享验证逻辑
-   - 移除旧的 `store` 目录，逻辑迁移到领域模块
+   - 移除旧的 `store` 目录内容，逻辑迁移到领域模块
 
 2. **数据管理优化**
    - 使用 `deepFreeze()` 深度冻结数据
@@ -472,4 +495,4 @@ domains/filter   domains/builder
 
 ---
 
-*文档更新时间: 2026-03-04*
+*文档更新时间: 2026-03-05*
