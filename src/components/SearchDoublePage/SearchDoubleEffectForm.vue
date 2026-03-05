@@ -11,8 +11,8 @@
 }
 
 .filter-card {
-	background: hsl(var(--card));
-	border: 1px solid hsl(var(--border));
+	background: var(--card);
+	border: 1px solid var(--border);
 	border-radius: var(--radius);
 	padding: 24px;
 }
@@ -21,7 +21,7 @@
 	font-family: var(--font-chinese);
 	font-size: 14px;
 	font-weight: 600;
-	color: hsl(var(--foreground));
+	color: var(--foreground);
 	margin-bottom: 16px;
 }
 
@@ -44,12 +44,12 @@
 	font-family: var(--font-chinese);
 	font-size: 12px;
 	font-weight: 500;
-	color: hsl(var(--muted-foreground));
+	color: var(--muted-foreground);
 }
 
 .checkbox-section {
 	padding-top: 16px;
-	border-top: 1px solid hsl(var(--border));
+	border-top: 1px solid var(--border);
 }
 
 .checkbox-row {
@@ -66,7 +66,7 @@
 	font-family: var(--font-chinese);
 	font-size: 12px;
 	font-weight: 500;
-	color: hsl(var(--muted-foreground));
+	color: var(--muted-foreground);
 	min-width: 40px;
 }
 
@@ -77,11 +77,11 @@
 .results-count {
 	font-family: var(--font-chinese);
 	font-size: 14px;
-	color: hsl(var(--muted-foreground));
-	
+	color: var(--muted-foreground);
+
 	.count-number {
 		font-weight: 600;
-		color: hsl(var(--foreground));
+		color: var(--foreground);
 	}
 }
 
@@ -95,7 +95,7 @@
 	grid-column: 1 / -1;
 	text-align: center;
 	padding: 48px;
-	color: hsl(var(--muted-foreground));
+	color: var(--muted-foreground);
 }
 
 @media (max-width: 768px) {
