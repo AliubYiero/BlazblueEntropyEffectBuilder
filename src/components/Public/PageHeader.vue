@@ -3,8 +3,8 @@
 	position: sticky;
 	top: 0;
 	z-index: 50;
-	background: hsl(var(--background));
-	border-bottom: 1px solid hsl(var(--border));
+	background: var(--background);
+	border-bottom: 1px solid var(--border);
 }
 
 .header-inner {
@@ -27,13 +27,13 @@
 	font-family: var(--font-chinese);
 	font-size: 16px;
 	font-weight: 600;
-	color: hsl(var(--foreground));
+	color: var(--foreground);
 }
 
 .logo-subtitle {
 	font-family: var(--font-chinese);
 	font-size: 12px;
-	color: hsl(var(--muted-foreground));
+	color: var(--muted-foreground);
 }
 
 .nav-menu {
@@ -46,7 +46,7 @@
 	font-family: var(--font-chinese);
 	font-size: 14px;
 	font-weight: 500;
-	color: hsl(var(--muted-foreground));
+	color: var(--muted-foreground);
 	background: transparent;
 	border: none;
 	border-radius: calc(var(--radius) - 4px);
@@ -54,13 +54,13 @@
 	transition: all 0.15s ease;
 
 	&:hover {
-		color: hsl(var(--foreground));
-		background: hsl(var(--accent) / 0.5);
+		color: var(--foreground);
+		background: hsl(from var(--accent) h s l / 0.5);
 	}
 
 	&.is-active {
-		color: hsl(var(--foreground));
-		background: hsl(var(--accent));
+		color: var(--foreground);
+		background: var(--accent);
 	}
 }
 
@@ -77,20 +77,20 @@
 	width: 36px;
 	height: 36px;
 	background: transparent;
-	border: 1px solid hsl(var(--border));
+	border: 1px solid var(--border);
 	border-radius: calc(var(--radius) - 4px);
 	cursor: pointer;
 	transition: all 0.15s ease;
 
 	&:hover {
-		background: hsl(var(--accent) / 0.5);
-		border-color: hsl(var(--ring));
+		background: hsl(from var(--accent) h s l / 0.5);
+		border-color: var(--ring);
 	}
 
 	svg {
 		width: 18px;
 		height: 18px;
-		color: hsl(var(--foreground));
+		color: var(--foreground);
 	}
 }
 
