@@ -11,14 +11,14 @@
 	font-family: var(--font-chinese);
 	font-size: 12px;
 	font-weight: 500;
-	color: hsl(var(--muted-foreground));
+	color: var(--muted-foreground);
 	margin-bottom: 8px;
 	display: block;
 }
 
 .label-hint {
 	font-weight: 400;
-	color: hsl(var(--muted-foreground) / 0.7);
+	color: hsl(from var(--muted-foreground) h s l / 0.7);
 	margin-left: 4px;
 }
 
@@ -27,7 +27,7 @@
 	align-items: center;
 	gap: 8px;
 	padding: 8px 12px;
-	background: hsl(var(--secondary));
+	background: var(--secondary);
 	border-radius: calc(var(--radius) - 2px);
 }
 
@@ -35,7 +35,7 @@
 	font-family: var(--font-chinese);
 	font-size: 13px;
 	font-weight: 500;
-	color: hsl(var(--secondary-foreground));
+	color: var(--secondary-foreground);
 }
 
 .input-full {
@@ -45,15 +45,15 @@
 .skill-options {
 	max-height: 280px;
 	overflow-y: auto;
-	border: 1px solid hsl(var(--border));
+	border: 1px solid var(--border);
 	border-radius: calc(var(--radius) - 2px);
 	padding: 8px;
 }
 
 .skill-option {
 	padding: 10px;
-	border-bottom: 1px solid hsl(var(--border) / 0.5);
-	
+	border-bottom: 1px solid hsl(from var(--border) h s l / 0.5);
+
 	&:last-child {
 		border-bottom: none;
 	}
@@ -69,7 +69,7 @@
 	font-family: var(--font-chinese);
 	font-size: 13px;
 	font-weight: 600;
-	color: hsl(var(--foreground));
+	color: var(--foreground);
 }
 
 .skill-sects {
@@ -90,17 +90,17 @@
 	}
 	
 	&.is-selected {
-		background: hsl(var(--primary));
-		color: hsl(var(--primary-foreground));
-		border-color: hsl(var(--primary));
+		background: var(--primary);
+		color: var(--primary-foreground);
+		border-color: var(--primary);
 	}
-	
+
 	&.is-disabled {
 		opacity: 0.4;
 		cursor: not-allowed;
-		background: hsl(var(--secondary) / 0.5);
-		border-color: hsl(var(--border) / 0.5);
-		
+		background: hsl(from var(--secondary) h s l / 0.5);
+		border-color: hsl(from var(--border) h s l / 0.5);
+
 		&:hover {
 			transform: none;
 		}
@@ -110,26 +110,26 @@
 .skill-desc {
 	font-family: var(--font-chinese);
 	font-size: 11px;
-	color: hsl(var(--muted-foreground));
+	color: var(--muted-foreground);
 	line-height: 1.4;
 }
 
 .no-data {
 	padding: 24px;
 	text-align: center;
-	border: 1px dashed hsl(var(--border));
+	border: 1px dashed var(--border);
 	border-radius: calc(var(--radius) - 2px);
 }
 
 .no-data-text {
 	font-family: var(--font-chinese);
 	font-size: 12px;
-	color: hsl(var(--muted-foreground));
+	color: var(--muted-foreground);
 }
 
 .selected-info {
 	padding: 10px 12px;
-	background: hsl(var(--accent) / 0.3);
+	background: hsl(from var(--accent) h s l / 0.3);
 	border-radius: calc(var(--radius) - 2px);
 	margin-bottom: 16px;
 }
@@ -137,14 +137,14 @@
 .selected-label {
 	font-family: var(--font-chinese);
 	font-size: 12px;
-	color: hsl(var(--muted-foreground));
+	color: var(--muted-foreground);
 }
 
 .selected-value {
 	font-family: var(--font-chinese);
 	font-size: 13px;
 	font-weight: 600;
-	color: hsl(var(--foreground));
+	color: var(--foreground);
 }
 
 .button-group {
@@ -152,20 +152,20 @@
 	gap: 8px;
 	justify-content: flex-end;
 	padding-top: 16px;
-	border-top: 1px solid hsl(var(--border));
+	border-top: 1px solid var(--border);
 }
 
 /* Element Plus 样式覆盖 */
 :deep(.el-tag) {
-	--el-tag-bg-color: hsl(var(--secondary));
-	--el-tag-border-color: hsl(var(--border));
-	--el-tag-text-color: hsl(var(--secondary-foreground));
+	--el-tag-bg-color: var(--secondary);
+	--el-tag-border-color: var(--border);
+	--el-tag-text-color: var(--secondary-foreground);
 }
 
 :deep(.el-tag.is-selected) {
-	--el-tag-bg-color: hsl(var(--primary));
-	--el-tag-border-color: hsl(var(--primary));
-	--el-tag-text-color: hsl(var(--primary-foreground));
+	--el-tag-bg-color: var(--primary);
+	--el-tag-border-color: var(--primary);
+	--el-tag-text-color: var(--primary-foreground);
 }
 </style>
 
