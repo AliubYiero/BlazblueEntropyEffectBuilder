@@ -50,9 +50,9 @@ const filterDetailList = computed<SkillInfo[]>( () => {
 	align-items: center;
 	justify-content: center;
 	padding: 32px;
-	border: 1px dashed hsl(var(--border));
+	border: 1px dashed var(--border);
 	border-radius: var(--radius);
-	color: hsl(var(--muted-foreground));
+	color: var(--muted-foreground);
 }
 
 .skills-grid {
