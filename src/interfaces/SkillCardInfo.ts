@@ -1,5 +1,5 @@
 /**
- * SkillCard.ts
+ * SelectSkillCard.ts
  * created by 2024/4/20
  * @file 技能卡片信息接口
  * @author  Yiero

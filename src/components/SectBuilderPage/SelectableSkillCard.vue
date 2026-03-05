@@ -9,14 +9,14 @@ import SkillCard from '../Public/SkillCard.vue';
 const props = defineProps<{ skillCardInfo: SkillCardInfo }>();
 const builderStore = useBuilderStore();
 
-const filterDetailList = computed<SkillInfo[]>(() => {
+const filterDetailList = computed<SkillInfo[]>( () => {
 	const skillInfoList = getSkillInfoList().value;
-	let list = skillInfoList.filter(skill =>
-		props.skillCardInfo.sect && (skill.mainSect.includes(props.skillCardInfo.sect) || skill.secondSect.includes(props.skillCardInfo.sect)),
+	let list = skillInfoList.filter( skill =>
+		props.skillCardInfo.sect && ( skill.mainSect.includes( props.skillCardInfo.sect ) || skill.secondSect.includes( props.skillCardInfo.sect ) ),
 	);
-	const existing = builderStore.skillCardInfoList.filter(c => c.sect || c.inherit).map(c => c.triggerName);
-	return list.filter(skill => skill.trigger.some(t => !existing.includes(t)));
-});
+	const existing = builderStore.skillCardInfoList.filter( c => c.sect || c.inherit ).map( c => c.triggerName );
+	return list.filter( skill => skill.trigger.some( t => !existing.includes( t ) ) );
+} );
 </script>
 
 <template>
@@ -24,15 +24,15 @@ const filterDetailList = computed<SkillInfo[]>(() => {
 		<div v-if="filterDetailList.length === 0" class="empty-state">
 			选择流派后显示可组合的双重策略
 		</div>
-
+		
 		<div v-else class="skills-grid">
 			<SkillCard
 				v-for="detail in filterDetailList"
 				:key="detail.name"
+				:show-tooltip="true"
+				:show-triggers="true"
 				:skill="detail"
 				size="compact"
-				:show-triggers="false"
-				:show-tooltip="true"
 			/>
 		</div>
 	</div>
