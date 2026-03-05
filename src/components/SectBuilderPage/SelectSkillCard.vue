@@ -3,8 +3,8 @@
 	position: relative;
 	flex-shrink: 0;
 	width: 120px;
-	background: hsl(var(--card));
-	border: 1px solid hsl(var(--border));
+	background: var(--card);
+	border: 1px solid var(--border);
 	border-radius: var(--radius);
 	padding: 16px;
 	display: flex;
@@ -16,8 +16,8 @@
 	transition: all 0.15s ease;
 	
 	&:hover {
-		border-color: hsl(var(--ring));
-		background: hsl(var(--accent) / 0.3);
+		border-color: var(--ring);
+		background: hsl(from var(--accent) h s l / 0.3);
 	}
 }
 
@@ -37,8 +37,8 @@
 	width: 40px;
 	height: 40px;
 	border-radius: 50%;
-	background: hsl(var(--secondary));
-	border: 2px solid hsl(var(--border));
+	background: var(--secondary);
+	border: 2px solid var(--border);
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -47,7 +47,7 @@
 	.icon-inner {
 		width: 16px;
 		height: 16px;
-		background: hsl(var(--muted-foreground));
+		background: var(--muted-foreground);
 		border-radius: 50%;
 	}
 }
@@ -56,7 +56,7 @@
 	font-family: var(--font-chinese);
 	font-size: 12px;
 	font-weight: 500;
-	color: hsl(var(--muted-foreground));
+	color: var(--muted-foreground);
 	margin-bottom: 4px;
 }
 
@@ -64,10 +64,10 @@
 	font-family: var(--font-chinese);
 	font-size: 13px;
 	font-weight: 500;
-	color: hsl(var(--foreground));
+	color: var(--foreground);
 	
 	&--empty {
-		color: hsl(var(--muted-foreground));
+		color: var(--muted-foreground);
 		font-weight: 400;
 	}
 }
