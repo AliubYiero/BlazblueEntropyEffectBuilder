@@ -34,7 +34,12 @@ const styleMapper: Record<Attribute, string> = {
 };
 
 const getSkillDisplay = (sectName: string): string => {
-  return getSkillsBySect(sectName);
+  const skills = getSkillsBySect(sectName);
+  return Array.isArray(skills) ? skills.join('、') : skills;
+};
+
+const getElementDotClass = (attribute: Attribute): string => {
+  return styleMapper[attribute] || 'default';
 };
 </script>
 
@@ -55,7 +60,7 @@ const getSkillDisplay = (sectName: string): string => {
 
     <div class="skill-card__sects">
       <div class="sect-item">
-        <span :class="['element-dot', `element-dot--${styleMapper[skill.mainAttribute]}`]"></span>
+        <span :class="['element-dot', `element-dot--${getElementDotClass(skill.mainAttribute)}`]"></span>
         <template v-if="showTooltip && getSkillDisplay(skill.mainSect)">
           <el-tooltip :content="getSkillDisplay(skill.mainSect)" placement="top">
             <span class="sect-name">{{ skill.mainSect }}</span>
@@ -67,7 +72,7 @@ const getSkillDisplay = (sectName: string): string => {
       </div>
       <span class="sect-connector">+</span>
       <div class="sect-item">
-        <span :class="['element-dot', `element-dot--${styleMapper[skill.secondAttribute]}`]"></span>
+        <span :class="['element-dot', `element-dot--${getElementDotClass(skill.secondAttribute)}`]"></span>
         <template v-if="showTooltip && getSkillDisplay(skill.secondSect)">
           <el-tooltip :content="getSkillDisplay(skill.secondSect)" placement="top">
             <span class="sect-name">{{ skill.secondSect }}</span>
