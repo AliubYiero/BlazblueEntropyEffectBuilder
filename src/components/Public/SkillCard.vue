@@ -90,14 +90,14 @@ const getElementDotClass = (attribute: Attribute): string => {
 
 <style lang="scss" scoped>
 .skill-card {
-  background: hsl(var(--card));
-  border: 1px solid hsl(var(--border));
+  background: var(--card);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
   transition: all 0.15s ease;
 
   &:hover {
-    border-color: hsl(var(--ring));
-    background: hsl(var(--accent) / 0.3);
+    border-color: var(--ring);
+    background: hsl(from var(--accent) h s l / 0.3);
   }
 }
 
@@ -115,7 +115,7 @@ const getElementDotClass = (attribute: Attribute): string => {
     font-family: var(--font-chinese);
     font-size: 14px;
     font-weight: 600;
-    color: hsl(var(--foreground));
+    color: var(--foreground);
   }
 
   .skill-card__triggers {
@@ -129,8 +129,8 @@ const getElementDotClass = (attribute: Attribute): string => {
     font-weight: 500;
     padding: 2px 8px;
     border-radius: calc(var(--radius) - 4px);
-    background: hsl(var(--secondary));
-    color: hsl(var(--secondary-foreground));
+    background: var(--secondary);
+    color: var(--secondary-foreground);
   }
 
   .skill-card__sects {
@@ -150,11 +150,11 @@ const getElementDotClass = (attribute: Attribute): string => {
     font-family: var(--font-chinese);
     font-size: 13px;
     font-weight: 500;
-    color: hsl(var(--foreground));
+    color: var(--foreground);
   }
 
   .sect-connector {
-    color: hsl(var(--muted-foreground));
+    color: var(--muted-foreground);
     font-size: 12px;
   }
 
@@ -162,9 +162,9 @@ const getElementDotClass = (attribute: Attribute): string => {
     font-family: var(--font-chinese);
     font-size: 13px;
     line-height: 1.5;
-    color: hsl(var(--muted-foreground));
+    color: var(--muted-foreground);
     padding-top: 8px;
-    border-top: 1px solid hsl(var(--border));
+    border-top: 1px solid var(--border);
   }
 }
 
@@ -182,7 +182,7 @@ const getElementDotClass = (attribute: Attribute): string => {
     font-family: var(--font-chinese);
     font-size: 13px;
     font-weight: 500;
-    color: hsl(var(--foreground));
+    color: var(--foreground);
   }
 
   .skill-card__triggers {
@@ -196,8 +196,8 @@ const getElementDotClass = (attribute: Attribute): string => {
     font-weight: 500;
     padding: 2px 6px;
     border-radius: calc(var(--radius) - 4px);
-    background: hsl(var(--secondary));
-    color: hsl(var(--secondary-foreground));
+    background: var(--secondary);
+    color: var(--secondary-foreground);
   }
 
   .skill-card__sects {
@@ -216,18 +216,18 @@ const getElementDotClass = (attribute: Attribute): string => {
   .sect-name {
     font-family: var(--font-chinese);
     font-size: 11px;
-    color: hsl(var(--foreground));
+    color: var(--foreground);
   }
 
   .sect-connector {
-    color: hsl(var(--muted-foreground));
+    color: var(--muted-foreground);
     font-size: 10px;
   }
 
   .skill-card__desc {
     font-family: var(--font-chinese);
     font-size: 11px;
-    color: hsl(var(--muted-foreground));
+    color: var(--muted-foreground);
     line-height: 1.4;
   }
 }
