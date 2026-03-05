@@ -91,82 +91,6 @@
 	gap: 16px;
 }
 
-.skill-card {
-	background: hsl(var(--card));
-	border: 1px solid hsl(var(--border));
-	border-radius: var(--radius);
-	padding: 16px;
-	transition: all 0.15s ease;
-	
-	&:hover {
-		border-color: hsl(var(--ring));
-		background: hsl(var(--accent) / 0.3);
-	}
-}
-
-.card-header {
-	display: flex;
-	justify-content: space-between;
-	align-items: flex-start;
-	margin-bottom: 12px;
-}
-
-.skill-name {
-	font-family: var(--font-chinese);
-	font-size: 14px;
-	font-weight: 600;
-	color: hsl(var(--foreground));
-}
-
-.trigger-badges {
-	display: flex;
-	gap: 4px;
-}
-
-.trigger-badge {
-	font-family: var(--font-chinese);
-	font-size: 11px;
-	font-weight: 500;
-	padding: 2px 8px;
-	border-radius: calc(var(--radius) - 4px);
-	background: hsl(var(--secondary));
-	color: hsl(var(--secondary-foreground));
-}
-
-.sect-combo {
-	display: flex;
-	align-items: center;
-	gap: 8px;
-	margin-bottom: 8px;
-}
-
-.sect-item {
-	display: flex;
-	align-items: center;
-	gap: 4px;
-}
-
-.sect-name {
-	font-family: var(--font-chinese);
-	font-size: 13px;
-	font-weight: 500;
-	color: hsl(var(--foreground));
-}
-
-.sect-connector {
-	color: hsl(var(--muted-foreground));
-	font-size: 12px;
-}
-
-.skill-description {
-	font-family: var(--font-chinese);
-	font-size: 13px;
-	line-height: 1.5;
-	color: hsl(var(--muted-foreground));
-	padding-top: 8px;
-	border-top: 1px solid hsl(var(--border));
-}
-
 .empty-state {
 	grid-column: 1 / -1;
 	text-align: center;
@@ -252,62 +176,15 @@
 			<div v-if="filterSkillInfoList.length === 0" class="empty-state">
 				没有找到匹配的双重策略
 			</div>
-			
-			<div
+
+			<SkillCard
 				v-for="skill in filterSkillInfoList"
 				:key="skill.name"
-				class="skill-card"
-			>
-				<div class="card-header">
-					<h3 class="skill-name">{{ skill.name }}</h3>
-					<div class="trigger-badges">
-						<span v-for="trigger in skill.trigger" :key="trigger"
-						      class="trigger-badge">{{ trigger }}</span>
-					</div>
-				</div>
-				
-				<div class="sect-combo">
-					<div class="sect-item">
-						<span
-							:class="['element-dot', `element-dot--${styleMapper[skill.mainAttribute]}`]"></span>
-						<template v-if="getSkillDisplay(skill.mainSect)">
-							<el-tooltip
-								:content="getSkillDisplay(skill.mainSect)"
-								placement="top">
-								<span class="sect-name">{{
-										skill.mainSect
-									}}</span>
-							</el-tooltip>
-						</template>
-						<template v-else>
-							<span class="sect-name">{{ skill.mainSect }}</span>
-						</template>
-					</div>
-					
-					<span class="sect-connector">+</span>
-					
-					<div class="sect-item">
-						<span
-							:class="['element-dot', `element-dot--${styleMapper[skill.secondAttribute]}`]"></span>
-						<template v-if="getSkillDisplay(skill.secondSect)">
-							<el-tooltip
-								:content="getSkillDisplay(skill.secondSect)"
-								placement="top">
-								<span class="sect-name">{{
-										skill.secondSect
-									}}</span>
-							</el-tooltip>
-						</template>
-						<template v-else>
-							<span class="sect-name">{{
-									skill.secondSect
-								}}</span>
-						</template>
-					</div>
-				</div>
-				
-				<p class="skill-description">{{ skill.description }}</p>
-			</div>
+				:skill="skill"
+				size="normal"
+				:show-triggers="true"
+				:show-tooltip="true"
+			/>
 		</div>
 	</div>
 </template>
@@ -320,8 +197,8 @@ import {
 	useFilterStore,
 } from '../../domains/filter';
 import { getSkillInfoList } from '../../domains/skill';
-import { getSkillsBySect, sectConfig } from '../../domains/config';
-import type { Attribute } from '../../interfaces/Attribute.ts';
+import { sectConfig } from '../../domains/config';
+import SkillCard from '../Public/SkillCard.vue';
 import type { Trigger } from '../../interfaces/Trigger.ts';
 
 // 初始化 Store
@@ -403,15 +280,4 @@ const handleFetchSectSuggestions = ( searchString: string, cb: Function ) => {
 
 // 筛选结果
 const filterSkillInfoList = computed( () => filterStore.filterResult.skills );
-
-// 样式映射
-const styleMapper: Record<Attribute, string> = {
-	'火': 'fire', '冰': 'ice', '电': 'thunder',
-	'毒': 'poison', '暗': 'dark', '光': 'light', '刃': 'blade',
-};
-
-// 流派技能提示
-const getSkillDisplay = ( sectName: string ): string => {
-	return getSkillsBySect( sectName );
-};
 </script>
