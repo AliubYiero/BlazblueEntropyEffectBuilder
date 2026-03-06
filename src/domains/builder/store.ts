@@ -50,20 +50,28 @@ export const useBuilderStore = defineStore('builder', () => {
   const readOnlyCardList = computed(() => readonly(skillCardInfoList.value));
 
   /**
+   * 自然激活的策略（不含继承）
+   * @description 仅通过流派配置自然激活的双重策略，用于三态判断
+   */
+  const calculatedSkills = computed<SkillInfo[]>(() => {
+    return calculateActivatedSkills(skillCardInfoList.value).skills;
+  });
+
+  /**
    * 已激活的策略
    * @description 根据当前配置计算已激活的双重策略
    */
   const activatedSkills = computed<ActivatedSkillResult>(() => {
-    const calculated = calculateActivatedSkills(skillCardInfoList.value);
+    const skills = calculatedSkills.value;
 
     // 合并继承的双重策略（去重）
     const inheritedSkills = skillCardInfoList.value
       .filter((card) => card.inherit && card.inheritSkill)
       .map((card) => card.inheritSkill!);
 
-    const calculatedNames = new Set(calculated.skills.map((s) => s.name));
+    const calculatedNames = new Set(skills.map((s) => s.name));
     const uniqueInherited = inheritedSkills.filter((s) => !calculatedNames.has(s.name));
-    const allSkills = [...calculated.skills, ...uniqueInherited];
+    const allSkills = [...skills, ...uniqueInherited];
 
     return {
       skills: allSkills,
@@ -281,6 +289,33 @@ export const useBuilderStore = defineStore('builder', () => {
     return true;
   };
 
+  /**
+   * 获取触发位的勾选框三态状态
+   * @description 基于自然激活策略计算，继承的策略不影响其他触发位
+   * @param trigger - 触发位名称
+   * @returns 'checked' | 'pending' | 'unchecked'
+   */
+  const getCheckboxState = (trigger: Trigger): 'checked' | 'pending' | 'unchecked' => {
+    const card = skillCardInfoList.value.find((c) => c.triggerName === trigger);
+    if (card?.inherit) return 'checked';
+
+    const related = calculatedSkills.value.filter((s) => s.trigger.includes(trigger));
+    if (related.length === 0) return 'unchecked';
+
+    for (const skill of related) {
+      if (skill.trigger.length === 1) return 'checked';
+
+      const otherTriggers = skill.trigger.filter((t) => t !== trigger);
+      const allOthersChecked = otherTriggers.every((t) => {
+        const otherCard = skillCardInfoList.value.find((c) => c.triggerName === t);
+        return otherCard?.inherit;
+      });
+      if (allOthersChecked) return 'checked';
+    }
+
+    return 'pending';
+  };
+
   return {
     // State
     skillCardInfoList,
@@ -290,6 +325,7 @@ export const useBuilderStore = defineStore('builder', () => {
     activatedSkills,
     configuredCount,
     hasConfiguration,
+    calculatedSkills,
 
     // Actions
     updateSkillCardInfo,
@@ -303,5 +339,6 @@ export const useBuilderStore = defineStore('builder', () => {
     resetAllSkillCards,
     exportConfiguration,
     importConfiguration,
+    getCheckboxState,
   };
 });

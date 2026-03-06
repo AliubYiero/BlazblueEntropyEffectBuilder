@@ -194,38 +194,14 @@ const skillCardInfoList = computed<SkillCardInfoTuple>( () => builderStore.skill
 
 const activatedSkills = computed( () => builderStore.activatedSkills.skills );
 
-/**
- * 获取 checkbox 三态状态
- */
-const getCheckboxState = ( trigger: Trigger ): 'checked' | 'pending' | 'unchecked' => {
-	const card = builderStore.getSkillCardByTrigger( trigger );
-	if ( card?.inherit ) return 'checked';
-	
-	const related = activatedSkills.value.filter( s => s.trigger.includes( trigger ) );
-	if ( related.length === 0 ) return 'unchecked';
-	
-	for ( const skill of related ) {
-		if ( skill.trigger.length === 1 ) return 'checked';
-		
-		const otherTriggers = skill.trigger.filter( t => t !== trigger );
-		const allOthersChecked = otherTriggers.every( t => {
-			const otherCard = builderStore.getSkillCardByTrigger( t );
-			return otherCard?.inherit;
-		} );
-		if ( allOthersChecked ) return 'checked';
-	}
-	
-	return 'pending';
-};
-
-const isInheritChecked = ( trigger: Trigger ) => getCheckboxState( trigger ) === 'checked';
-const isInheritPending = ( trigger: Trigger ) => getCheckboxState( trigger ) === 'pending';
+const isInheritChecked = ( trigger: Trigger ) => builderStore.getCheckboxState( trigger ) === 'checked';
+const isInheritPending = ( trigger: Trigger ) => builderStore.getCheckboxState( trigger ) === 'pending';
 
 /**
  * 处理 checkbox 点击
  */
 const handleInheritClick = ( trigger: Trigger ) => {
-	const state = getCheckboxState( trigger );
+	const state = builderStore.getCheckboxState( trigger );
 	if ( state === 'checked' ) {
 		builderStore.clearInheritSkill( trigger );
 	}
