@@ -13,12 +13,16 @@ export const router = createRouter( {
 	history: createWebHashHistory(),
 	routes: [
 		{
-			path: '/',
+			path: '/info',
 			component: () => import('../views/SearchDoublePage.vue'),
 		},
 		{
-			path: '/builder',
+			path: '/',
 			component: () => import('../views/SectBuilderPage.vue'),
+		},
+		{
+			path: '/builder',
+			redirect: '/',
 		},
 	],
 } );

@@ -52,12 +52,12 @@
 	border-radius: calc(var(--radius) - 4px);
 	cursor: pointer;
 	transition: all 0.15s ease;
-
+	
 	&:hover {
 		color: var(--foreground);
 		background: hsl(from var(--accent) h s l / 0.5);
 	}
-
+	
 	&.is-active {
 		color: var(--foreground);
 		background: var(--accent);
@@ -81,12 +81,12 @@
 	border-radius: calc(var(--radius) - 4px);
 	cursor: pointer;
 	transition: all 0.15s ease;
-
+	
 	&:hover {
 		background: hsl(from var(--accent) h s l / 0.5);
 		border-color: var(--ring);
 	}
-
+	
 	svg {
 		width: 18px;
 		height: 18px;
@@ -98,11 +98,11 @@
 	.header-inner {
 		padding: 0 16px;
 	}
-
+	
 	.logo-subtitle {
 		display: none;
 	}
-
+	
 	.nav-item {
 		padding: 6px 12px;
 		font-size: 13px;
@@ -117,7 +117,7 @@
 				<span class="logo-text">苍翼混沌效应</span>
 				<span class="logo-subtitle">流派构建器</span>
 			</div>
-
+			
 			<nav class="nav-menu">
 				<button
 					v-for="item in navItems"
@@ -128,22 +128,34 @@
 					{{ item.label }}
 				</button>
 			</nav>
-
+			
 			<div class="header-actions">
-				<button class="theme-toggle" @click="toggleTheme" :title="isDark ? '切换到浅色模式' : '切换到深色模式'">
-					<svg v-if="isDark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+				<button :title="isDark ? '切换到浅色模式' : '切换到深色模式'"
+				        class="theme-toggle"
+				        @click="toggleTheme">
+					<svg v-if="isDark" fill="none"
+					     stroke="currentColor" stroke-linecap="round"
+					     stroke-linejoin="round"
+					     stroke-width="2" viewBox="0 0 24 24"
+					     xmlns="http://www.w3.org/2000/svg">
 						<circle cx="12" cy="12" r="5"></circle>
-						<line x1="12" y1="1" x2="12" y2="3"></line>
-						<line x1="12" y1="21" x2="12" y2="23"></line>
-						<line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-						<line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-						<line x1="1" y1="12" x2="3" y2="12"></line>
-						<line x1="21" y1="12" x2="23" y2="12"></line>
-						<line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-						<line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+						<line x1="12" x2="12" y1="1" y2="3"></line>
+						<line x1="12" x2="12" y1="21" y2="23"></line>
+						<line x1="4.22" x2="5.64" y1="4.22" y2="5.64"></line>
+						<line x1="18.36" x2="19.78" y1="18.36"
+						      y2="19.78"></line>
+						<line x1="1" x2="3" y1="12" y2="12"></line>
+						<line x1="21" x2="23" y1="12" y2="12"></line>
+						<line x1="4.22" x2="5.64" y1="19.78" y2="18.36"></line>
+						<line x1="18.36" x2="19.78" y1="5.64" y2="4.22"></line>
 					</svg>
-					<svg v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-						<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+					<svg v-else fill="none"
+					     stroke="currentColor" stroke-linecap="round"
+					     stroke-linejoin="round"
+					     stroke-width="2" viewBox="0 0 24 24"
+					     xmlns="http://www.w3.org/2000/svg">
+						<path
+							d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
 					</svg>
 				</button>
 			</div>
@@ -162,14 +174,14 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-	{ label: '双重词条', path: '/' },
-	{ label: '流派构建', path: '/builder' },
+	{ label: '流派构建', path: '/' },
+	{ label: '双重词条', path: '/info' },
 ];
 
-const currentPath = computed(() => router.currentRoute.value.path);
+const currentPath = computed( () => router.currentRoute.value.path );
 const { isDark, toggleTheme } = useTheme();
 
-const handleNavigate = (path: string) => {
-	router.push(path);
+const handleNavigate = ( path: string ) => {
+	router.push( path );
 };
 </script>
