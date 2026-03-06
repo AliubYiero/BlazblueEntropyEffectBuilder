@@ -3,13 +3,24 @@ import { computed } from 'vue';
 import type { SkillCardInfo } from '../../domains/builder/types.ts';
 import { useBuilderStore } from '../../domains/builder/index.ts';
 import { getSkillInfoList } from '../../domains/skill/repository.ts';
-import type { SkillInfo } from '../../core/data/types.ts';
+import { triggerList } from '../../domains/config/index.ts';
+import type { Trigger } from '../../interfaces/Trigger.ts';
 import SkillCard from '../Public/SkillCard.vue';
 
 const props = defineProps<{ skillCardInfo: SkillCardInfo }>();
 const builderStore = useBuilderStore();
 
-const filterDetailList = computed<SkillInfo[]>( () => {
+const occupiedTriggers = computed<Set<Trigger>>( () => {
+	const occupied = new Set<Trigger>();
+	for ( const trigger of triggerList ) {
+		if ( builderStore.getCheckboxState( trigger ) === 'checked' ) {
+			occupied.add( trigger );
+		}
+	}
+	return occupied;
+} );
+
+const filterDetailList = computed( () => {
 	const skillInfoList = getSkillInfoList().value;
 	let list = skillInfoList.filter( skill =>
 		props.skillCardInfo.sect && ( skill.mainSect.includes( props.skillCardInfo.sect ) || skill.secondSect.includes( props.skillCardInfo.sect ) ),
@@ -20,10 +31,16 @@ const filterDetailList = computed<SkillInfo[]>( () => {
 			.filter( c => c.inheritSkill )
 			.map( c => c.inheritSkill!.name ),
 	);
-	return list.filter( skill =>
-		!inheritedNames.has( skill.name ) &&
-		skill.trigger.some( t => !existing.includes( t ) ),
-	);
+	return list
+		.filter( skill =>
+			!inheritedNames.has( skill.name ) &&
+			skill.trigger.some( t => !existing.includes( t ) ),
+		)
+		.map( skill => ( {
+			skill,
+			availableTriggers: skill.trigger.filter( t => !occupiedTriggers.value.has( t ) ),
+		} ) )
+		.filter( item => item.availableTriggers.length > 0 );
 } );
 </script>
 
@@ -35,11 +52,12 @@ const filterDetailList = computed<SkillInfo[]>( () => {
 		
 		<div v-else class="skills-grid">
 			<SkillCard
-				v-for="detail in filterDetailList"
-				:key="detail.name"
+				v-for="item in filterDetailList"
+				:key="item.skill.name"
 				:show-tooltip="true"
 				:show-triggers="true"
-				:skill="detail"
+				:skill="item.skill"
+				:triggers="item.availableTriggers"
 				size="compact"
 			/>
 		</div>
