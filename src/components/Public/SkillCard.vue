@@ -1,6 +1,8 @@
 <script lang="ts" setup>
+import { computed } from 'vue';
 import type { SkillInfo } from '../../core/data/types.ts';
 import type { Attribute } from '../../interfaces/Attribute.ts';
+import type { Trigger } from '../../interfaces/Trigger.ts';
 import { getSkillsBySect } from '../../domains/config/index.ts';
 
 interface Props {
@@ -9,6 +11,7 @@ interface Props {
   showTriggers?: boolean;
   showTooltip?: boolean;
   clickable?: boolean;
+  triggers?: Trigger[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -17,6 +20,8 @@ const props = withDefaults(defineProps<Props>(), {
   showTooltip: true,
   clickable: false,
 });
+
+const displayTriggers = computed(() => props.triggers ?? props.skill.trigger);
 
 const emit = defineEmits<{
   (e: 'click', skill: SkillInfo): void;
@@ -51,8 +56,8 @@ const getElementDotClass = (attribute: Attribute): string => {
   >
     <div class="skill-card__header">
       <h3 class="skill-card__name">{{ skill.name }}</h3>
-      <div v-if="showTriggers && skill.trigger.length > 0" class="skill-card__triggers">
-        <span v-for="trigger in skill.trigger" :key="trigger" class="trigger-badge">
+      <div v-if="showTriggers && displayTriggers.length > 0" class="skill-card__triggers">
+        <span v-for="trigger in displayTriggers" :key="trigger" class="trigger-badge">
           {{ trigger }}
         </span>
       </div>
