@@ -18,6 +18,8 @@ export interface SkillCardInfo {
   sect: SectValue | '';
   /** 是否继承上位效果 */
   inherit: boolean;
+  /** 继承的双重策略信息 */
+  inheritSkill?: SkillInfo;
 }
 
 /**

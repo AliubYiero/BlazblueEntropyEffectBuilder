@@ -15,7 +15,15 @@ const filterDetailList = computed<SkillInfo[]>( () => {
 		props.skillCardInfo.sect && ( skill.mainSect.includes( props.skillCardInfo.sect ) || skill.secondSect.includes( props.skillCardInfo.sect ) ),
 	);
 	const existing = builderStore.skillCardInfoList.filter( c => c.sect || c.inherit ).map( c => c.triggerName );
-	return list.filter( skill => skill.trigger.some( t => !existing.includes( t ) ) );
+	const inheritedNames = new Set(
+		builderStore.skillCardInfoList
+			.filter( c => c.inheritSkill )
+			.map( c => c.inheritSkill!.name ),
+	);
+	return list.filter( skill =>
+		!inheritedNames.has( skill.name ) &&
+		skill.trigger.some( t => !existing.includes( t ) ),
+	);
 } );
 </script>
 

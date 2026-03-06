@@ -43,6 +43,20 @@
 	margin-bottom: 12px;
 }
 
+.inherit-filters :deep(.el-checkbox.is-pending .el-checkbox__inner) {
+	border-style: dashed;
+	border-color: var(--primary) !important;
+	background: transparent;
+	
+	&::after {
+		display: none;
+	}
+}
+
+.inherit-filters :deep(.el-checkbox.is-pending.is-checked .el-checkbox__inner) {
+	border-style: dashed;
+}
+
 .empty-activated {
 	grid-column: 1 / -1;
 	text-align: center;
@@ -93,9 +107,11 @@
 				<el-checkbox
 					v-for="trigger in triggerList"
 					:key="trigger"
+					:class="{ 'is-pending': isInheritPending(trigger) }"
+					:indeterminate="isInheritPending(trigger)"
 					:label="trigger"
 					:model-value="isInheritChecked(trigger)"
-					@change="(val: boolean) => toggleInherit(trigger, val)"
+					@change="() => handleInheritClick(trigger)"
 				/>
 			</div>
 			
@@ -108,10 +124,10 @@
 				<SkillCard
 					v-for="skill in activatedSkills"
 					:key="skill.name"
+					:show-tooltip="false"
+					:show-triggers="true"
 					:skill="skill"
 					size="normal"
-					:show-triggers="true"
-					:show-tooltip="false"
 				/>
 			</div>
 		</section>
@@ -135,6 +151,12 @@
 			<change-skill-sect-form :trigger-name="currentTrigger"
 			                        @close-dialog="closeDialog"/>
 		</el-dialog>
+		
+		<el-dialog v-model="isShowInheritDialog" title="继承双重策略"
+		           width="400px">
+			<InheritSkillForm :trigger-name="currentInheritTrigger"
+			                  @close-dialog="closeInheritDialog"/>
+		</el-dialog>
 	</div>
 </template>
 
@@ -145,6 +167,8 @@ import SelectableSkillCard
 	from '../components/SectBuilderPage/SelectableSkillCard.vue';
 import ChangeSkillSectForm
 	from '../components/SectBuilderPage/ChangeSkillSectForm.vue';
+import InheritSkillForm
+	from '../components/SectBuilderPage/InheritSkillForm.vue';
 import SkillCard from '../components/Public/SkillCard.vue';
 import {
 	type SkillCardInfoTuple,
@@ -157,17 +181,51 @@ const builderStore = useBuilderStore();
 
 const skillCardInfoList = computed<SkillCardInfoTuple>( () => builderStore.skillCardInfoList as SkillCardInfoTuple );
 
-const isInheritChecked = ( trigger: Trigger ) => {
-	const card = builderStore.getSkillCardByTrigger( trigger );
-	return card?.inherit || false;
-};
-
-const toggleInherit = ( trigger: Trigger, value: boolean ) => {
-	builderStore.updateSkillCardInherit( trigger, value );
-};
-
 const activatedSkills = computed( () => builderStore.activatedSkills.skills );
 
+/**
+ * 获取 checkbox 三态状态
+ */
+const getCheckboxState = ( trigger: Trigger ): 'checked' | 'pending' | 'unchecked' => {
+	const card = builderStore.getSkillCardByTrigger( trigger );
+	if ( card?.inherit ) return 'checked';
+	
+	const related = activatedSkills.value.filter( s => s.trigger.includes( trigger ) );
+	if ( related.length === 0 ) return 'unchecked';
+	
+	for ( const skill of related ) {
+		if ( skill.trigger.length === 1 ) return 'checked';
+		
+		const otherTriggers = skill.trigger.filter( t => t !== trigger );
+		const allOthersChecked = otherTriggers.every( t => {
+			const otherCard = builderStore.getSkillCardByTrigger( t );
+			return otherCard?.inherit;
+		} );
+		if ( allOthersChecked ) return 'checked';
+	}
+	
+	return 'pending';
+};
+
+const isInheritChecked = ( trigger: Trigger ) => getCheckboxState( trigger ) === 'checked';
+const isInheritPending = ( trigger: Trigger ) => getCheckboxState( trigger ) === 'pending';
+
+/**
+ * 处理 checkbox 点击
+ */
+const handleInheritClick = ( trigger: Trigger ) => {
+	const state = getCheckboxState( trigger );
+	if ( state === 'checked' ) {
+		builderStore.clearInheritSkill( trigger );
+	}
+	else {
+		// pending 或 unchecked -> 打开继承对话框
+		currentInheritTrigger.value = trigger;
+		isShowInheritDialog.value = true;
+	}
+};
+
+// 修改技能流派对话框
 const isShowDialog = ref( false );
 const currentTrigger = ref<Trigger>( '普攻' );
 
@@ -178,5 +236,13 @@ const openDialog = ( trigger: Trigger ) => {
 
 const closeDialog = () => {
 	isShowDialog.value = false;
+};
+
+// 继承双重策略对话框
+const isShowInheritDialog = ref( false );
+const currentInheritTrigger = ref<Trigger>( '普攻' );
+
+const closeInheritDialog = () => {
+	isShowInheritDialog.value = false;
 };
 </script>

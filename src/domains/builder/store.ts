@@ -8,6 +8,7 @@ import { shallowRef, computed, readonly } from 'vue';
 import type { SkillCardInfoTuple, SkillCardInfo, ActivatedSkillResult } from './types.ts';
 import type { Trigger } from '../../interfaces/Trigger.ts';
 import type { SectValue } from '../config/types.ts';
+import type { SkillInfo } from '../../core/data/types.ts';
 import { calculateActivatedSkills, checkDuplicateSect } from './service.ts';
 import { isValidSect } from '../skill/repository.ts';
 
@@ -53,7 +54,21 @@ export const useBuilderStore = defineStore('builder', () => {
    * @description 根据当前配置计算已激活的双重策略
    */
   const activatedSkills = computed<ActivatedSkillResult>(() => {
-    return calculateActivatedSkills(skillCardInfoList.value);
+    const calculated = calculateActivatedSkills(skillCardInfoList.value);
+
+    // 合并继承的双重策略（去重）
+    const inheritedSkills = skillCardInfoList.value
+      .filter((card) => card.inherit && card.inheritSkill)
+      .map((card) => card.inheritSkill!);
+
+    const calculatedNames = new Set(calculated.skills.map((s) => s.name));
+    const uniqueInherited = inheritedSkills.filter((s) => !calculatedNames.has(s.name));
+    const allSkills = [...calculated.skills, ...uniqueInherited];
+
+    return {
+      skills: allSkills,
+      count: allSkills.length,
+    };
   });
 
   /**
@@ -96,6 +111,9 @@ export const useBuilderStore = defineStore('builder', () => {
     ) as SkillCardInfoTuple;
 
     skillCardInfoList.value = newList;
+    // 先清除不再有效的继承，再自动继承单触发位的双重策略
+    clearInvalidInheritedSkills();
+    autoInheritSingleTriggerSkills();
     return true;
   };
 
@@ -118,6 +136,102 @@ export const useBuilderStore = defineStore('builder', () => {
 
     skillCardInfoList.value = newList;
     return true;
+  };
+
+  /**
+   * 设置继承的双重策略
+   * @param triggerName - 触发位名称
+   * @param skill - 要继承的双重策略
+   */
+  const setInheritSkill = (triggerName: Trigger, skill: SkillInfo): boolean => {
+    if (!VALID_TRIGGERS.includes(triggerName)) {
+      console.warn(`[useBuilderStore] 无效的触发位: ${triggerName}`);
+      return false;
+    }
+
+    const newList = skillCardInfoList.value.map((item) =>
+      item.triggerName === triggerName
+        ? { ...item, inherit: true, inheritSkill: skill }
+        : item,
+    ) as SkillCardInfoTuple;
+
+    skillCardInfoList.value = newList;
+    return true;
+  };
+
+  /**
+   * 清除继承的双重策略
+   * @param triggerName - 触发位名称
+   */
+  const clearInheritSkill = (triggerName: Trigger): boolean => {
+    if (!VALID_TRIGGERS.includes(triggerName)) {
+      console.warn(`[useBuilderStore] 无效的触发位: ${triggerName}`);
+      return false;
+    }
+
+    const newList = skillCardInfoList.value.map((item) =>
+      item.triggerName === triggerName
+        ? { ...item, inherit: false, inheritSkill: undefined }
+        : item,
+    ) as SkillCardInfoTuple;
+
+    skillCardInfoList.value = newList;
+    return true;
+  };
+
+  /**
+   * 清除不再有效的继承
+   * @description 当流派配置变化时，清除 inheritSkill 对应策略已不在激活列表中的继承
+   */
+  const clearInvalidInheritedSkills = (): void => {
+    const calculated = calculateActivatedSkills(skillCardInfoList.value);
+    const activatedNames = new Set(calculated.skills.map((s) => s.name));
+    let changed = false;
+    let current = skillCardInfoList.value;
+
+    for (const card of current) {
+      if (card.inherit && card.inheritSkill && !activatedNames.has(card.inheritSkill.name)) {
+        current = current.map((item) =>
+          item.triggerName === card.triggerName
+            ? { ...item, inherit: false, inheritSkill: undefined }
+            : item,
+        ) as SkillCardInfoTuple;
+        changed = true;
+      }
+    }
+
+    if (changed) {
+      skillCardInfoList.value = current;
+    }
+  };
+
+  /**
+   * 自动设置单触发位和最后剩余触发位的继承
+   * @description 当激活策略变化时调用，自动勾选确定性的触发位
+   */
+  const autoInheritSingleTriggerSkills = (): void => {
+    const calculated = calculateActivatedSkills(skillCardInfoList.value);
+    let changed = false;
+    let current = skillCardInfoList.value;
+
+    for (const skill of calculated.skills) {
+      if (skill.trigger.length === 1) {
+        const trigger = skill.trigger[0];
+        const card = current.find((c) => c.triggerName === trigger);
+        if (card && !card.inherit) {
+          current = current.map((item) =>
+            item.triggerName === trigger
+              ? { ...item, inherit: true, inheritSkill: skill }
+              : item,
+          ) as SkillCardInfoTuple;
+          changed = true;
+        }
+      }
+    }
+
+    if (changed) {
+      skillCardInfoList.value = current;
+    }
   };
 
   /**
@@ -180,6 +294,10 @@ export const useBuilderStore = defineStore('builder', () => {
     // Actions
     updateSkillCardInfo,
     updateSkillCardInherit,
+    setInheritSkill,
+    clearInheritSkill,
+    clearInvalidInheritedSkills,
+    autoInheritSingleTriggerSkills,
     getSkillCardByTrigger,
     checkSectDuplicate,
     resetAllSkillCards,
