@@ -4,10 +4,10 @@
  */
 
 import type {
-  SkillCardInfoTuple,
-  SkillCardInfo,
-  ActivatedSkillResult,
-  DuplicateCheckResult,
+	ActivatedSkillResult,
+	DuplicateCheckResult,
+	SkillCardInfo,
+	SkillCardInfoTuple,
 } from './types.ts';
 import type { SectValue } from '../config/types.ts';
 import type { Trigger } from '../../interfaces/Trigger.ts';
@@ -33,7 +33,7 @@ export function calculateActivatedSkills(cards: SkillCardInfoTuple): ActivatedSk
 
   // 如果配置少于2个流派，无法激活任何策略
   if (configuredSects.size < 2) {
-    return { skills: [], count: 0 };
+    return { skills: [], count: 0, skillNames: [] };
   }
 
   // 筛选可激活的策略
@@ -57,9 +57,12 @@ export function calculateActivatedSkills(cards: SkillCardInfoTuple): ActivatedSk
     }
   });
 
+  const skillName = activatedSkills.map(skill => skill.name);
+  
   return {
     skills: activatedSkills,
     count: activatedSkills.length,
+    skillNames:skillName
   };
 }
 
