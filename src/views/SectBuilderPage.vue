@@ -18,6 +18,13 @@
 	font-size: 14px;
 	font-weight: 600;
 	color: var(--foreground);
+	
+	&-tooltip {
+		padding-left: 8px;
+		color: var(--muted-foreground);
+		font-weight: lighter;
+		font-size: 12px;
+	}
 }
 
 .section-count {
@@ -97,7 +104,11 @@
 	<div class="page-container">
 		<section class="activated-section">
 			<div class="section-header">
-				<h2 class="section-title">已激活策略</h2>
+				<h2 class="section-title">
+					<span>已激活策略</span>
+					<span
+						class="section-title-tooltip">(点击勾选框可选择继承的双重策略)</span>
+				</h2>
 				<span class="section-count">共 {{
 						activatedSkills.length
 					}} 条</span>
