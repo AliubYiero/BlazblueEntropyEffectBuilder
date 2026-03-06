@@ -43,6 +43,10 @@ export interface ActivatedSkillResult {
   skills: SkillInfo[];
   /** 激活数量 */
   count: number;
+  /**
+   * 已激活的策略名称列表
+   */
+  skillNames: string[]
 }
 
 /**

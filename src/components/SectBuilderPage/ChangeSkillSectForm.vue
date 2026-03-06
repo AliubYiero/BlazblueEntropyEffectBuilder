@@ -339,6 +339,13 @@ const filteredSkillList = computed( (): SkillInfo[] => {
 		);
 	}
 	
+	// 如果存在已激活双重策略, 过滤该双重策略
+	if ( builderStore.activatedSkills.count ) {
+		result = result.filter( ( skill ) =>
+			!builderStore.activatedSkills.skillNames.includes( skill.name ),
+		);
+	}
+	
 	return result;
 } );
 
