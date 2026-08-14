@@ -165,7 +165,7 @@ export const useSkillData = () => {
 
 const initializeData = async () => {
 	try {
-		const data = await import('../data/DoubleSkillInfoList.json');
+		const data = await import('../data/DoubleSkillInfoListV1.json');
 		const frozenData = Object.freeze( [ ...data.default ] ) as Readonly<SkillInfoInterface[]>;
 		rawSkillData.value = frozenData;
 		isInitialized = true;

@@ -185,7 +185,7 @@ export async function loadSkillData(): Promise<DataLoadResult<FrozenSkillInfoLis
 	}
 	
 	try {
-		const module = await import('../../data/DoubleSkillInfoList.json');
+		const module = await import('../../data/DoubleSkillInfoListV1.json');
 		const data = module.default as SkillInfo[];
 		cachedData = deepFreeze( [ ...data ] ) as FrozenSkillInfoList;
 		

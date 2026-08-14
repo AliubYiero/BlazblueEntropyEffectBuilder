@@ -104,11 +104,11 @@ git commit -m "feat(types): add DoubleSkill interface and extend SectInfo with d
 ```typescript
 /**
  * 双重策略数据转换脚本
- * 将 DoubleSkillInfoList.json 转换为每个流派的 doubleSkills 数组
+ * 将 DoubleSkillInfoListV1.json 转换为每个流派的 doubleSkills 数组
  */
 
 import type { DoubleSkill } from '../src/domains/config/types';
-import doubleSkillData from '../src/data/DoubleSkillInfoList.json';
+import doubleSkillData from '../src/data/DoubleSkillInfoListV1.json';
 
 interface RawDoubleSkill {
   name: string;
