@@ -196,14 +196,13 @@ import {
 	getSectSuggestions,
 	useFilterStore,
 } from '../../domains/filter';
-import { getSkillInfoList } from '../../domains/skill';
-import { sectConfig } from '../../domains/config';
+import { getSkillIndex } from '../../domains/skill';
 import SkillCard from '../Public/SkillCard.vue';
 import type { Trigger } from '../../interfaces/Trigger.ts';
 
 // 初始化 Store
 const filterStore = useFilterStore();
-const skillInfoList = getSkillInfoList();
+const strategies = computed( () => getSkillIndex().value?.strategies ?? [] );
 
 // 双向绑定的筛选状态
 const attribute = computed( {
@@ -252,9 +251,9 @@ const triggerCheckboxItems = computed( () => [
 		value: filterStore.triggerCheckboxes.召唤,
 	},
 	{
-		key: '传承' as const,
-		label: '传承',
-		value: filterStore.triggerCheckboxes.传承,
+		key: '传承技' as const,
+		label: '传承技',
+		value: filterStore.triggerCheckboxes.传承技,
 	},
 ] );
 
@@ -269,15 +268,15 @@ const handleTriggerCheckboxChange = ( key: Trigger, value: boolean ) => {
 
 // 自动完成建议
 const handleFetchAttributeSuggestions = ( searchString: string, cb: Function ) => {
-	const list = getAttributeSuggestions( skillInfoList.value, searchString );
+	const list = getAttributeSuggestions( strategies.value, searchString );
 	cb( list );
 };
 
 const handleFetchSectSuggestions = ( searchString: string, cb: Function ) => {
-	const list = getSectSuggestions( skillInfoList.value, attribute.value, searchString, sectConfig );
+	const list = getSectSuggestions( attribute.value, searchString );
 	cb( list );
 };
 
-// 筛选结果
+// 筛选结果（V2 新形状）
 const filterSkillInfoList = computed( () => filterStore.filterResult.skills );
 </script>

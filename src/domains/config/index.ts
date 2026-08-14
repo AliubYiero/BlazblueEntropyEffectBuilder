@@ -5,16 +5,15 @@
  */
 
 // Types
-export type { SectInfo, SectConfigMap, AttributeList, TriggerList } from './types.ts';
+export type { SectInfo, AttributeList, TriggerList } from './types.ts';
 
 // Constants
-export { sectList, attributeList, triggerList, sectConfig } from './constants.ts';
+export { sectList, attributeList, triggerList } from './constants.ts';
 
 // Utils
 export {
   getSkillsBySect,
   getAttributeBySect,
-  getSectsByAttribute,
   isValidSect,
   getAllSectNames,
   getSectInfo,

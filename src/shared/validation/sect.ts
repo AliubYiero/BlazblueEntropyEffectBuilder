@@ -7,7 +7,7 @@ import type { SectValue } from '../../domains/config/types.ts';
 import type { Trigger } from '../../interfaces/Trigger.ts';
 import type { Attribute } from '../../interfaces/Attribute.ts';
 import type { SkillCardInfo } from '../../domains/builder/types.ts';
-import { getValidTriggersForSect, getAttributeBySectValue } from '../../domains/skill/repository.ts';
+import { getSectInfo, getAttributeBySect } from '../../domains/config/utils.ts';
 
 /**
  * 验证结果接口
@@ -33,7 +33,9 @@ export function validateSectTriggerMatch(
     return { valid: true };
   }
 
-  const validTriggers = getValidTriggersForSect(sect);
+  // sectList 为流派命名权威，技能触发位即该流派可用触发位
+  const sectInfo = getSectInfo(sect);
+  const validTriggers = sectInfo ? sectInfo.skill.map((s) => s.trigger) : [];
   if (validTriggers.length === 0) {
     return { valid: false, message: '无效的流派名称' };
   }
@@ -89,7 +91,7 @@ export function validateAttributeMatch(
     return true;
   }
 
-  const actualAttribute = getAttributeBySectValue(sect);
+  const actualAttribute = getAttributeBySect(sect);
   return actualAttribute === attribute;
 }
 

@@ -204,40 +204,40 @@
 							<div class="skill-sects">
 								<el-tooltip
 									:content="`该流派不支持${props.triggerName}位`"
-									:disabled="isSectAvailableForTrigger(skill.mainSect)"
+									:disabled="isSectAvailableForTrigger(sectPairOf(skill).primaryStyle)"
 									placement="top"
 								>
 									<el-tag
 										:class="['sect-tag', 'sect-tag--main', {
-											'is-selected': formData.sect === skill.mainSect,
-											'is-disabled': !isSectAvailableForTrigger(skill.mainSect)
+											'is-selected': formData.sect === sectPairOf(skill).primaryStyle,
+											'is-disabled': !isSectAvailableForTrigger(sectPairOf(skill).primaryStyle)
 										}]"
-										:disabled="!isSectAvailableForTrigger(skill.mainSect)"
+										:disabled="!isSectAvailableForTrigger(sectPairOf(skill).primaryStyle)"
 										size="small"
-										@click="selectSect(skill.mainSect, skill)"
+										@click="selectSect(sectPairOf(skill).primaryStyle, skill)"
 									>
 										<span
-											:class="['element-dot', `element-dot--${styleMapper[skill.mainAttribute]}`]"></span>
-										{{ skill.mainSect }}
+											:class="['element-dot', `element-dot--${styleMapper[sectPairOf(skill).primaryAttribute]}`]"></span>
+										{{ sectPairOf(skill).primaryStyle }}
 									</el-tag>
 								</el-tooltip>
 								<el-tooltip
 									:content="`该流派不支持${props.triggerName}位`"
-									:disabled="isSectAvailableForTrigger(skill.secondSect)"
+									:disabled="isSectAvailableForTrigger(sectPairOf(skill).secondaryStyle)"
 									placement="top"
 								>
 									<el-tag
 										:class="['sect-tag', 'sect-tag--second', {
-											'is-selected': formData.sect === skill.secondSect,
-											'is-disabled': !isSectAvailableForTrigger(skill.secondSect)
+											'is-selected': formData.sect === sectPairOf(skill).secondaryStyle,
+											'is-disabled': !isSectAvailableForTrigger(sectPairOf(skill).secondaryStyle)
 										}]"
-										:disabled="!isSectAvailableForTrigger(skill.secondSect)"
+										:disabled="!isSectAvailableForTrigger(sectPairOf(skill).secondaryStyle)"
 										size="small"
-										@click="selectSect(skill.secondSect, skill)"
+										@click="selectSect(sectPairOf(skill).secondaryStyle, skill)"
 									>
 										<span
-											:class="['element-dot', `element-dot--${styleMapper[skill.secondAttribute]}`]"></span>
-										{{ skill.secondSect }}
+											:class="['element-dot', `element-dot--${styleMapper[sectPairOf(skill).secondaryAttribute]}`]"></span>
+										{{ sectPairOf(skill).secondaryStyle }}
 									</el-tag>
 								</el-tooltip>
 							</div>
@@ -274,15 +274,15 @@ import type { Trigger } from '../../interfaces/Trigger.ts';
 import type { Attribute } from '../../interfaces/Attribute.ts';
 import type { SectValue } from '../../domains/config/types.ts';
 import { attributeList } from '../../domains/config/index.ts';
-import { filterByTrigger } from '../../domains/skill/repository.ts';
-import { getSectInfo } from '../../domains/config/utils.ts';
+import { getSkillIndex, getStrategySectPair } from '../../domains/skill/repository.ts';
 import {
 	type SkillCardInfo,
 	useBuilderStore,
+	getAvailableTriggersForSect,
 } from '../../domains/builder/index.ts';
 import { validateSect } from '../../shared/validation/index.ts';
 import type { FormInstance, FormRules } from 'element-plus';
-import type { SkillInfo } from '../../core/data/types.ts';
+import type { DualStrategyInfo } from '../../core/data/types.ts';
 
 const props = defineProps<{ triggerName: Trigger }>();
 const emit = defineEmits<{ ( event: 'closeDialog' ): void }>();
@@ -326,57 +326,54 @@ const rules: FormRules = {
  * 筛选占用当前触发位的双重策略
  * 如果选择了属性，则进一步筛选包含该属性的策略
  * */
-const filteredSkillList = computed( (): SkillInfo[] => {
-	// 获取占用当前触发位的所有双重策略
-	const skillsByTrigger = filterByTrigger( props.triggerName );
-	let result = skillsByTrigger.value;
-	
+const filteredSkillList = computed( (): DualStrategyInfo[] => {
+	const strategies = getSkillIndex().value?.strategies ?? [];
+	// 获取占用当前触发位的所有双重策略（triggerSlots 含当前触发位）
+	let result = strategies.filter( ( skill ) => skill.triggerSlots.includes( props.triggerName ) );
+
 	// 如果选择了属性，筛选包含该属性的策略
 	if ( formData.attribute ) {
 		result = result.filter( ( skill ) =>
-			skill.mainAttribute === formData.attribute ||
-			skill.secondAttribute === formData.attribute,
+			skill.element === formData.attribute ||
+			getStrategySectPair( skill ).secondaryAttribute === formData.attribute,
 		);
 	}
-	
-	// 如果存在已激活双重策略, 过滤该双重策略
-	if ( builderStore.activatedSkills.count ) {
-		result = result.filter( ( skill ) =>
-			!builderStore.activatedSkills.skillNames.includes( skill.name ),
-		);
-	}
-	
+
+	// 排除已激活策略（按 id）
+	const activatedIds = new Set( builderStore.activatedSkills.skills.map( ( s ) => s.id ) );
+	result = result.filter( ( skill ) => !activatedIds.has( skill.id ) );
+
 	return result;
 } );
 
 /**
- * 选择流派
- * */
-/**
  * 判断流派是否支持当前触发位
+ * @description 从 index.stylesBySlot 反查（设计 §4.3）
  * @param sect - 流派名称
  * @returns 是否可用
  */
 const isSectAvailableForTrigger = ( sect: SectValue ): boolean => {
 	if ( !sect ) return false;
-	const sectInfo = getSectInfo( sect );
-	if ( !sectInfo ) return false;
-	// 检查该流派的任意技能是否支持当前触发位
-	return sectInfo.skill.some( s => s.trigger === props.triggerName );
+	return getAvailableTriggersForSect( sect ).includes( props.triggerName );
 };
 
 /**
  * 选择流派
  * @param sect - 流派名称
- * @param skill - 所属双重策略信息（用于检查可用性）
+ * @param _skill - 所属双重策略信息（用于检查可用性）
  * */
-const selectSect = ( sect: SectValue, _skill: SkillInfo ) => {
+const selectSect = ( sect: SectValue, _skill: DualStrategyInfo ) => {
 	// 检查流派是否支持当前触发位
 	if ( !isSectAvailableForTrigger( sect ) ) {
 		return;
 	}
 	formData.sect = sect;
 };
+
+/**
+ * 派生显示流派与属性（Q10 helper，组件保持薄）
+ */
+const sectPairOf = ( skill: DualStrategyInfo ) => getStrategySectPair( skill );
 
 /**
  * 提交表单

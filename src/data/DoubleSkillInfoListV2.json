@@ -1,0 +1,2820 @@
+{
+  "version": "2.0",
+  "slots": {
+    "普攻": [
+      "燃烧",
+      "火精灵",
+      "寒冷",
+      "寒冷 (寒气爆发)",
+      "寒冷 (聚寒成冰)",
+      "玄冰剑刃",
+      "闪电链",
+      "中毒",
+      "影刺",
+      "暗影标记",
+      "光波",
+      "撕裂",
+      "飞刃"
+    ],
+    "技能": [
+      "燃烧",
+      "火弹",
+      "寒冷",
+      "寒冷 (寒气爆发)",
+      "寒冷 (聚寒成冰)",
+      "冰雹",
+      "闪电链",
+      "感电",
+      "中毒",
+      "毒液",
+      "影刺",
+      "暗影标记",
+      "光枪",
+      "撕裂",
+      "刀刃风暴"
+    ],
+    "冲刺": [
+      "燃烧",
+      "冰锥",
+      "落雷",
+      "毒弹",
+      "影子",
+      "圣光标记",
+      "飞剑"
+    ],
+    "传承技": [
+      "火弹",
+      "火环",
+      "冰锥",
+      "冰雹",
+      "闪电链",
+      "感电",
+      "电桩",
+      "毒液",
+      "毒泡河豚",
+      "黑洞",
+      "光枪",
+      "闪光",
+      "刀刃风暴"
+    ],
+    "召唤": [
+      "地雷",
+      "冰刺",
+      "电球",
+      "史莱姆",
+      "触手",
+      "光阵",
+      "刃环"
+    ]
+  },
+  "styleAliases": {
+    "寒冷": [
+      "寒冷 (寒气爆发)",
+      "寒冷 (聚寒成冰)"
+    ]
+  },
+  "dualStrategies": [
+    {
+      "id": "fire_ring_burn",
+      "name": "火环燃烧",
+      "element": "火",
+      "triggerSlots": [
+        "传承技"
+      ],
+      "primary": [
+        {
+          "slot": "普攻",
+          "style": "燃烧",
+          "name": "普攻燃烧"
+        },
+        {
+          "slot": "技能",
+          "style": "燃烧",
+          "name": "技能燃烧"
+        },
+        {
+          "slot": "冲刺",
+          "style": "燃烧",
+          "name": "冲刺燃烧"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "传承技",
+          "style": "火环",
+          "name": "传承技火环"
+        }
+      ],
+      "description": "火环可使敌人燃烧，每秒收到 550 伤害"
+    },
+    {
+      "id": "flame_flying_sword",
+      "name": "火焰飞剑",
+      "element": "火",
+      "triggerSlots": [
+        "冲刺"
+      ],
+      "primary": [
+        {
+          "slot": "普攻",
+          "style": "燃烧",
+          "name": "普攻燃烧"
+        },
+        {
+          "slot": "技能",
+          "style": "燃烧",
+          "name": "技能燃烧"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "冲刺",
+          "style": "飞剑",
+          "name": "冲刺飞剑"
+        }
+      ],
+      "description": "飞剑升级为火焰飞剑，命中后可使敌人燃烧，每秒收到 340 伤害"
+    },
+    {
+      "id": "burning_bomb",
+      "name": "燃烧爆弹",
+      "element": "火",
+      "triggerSlots": [
+        "冲刺",
+        "普攻",
+        "技能"
+      ],
+      "primary": [
+        {
+          "slot": "传承技",
+          "style": "火弹",
+          "name": "传承技火弹"
+        },
+        {
+          "slot": "技能",
+          "style": "火弹",
+          "name": "技能火弹"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "普攻",
+          "style": "燃烧",
+          "name": "普攻燃烧"
+        },
+        {
+          "slot": "技能",
+          "style": "燃烧",
+          "name": "技能燃烧"
+        },
+        {
+          "slot": "冲刺",
+          "style": "燃烧",
+          "name": "冲刺燃烧"
+        }
+      ],
+      "description": "攻击燃烧的敌人时会发射火弹，每个火弹造成 600 伤害"
+    },
+    {
+      "id": "detonating_fire_bomb",
+      "name": "爆燃火弹",
+      "element": "火",
+      "triggerSlots": [
+        "技能",
+        "传承技"
+      ],
+      "primary": [
+        {
+          "slot": "传承技",
+          "style": "火弹",
+          "name": "传承技火弹"
+        },
+        {
+          "slot": "技能",
+          "style": "火弹",
+          "name": "技能火弹"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "普攻",
+          "style": "燃烧",
+          "name": "普攻燃烧"
+        },
+        {
+          "slot": "技能",
+          "style": "燃烧",
+          "name": "技能燃烧"
+        },
+        {
+          "slot": "冲刺",
+          "style": "燃烧",
+          "name": "冲刺燃烧"
+        }
+      ],
+      "description": "火弹对燃烧的敌人的伤害提示 100%"
+    },
+    {
+      "id": "thundercloud_fire_bomb",
+      "name": "雷云火弹",
+      "element": "火",
+      "triggerSlots": [
+        "传承技"
+      ],
+      "primary": [
+        {
+          "slot": "传承技",
+          "style": "火弹",
+          "name": "传承技火弹"
+        },
+        {
+          "slot": "技能",
+          "style": "火弹",
+          "name": "技能火弹"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "传承技",
+          "style": "闪电链",
+          "name": "电闪雷鸣"
+        }
+      ],
+      "description": "雷云会额外发射火弹，每个造成 220 伤害"
+    },
+    {
+      "id": "storm_fire_ring",
+      "name": "风暴火环",
+      "element": "火",
+      "triggerSlots": [
+        "技能"
+      ],
+      "primary": [
+        {
+          "slot": "传承技",
+          "style": "火环",
+          "name": "传承技火环"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "技能",
+          "style": "刀刃风暴",
+          "name": "技能风暴"
+        }
+      ],
+      "description": "刀刃风暴会产生火环，造成 1200 伤害"
+    },
+    {
+      "id": "burning_fire_ring",
+      "name": "焚弹火环",
+      "element": "火",
+      "triggerSlots": [
+        "传承技"
+      ],
+      "primary": [
+        {
+          "slot": "传承技",
+          "style": "火环",
+          "name": "传承技火环"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "召唤",
+          "style": "刃环",
+          "name": "召唤刃环"
+        }
+      ],
+      "description": "火环可以吞噬子弹，吞噬子弹时生成可格挡子弹的火种环绕自身，火种碰撞敌人造成 300 伤害"
+    },
+    {
+      "id": "mine_flame",
+      "name": "地雷火焰",
+      "element": "火",
+      "triggerSlots": [
+        "召唤"
+      ],
+      "primary": [
+        {
+          "slot": "召唤",
+          "style": "地雷",
+          "name": "放置地雷"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "普攻",
+          "style": "燃烧",
+          "name": "普攻燃烧"
+        },
+        {
+          "slot": "技能",
+          "style": "燃烧",
+          "name": "技能燃烧"
+        },
+        {
+          "slot": "冲刺",
+          "style": "燃烧",
+          "name": "冲刺燃烧"
+        }
+      ],
+      "description": "地雷爆炸后会残留火焰，对经过的敌人每秒造成 400 伤害"
+    },
+    {
+      "id": "mine_flash",
+      "name": "地雷闪光",
+      "element": "火",
+      "triggerSlots": [
+        "召唤"
+      ],
+      "primary": [
+        {
+          "slot": "召唤",
+          "style": "地雷",
+          "name": "放置地雷"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "传承技",
+          "style": "闪光",
+          "name": "传承技闪光"
+        }
+      ],
+      "description": "地雷爆炸时会产生闪光"
+    },
+    {
+      "id": "fire_spirit_detonate",
+      "name": "火精灵引爆",
+      "element": "火",
+      "triggerSlots": [
+        "普攻"
+      ],
+      "primary": [
+        {
+          "slot": "普攻",
+          "style": "火精灵",
+          "name": "火精灵助战"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "普攻",
+          "style": "燃烧",
+          "name": "普攻燃烧"
+        },
+        {
+          "slot": "冲刺",
+          "style": "燃烧",
+          "name": "冲刺燃烧"
+        }
+      ],
+      "description": "火精灵命中燃烧的敌人时有 50% 概率使其爆炸，造成 1150 伤害"
+    },
+    {
+      "id": "fire_bomb_fire_spirit",
+      "name": "火弹火精灵",
+      "element": "火",
+      "triggerSlots": [
+        "技能",
+        "传承技"
+      ],
+      "primary": [
+        {
+          "slot": "普攻",
+          "style": "火精灵",
+          "name": "火精灵助战"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "传承技",
+          "style": "火弹",
+          "name": "传承技火弹"
+        },
+        {
+          "slot": "技能",
+          "style": "火弹",
+          "name": "技能火弹"
+        }
+      ],
+      "description": "火弹命中或击杀敌人将产生火精灵，每个造成 300 伤害"
+    },
+    {
+      "id": "fire_spirit_bounce",
+      "name": "火精灵弹跳",
+      "element": "火",
+      "triggerSlots": [
+        "普攻"
+      ],
+      "primary": [
+        {
+          "slot": "普攻",
+          "style": "火精灵",
+          "name": "火精灵助战"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "技能",
+          "style": "闪电链",
+          "name": "技能闪电"
+        },
+        {
+          "slot": "传承技",
+          "style": "闪电链",
+          "name": "电闪雷鸣"
+        }
+      ],
+      "description": "火精灵可在敌人间弹跳，每次造成 280 伤害"
+    },
+    {
+      "id": "ice_cone_extreme_cold",
+      "name": "冰锥极寒",
+      "element": "冰",
+      "triggerSlots": [
+        "冲刺",
+        "传承技"
+      ],
+      "primary": [
+        {
+          "slot": "普攻",
+          "style": "寒冷 (寒气爆发)",
+          "name": "普攻寒冷 (寒气爆发)"
+        },
+        {
+          "slot": "技能",
+          "style": "寒冷 (寒气爆发)",
+          "name": "技能寒冷 (寒气爆发)"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "冲刺",
+          "style": "冰锥",
+          "name": "冲刺冰锥"
+        },
+        {
+          "slot": "传承技",
+          "style": "冰锥",
+          "name": "传承技冰锥"
+        }
+      ],
+      "description": "冰锥对敌人施加寒冷时，寒冷层数加 3"
+    },
+    {
+      "id": "frost_pulse",
+      "name": "冰霜脉冲",
+      "element": "冰",
+      "triggerSlots": [
+        "普攻",
+        "技能"
+      ],
+      "primary": [
+        {
+          "slot": "普攻",
+          "style": "寒冷 (寒气爆发)",
+          "name": "普攻寒冷 (寒气爆发)"
+        },
+        {
+          "slot": "技能",
+          "style": "寒冷 (寒气爆发)",
+          "name": "技能寒冷 (寒气爆发)"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "技能",
+          "style": "感电",
+          "name": "技能感电"
+        },
+        {
+          "slot": "传承技",
+          "style": "感电",
+          "name": "传承技感电"
+        }
+      ],
+      "description": "寒气爆发升级为冰霜脉冲，伤害提升 36%, 麻痹敌人"
+    },
+    {
+      "id": "ice_poison_fog",
+      "name": "寒冰毒雾",
+      "element": "冰",
+      "triggerSlots": [
+        "普攻"
+      ],
+      "primary": [
+        {
+          "slot": "技能",
+          "style": "寒冷 (聚寒成冰)",
+          "name": "技能寒冷 (聚寒成冰)"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "普攻",
+          "style": "中毒",
+          "name": "普攻淬毒"
+        }
+      ],
+      "description": "毒雾升级为寒冰毒雾，可冰冻敌人"
+    },
+    {
+      "id": "frost_sword_domain",
+      "name": "玄冰领域",
+      "element": "冰",
+      "triggerSlots": [
+        "普攻"
+      ],
+      "primary": [
+        {
+          "slot": "普攻",
+          "style": "寒冷 (聚寒成冰)",
+          "name": "普攻寒冷 (聚寒成冰)"
+        },
+        {
+          "slot": "技能",
+          "style": "寒冷 (聚寒成冰)",
+          "name": "技能寒冷 (聚寒成冰)"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "普攻",
+          "style": "玄冰剑刃",
+          "name": "玄冰剑刃"
+        }
+      ],
+      "description": "玄冰剑攻击敌人时，将能够短暂冰冻敌人 1.5 秒"
+    },
+    {
+      "id": "light_spear_ice_cone",
+      "name": "光枪冰锥",
+      "element": "冰",
+      "triggerSlots": [
+        "传承技",
+        "技能"
+      ],
+      "primary": [
+        {
+          "slot": "冲刺",
+          "style": "冰锥",
+          "name": "冲刺冰锥"
+        },
+        {
+          "slot": "传承技",
+          "style": "冰锥",
+          "name": "传承技冰锥"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "技能",
+          "style": "光枪",
+          "name": "技能光枪"
+        },
+        {
+          "slot": "传承技",
+          "style": "光枪",
+          "name": "传承技光枪"
+        }
+      ],
+      "description": "光枪插地时周围会出现冰锥，造成 600 伤害"
+    },
+    {
+      "id": "frozen_ice_cone",
+      "name": "冰冻冰锥",
+      "element": "冰",
+      "triggerSlots": [
+        "普攻",
+        "技能"
+      ],
+      "primary": [
+        {
+          "slot": "冲刺",
+          "style": "冰锥",
+          "name": "冲刺冰锥"
+        },
+        {
+          "slot": "传承技",
+          "style": "冰锥",
+          "name": "传承技冰锥"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "普攻",
+          "style": "寒冷 (聚寒成冰)",
+          "name": "普攻寒冷 (聚寒成冰)"
+        },
+        {
+          "slot": "技能",
+          "style": "寒冷 (聚寒成冰)",
+          "name": "技能寒冷 (聚寒成冰)"
+        }
+      ],
+      "description": "敌人被冰冻时，会有冰锥向周围蔓延，可造成 500 伤害"
+    },
+    {
+      "id": "hail_ice_cone",
+      "name": "冰爆冰锥",
+      "element": "冰",
+      "triggerSlots": [
+        "技能",
+        "传承技"
+      ],
+      "primary": [
+        {
+          "slot": "冲刺",
+          "style": "冰锥",
+          "name": "冲刺冰锥"
+        },
+        {
+          "slot": "传承技",
+          "style": "冰锥",
+          "name": "传承技冰锥"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "技能",
+          "style": "冰雹",
+          "name": "技能冰雹"
+        },
+        {
+          "slot": "传承技",
+          "style": "冰雹",
+          "name": "传承技冰雹"
+        }
+      ],
+      "description": "冰雹爆开时会在地面生成冰锥，造成 150 伤害"
+    },
+    {
+      "id": "endless_ice_spike",
+      "name": "无尽冰刺",
+      "element": "冰",
+      "triggerSlots": [
+        "召唤"
+      ],
+      "primary": [
+        {
+          "slot": "召唤",
+          "style": "冰刺",
+          "name": "召唤冰刺"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "普攻",
+          "style": "寒冷 (聚寒成冰)",
+          "name": "普攻寒冷 (聚寒成冰)"
+        },
+        {
+          "slot": "技能",
+          "style": "寒冷 (聚寒成冰)",
+          "name": "技能寒冷 (聚寒成冰)"
+        }
+      ],
+      "description": "冰刺会持续自动生成且索敌范围扩大，每个能造成基础冰刺 57% 的伤害"
+    },
+    {
+      "id": "ice_spike_regen",
+      "name": "冰刺再生",
+      "element": "冰",
+      "triggerSlots": [
+        "召唤"
+      ],
+      "primary": [
+        {
+          "slot": "召唤",
+          "style": "冰刺",
+          "name": "召唤冰刺"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "普攻",
+          "style": "寒冷 (寒气爆发)",
+          "name": "普攻寒冷 (寒气爆发)"
+        },
+        {
+          "slot": "技能",
+          "style": "寒冷 (寒气爆发)",
+          "name": "技能寒冷 (寒气爆发)"
+        }
+      ],
+      "description": "冰刺命中非寒冷状态的敌人时，自动再生成 3 个冰刺"
+    },
+    {
+      "id": "shadow_ice_spike",
+      "name": "影子冰刺",
+      "element": "冰",
+      "triggerSlots": [
+        "冲刺"
+      ],
+      "primary": [
+        {
+          "slot": "召唤",
+          "style": "冰刺",
+          "name": "召唤冰刺"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "冲刺",
+          "style": "影子",
+          "name": "冲刺影子"
+        }
+      ],
+      "description": "自身有冰刺时自身的影子也会有冰刺"
+    },
+    {
+      "id": "hail_ice_spike",
+      "name": "雹云冰刺",
+      "element": "冰",
+      "triggerSlots": [
+        "技能",
+        "传承技"
+      ],
+      "primary": [
+        {
+          "slot": "召唤",
+          "style": "冰刺",
+          "name": "召唤冰刺"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "技能",
+          "style": "冰雹",
+          "name": "技能冰雹"
+        },
+        {
+          "slot": "传承技",
+          "style": "冰雹",
+          "name": "传承技冰雹"
+        }
+      ],
+      "description": "冰雹云会同时落下冰刺，每个造成 300 伤害"
+    },
+    {
+      "id": "ice_thunder_cloud",
+      "name": "冰雷云雾",
+      "element": "冰",
+      "triggerSlots": [
+        "传承技"
+      ],
+      "primary": [
+        {
+          "slot": "技能",
+          "style": "冰雹",
+          "name": "技能冰雹"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "传承技",
+          "style": "闪电链",
+          "name": "电闪雷鸣"
+        }
+      ],
+      "description": "雷云将变为冰雷云雾，同时释放闪电链和冰雹，冰雹造成 300 伤害"
+    },
+    {
+      "id": "ice_light_array",
+      "name": "冰落光阵",
+      "element": "冰",
+      "triggerSlots": [
+        "技能",
+        "传承技"
+      ],
+      "primary": [
+        {
+          "slot": "技能",
+          "style": "冰雹",
+          "name": "技能冰雹"
+        },
+        {
+          "slot": "传承技",
+          "style": "冰雹",
+          "name": "传承技冰雹"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "召唤",
+          "style": "光阵",
+          "name": "召唤光阵"
+        }
+      ],
+      "description": "光阵附近冰雹的产生频率大幅增加"
+    },
+    {
+      "id": "ice_mine",
+      "name": "冰爆地雷",
+      "element": "冰",
+      "triggerSlots": [
+        "召唤"
+      ],
+      "primary": [
+        {
+          "slot": "技能",
+          "style": "冰雹",
+          "name": "技能冰雹"
+        },
+        {
+          "slot": "传承技",
+          "style": "冰雹",
+          "name": "传承技冰雹"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "召唤",
+          "style": "地雷",
+          "name": "放置地雷"
+        }
+      ],
+      "description": "地雷变为冰地雷，爆炸时将给敌人附加 4 层寒冷，并发射冰雹，每个造成 500 伤害"
+    },
+    {
+      "id": "ice_strike_sword",
+      "name": "冰击化剑",
+      "element": "冰",
+      "triggerSlots": [
+        "技能"
+      ],
+      "primary": [
+        {
+          "slot": "普攻",
+          "style": "玄冰剑刃",
+          "name": "玄冰剑刃"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "普攻",
+          "style": "寒冷 (寒气爆发)",
+          "name": "普攻寒冷 (寒气爆发)"
+        },
+        {
+          "slot": "技能",
+          "style": "寒冷 (寒气爆发)",
+          "name": "技能寒冷 (寒气爆发)"
+        }
+      ],
+      "description": "寒气爆发触发时将大幅增加玄冰剑的修复进度"
+    },
+    {
+      "id": "ice_sword_thrust",
+      "name": "冰剑刺击",
+      "element": "冰",
+      "triggerSlots": [
+        "普攻"
+      ],
+      "primary": [
+        {
+          "slot": "普攻",
+          "style": "玄冰剑刃",
+          "name": "玄冰剑刃"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "冲刺",
+          "style": "飞剑",
+          "name": "冲刺飞剑"
+        }
+      ],
+      "description": "玄冰剑在攻击完成后会再进行一次穿刺攻击"
+    },
+    {
+      "id": "light_blast_sword",
+      "name": "光爆玄冰",
+      "element": "冰",
+      "triggerSlots": [
+        "冲刺"
+      ],
+      "primary": [
+        {
+          "slot": "普攻",
+          "style": "玄冰剑刃",
+          "name": "玄冰剑刃"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "冲刺",
+          "style": "圣光标记",
+          "name": "圣光标记"
+        }
+      ],
+      "description": "圣光标记被引爆时可修复玄冰剑，玄冰剑攻击会引爆圣光标记"
+    },
+    {
+      "id": "lightning_shock",
+      "name": "闪电感电",
+      "element": "电",
+      "triggerSlots": [
+        "普攻",
+        "传承技",
+        "技能"
+      ],
+      "primary": [
+        {
+          "slot": "技能",
+          "style": "感电",
+          "name": "技能感电"
+        },
+        {
+          "slot": "传承技",
+          "style": "感电",
+          "name": "传承技感电"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "普攻",
+          "style": "闪电链",
+          "name": "普攻闪电"
+        },
+        {
+          "slot": "技能",
+          "style": "闪电链",
+          "name": "技能闪电"
+        },
+        {
+          "slot": "传承技",
+          "style": "闪电链",
+          "name": "电闪雷鸣"
+        }
+      ],
+      "description": "闪电链连接到处于感电状态的敌人会立即引发脉冲。"
+    },
+    {
+      "id": "pile_shock",
+      "name": "电桩感电",
+      "element": "电",
+      "triggerSlots": [
+        "传承技"
+      ],
+      "primary": [
+        {
+          "slot": "技能",
+          "style": "感电",
+          "name": "技能感电"
+        },
+        {
+          "slot": "传承技",
+          "style": "感电",
+          "name": "传承技感电"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "传承技",
+          "style": "电桩",
+          "name": "传承技电桩"
+        }
+      ],
+      "description": "电桩的电击在命中敌人 10 次后触发脉冲，造成 400 伤害"
+    },
+    {
+      "id": "blackhole_pulse",
+      "name": "黑洞脉冲",
+      "element": "电",
+      "triggerSlots": [
+        "传承技"
+      ],
+      "primary": [
+        {
+          "slot": "技能",
+          "style": "感电",
+          "name": "技能感电"
+        },
+        {
+          "slot": "传承技",
+          "style": "感电",
+          "name": "传承技感电"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "传承技",
+          "style": "黑洞",
+          "name": "传承技黑洞"
+        }
+      ],
+      "description": "黑洞出现和消失时都将引发脉冲，可造成 430 伤害。"
+    },
+    {
+      "id": "blade_pulse",
+      "name": "飞刃脉冲",
+      "element": "电",
+      "triggerSlots": [
+        "普攻"
+      ],
+      "primary": [
+        {
+          "slot": "技能",
+          "style": "感电",
+          "name": "技能感电"
+        },
+        {
+          "slot": "传承技",
+          "style": "感电",
+          "name": "传承技感电"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "普攻",
+          "style": "飞刃",
+          "name": "普攻飞刃"
+        }
+      ],
+      "description": "敌人被回收的 飞刃 命中 6 次后会激 脉冲，造成 400 伤害"
+    },
+    {
+      "id": "orb_lightning",
+      "name": "电球闪电",
+      "element": "电",
+      "triggerSlots": [
+        "召唤"
+      ],
+      "primary": [
+        {
+          "slot": "普攻",
+          "style": "闪电链",
+          "name": "普攻闪电"
+        },
+        {
+          "slot": "技能",
+          "style": "闪电链",
+          "name": "技能闪电"
+        },
+        {
+          "slot": "传承技",
+          "style": "闪电链",
+          "name": "电闪雷鸣"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "召唤",
+          "style": "电球",
+          "name": "环绕电球"
+        }
+      ],
+      "description": "电球命中敌人会产生闪电链连接周围敌人每次造成 260 伤害"
+    },
+    {
+      "id": "tentacle_lightning",
+      "name": "触手闪电",
+      "element": "电",
+      "triggerSlots": [
+        "召唤"
+      ],
+      "primary": [
+        {
+          "slot": "普攻",
+          "style": "闪电链",
+          "name": "普攻闪电"
+        },
+        {
+          "slot": "技能",
+          "style": "闪电链",
+          "name": "技能闪电"
+        },
+        {
+          "slot": "传承技",
+          "style": "闪电链",
+          "name": "电闪雷鸣"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "召唤",
+          "style": "触手",
+          "name": "召唤触手"
+        }
+      ],
+      "description": "暗影触手命中 3 次，可产生闪电链，每次连接造成 340 伤害"
+    },
+    {
+      "id": "light_spear_thunder",
+      "name": "光枪落雷",
+      "element": "电",
+      "triggerSlots": [
+        "传承技",
+        "技能"
+      ],
+      "primary": [
+        {
+          "slot": "冲刺",
+          "style": "落雷",
+          "name": "冲刺落雷"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "技能",
+          "style": "光枪",
+          "name": "技能光枪"
+        },
+        {
+          "slot": "传承技",
+          "style": "光枪",
+          "name": "传承技光枪"
+        }
+      ],
+      "description": "光枪插地时会出现落雷，可造成 1200 伤害"
+    },
+    {
+      "id": "orb_thunder",
+      "name": "电球落雷",
+      "element": "电",
+      "triggerSlots": [
+        "召唤"
+      ],
+      "primary": [
+        {
+          "slot": "冲刺",
+          "style": "落雷",
+          "name": "冲刺落雷"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "召唤",
+          "style": "电球",
+          "name": "环绕电球"
+        }
+      ],
+      "description": "电球命中敌人时会出现落雷，可造成 320 伤害"
+    },
+    {
+      "id": "thunder_judgment",
+      "name": "落雷惩戒",
+      "element": "电",
+      "triggerSlots": [
+        "普攻",
+        "技能"
+      ],
+      "primary": [
+        {
+          "slot": "冲刺",
+          "style": "落雷",
+          "name": "冲刺落雷"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "普攻",
+          "style": "影刺",
+          "name": "普攻影刺"
+        },
+        {
+          "slot": "技能",
+          "style": "影刺",
+          "name": "技能影刺"
+        }
+      ],
+      "description": "被打出过影子的敌人，攻击时会招致落雷可造成 900 伤害"
+    },
+    {
+      "id": "tracking_thunder",
+      "name": "追踪落雷",
+      "element": "电",
+      "triggerSlots": [
+        "冲刺"
+      ],
+      "primary": [
+        {
+          "slot": "冲刺",
+          "style": "落雷",
+          "name": "冲刺落雷"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "技能",
+          "style": "感电",
+          "name": "技能感电"
+        },
+        {
+          "slot": "传承技",
+          "style": "感电",
+          "name": "传承技感电"
+        }
+      ],
+      "description": "落雷会追踪感电的敌人且伤害提升 40%"
+    },
+    {
+      "id": "orb_launch",
+      "name": "电球发射",
+      "element": "电",
+      "triggerSlots": [
+        "召唤"
+      ],
+      "primary": [
+        {
+          "slot": "召唤",
+          "style": "电球",
+          "name": "环绕电球"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "普攻",
+          "style": "闪电链",
+          "name": "普攻闪电"
+        },
+        {
+          "slot": "技能",
+          "style": "闪电链",
+          "name": "技能闪电"
+        },
+        {
+          "slot": "传承技",
+          "style": "闪电链",
+          "name": "电闪雷鸣"
+        }
+      ],
+      "description": "电球碰撞敌人会引发爆炸，造成 400 伤害; 绕身结束后电球会射出，每个造成 1000 伤害"
+    },
+    {
+      "id": "shock_orb",
+      "name": "感电电球",
+      "element": "电",
+      "triggerSlots": [
+        "技能",
+        "传承技"
+      ],
+      "primary": [
+        {
+          "slot": "召唤",
+          "style": "电球",
+          "name": "环绕电球"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "技能",
+          "style": "感电",
+          "name": "技能感电"
+        },
+        {
+          "slot": "传承技",
+          "style": "感电",
+          "name": "传承技感电"
+        }
+      ],
+      "description": "敌人感电时，产生一个会跟踪敌人的电球，造成 500 伤害"
+    },
+    {
+      "id": "shadow_orb",
+      "name": "影子电球",
+      "element": "电",
+      "triggerSlots": [
+        "召唤"
+      ],
+      "primary": [
+        {
+          "slot": "召唤",
+          "style": "电球",
+          "name": "环绕电球"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "冲刺",
+          "style": "影子",
+          "name": "冲刺影子"
+        }
+      ],
+      "description": "生成电球时额外生成等量影子电球"
+    },
+    {
+      "id": "conductive_pile",
+      "name": "传导电桩",
+      "element": "电",
+      "triggerSlots": [
+        "传承技"
+      ],
+      "primary": [
+        {
+          "slot": "召唤",
+          "style": "电球",
+          "name": "环绕电球"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "传承技",
+          "style": "电桩",
+          "name": "传承技电桩"
+        }
+      ],
+      "description": "激活两个及以上电桩时，会召唤电球在电桩之间传递，每个造成 1200 伤害"
+    },
+    {
+      "id": "pile_chain",
+      "name": "电桩链接",
+      "element": "电",
+      "triggerSlots": [
+        "传承技"
+      ],
+      "primary": [
+        {
+          "slot": "传承技",
+          "style": "电桩",
+          "name": "传承技电桩"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "普攻",
+          "style": "闪电链",
+          "name": "普攻闪电"
+        },
+        {
+          "slot": "技能",
+          "style": "闪电链",
+          "name": "技能闪电"
+        }
+      ],
+      "description": "距离相近的电桩之间会周期性形成电网，对命中的敌人造成 150 伤害"
+    },
+    {
+      "id": "light_array_pile",
+      "name": "光阵电桩",
+      "element": "电",
+      "triggerSlots": [
+        "召唤"
+      ],
+      "primary": [
+        {
+          "slot": "传承技",
+          "style": "电桩",
+          "name": "传承技电桩"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "召唤",
+          "style": "光阵",
+          "name": "召唤光阵"
+        }
+      ],
+      "description": "光阵展开时额外召唤两座电桩，持续 8 秒，每次电击造成 150 伤害；在光阵内电桩的电击频率加快 50%"
+    },
+    {
+      "id": "electrolysis_poison",
+      "name": "电解化毒",
+      "element": "毒",
+      "triggerSlots": [
+        "普攻",
+        "传承技",
+        "技能"
+      ],
+      "primary": [
+        {
+          "slot": "普攻",
+          "style": "中毒",
+          "name": "普攻淬毒"
+        },
+        {
+          "slot": "技能",
+          "style": "中毒",
+          "name": "技能毒环"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "普攻",
+          "style": "闪电链",
+          "name": "普攻闪电"
+        },
+        {
+          "slot": "技能",
+          "style": "闪电链",
+          "name": "技能闪电"
+        },
+        {
+          "slot": "传承技",
+          "style": "闪电链",
+          "name": "电闪雷鸣"
+        }
+      ],
+      "description": "闪电链可使敌人中毒"
+    },
+    {
+      "id": "toxic_slime",
+      "name": "剧毒史莱姆",
+      "element": "毒",
+      "triggerSlots": [
+        "召唤"
+      ],
+      "primary": [
+        {
+          "slot": "普攻",
+          "style": "中毒",
+          "name": "普攻淬毒"
+        },
+        {
+          "slot": "技能",
+          "style": "中毒",
+          "name": "技能毒环"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "召唤",
+          "style": "史莱姆",
+          "name": "召唤史莱姆"
+        }
+      ],
+      "description": "史莱姆可使敌人中毒"
+    },
+    {
+      "id": "venom_catalysis",
+      "name": "毒液催化",
+      "element": "毒",
+      "triggerSlots": [
+        "传承技",
+        "技能"
+      ],
+      "primary": [
+        {
+          "slot": "普攻",
+          "style": "中毒",
+          "name": "普攻淬毒"
+        },
+        {
+          "slot": "技能",
+          "style": "中毒",
+          "name": "技能毒环"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "技能",
+          "style": "毒液",
+          "name": "技能毒液"
+        },
+        {
+          "slot": "传承技",
+          "style": "毒液",
+          "name": "传承技毒液"
+        }
+      ],
+      "description": "毒液对中毒敌人造成伤害时，减少 0.3 秒中毒敌人的毒发时间"
+    },
+    {
+      "id": "split_slime",
+      "name": "分裂史莱姆",
+      "element": "毒",
+      "triggerSlots": [
+        "召唤"
+      ],
+      "primary": [
+        {
+          "slot": "召唤",
+          "style": "史莱姆",
+          "name": "召唤史莱姆"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "普攻",
+          "style": "火精灵",
+          "name": "火精灵助战"
+        }
+      ],
+      "description": "史莱姆可以分裂"
+    },
+    {
+      "id": "possession_slime",
+      "name": "附身史莱姆",
+      "element": "毒",
+      "triggerSlots": [
+        "召唤"
+      ],
+      "primary": [
+        {
+          "slot": "召唤",
+          "style": "史莱姆",
+          "name": "召唤史莱姆"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "冲刺",
+          "style": "圣光标记",
+          "name": "圣光标记"
+        }
+      ],
+      "description": "史莱姆命中敌人后，黏在其身上，每秒造成 580 伤害直到消失"
+    },
+    {
+      "id": "venom_slime",
+      "name": "毒液史莱姆",
+      "element": "毒",
+      "triggerSlots": [
+        "召唤"
+      ],
+      "primary": [
+        {
+          "slot": "召唤",
+          "style": "史莱姆",
+          "name": "召唤史莱姆"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "技能",
+          "style": "毒液",
+          "name": "技能毒液"
+        },
+        {
+          "slot": "传承技",
+          "style": "毒液",
+          "name": "传承技毒液"
+        }
+      ],
+      "description": "史莱姆在每次落地时将生成毒液，每 0.5 秒造成 140 伤害"
+    },
+    {
+      "id": "poison_bomb",
+      "name": "中毒毒弹",
+      "element": "毒",
+      "triggerSlots": [
+        "普攻",
+        "技能"
+      ],
+      "primary": [
+        {
+          "slot": "冲刺",
+          "style": "毒弹",
+          "name": "冲刺毒弹"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "普攻",
+          "style": "中毒",
+          "name": "普攻淬毒"
+        },
+        {
+          "slot": "技能",
+          "style": "中毒",
+          "name": "技能毒环"
+        }
+      ],
+      "description": "处于中毒状态的敌人在毒发时会掉落毒弹，可造成 1720 伤害"
+    },
+    {
+      "id": "split_poison_bomb",
+      "name": "分裂毒弹",
+      "element": "毒",
+      "triggerSlots": [
+        "冲刺"
+      ],
+      "primary": [
+        {
+          "slot": "冲刺",
+          "style": "毒弹",
+          "name": "冲刺毒弹"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "普攻",
+          "style": "火精灵",
+          "name": "火精灵助战"
+        }
+      ],
+      "description": "毒弹落地时会分裂出 2 个，每个可造成 430 伤害"
+    },
+    {
+      "id": "puffer_poison_bomb",
+      "name": "河豚毒弹",
+      "element": "毒",
+      "triggerSlots": [
+        "传承技"
+      ],
+      "primary": [
+        {
+          "slot": "冲刺",
+          "style": "毒弹",
+          "name": "冲刺毒弹"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "传承技",
+          "style": "毒泡河豚",
+          "name": "传承技河豚"
+        }
+      ],
+      "description": "河豚产生毒泡时，也会喷出毒弹，造成 250 伤害"
+    },
+    {
+      "id": "venom_residue",
+      "name": "毒液残留",
+      "element": "毒",
+      "triggerSlots": [
+        "技能",
+        "传承技"
+      ],
+      "primary": [
+        {
+          "slot": "技能",
+          "style": "毒液",
+          "name": "技能毒液"
+        },
+        {
+          "slot": "传承技",
+          "style": "毒液",
+          "name": "传承技毒液"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "冲刺",
+          "style": "毒弹",
+          "name": "冲刺毒弹"
+        }
+      ],
+      "description": "毒弹爆炸后残留毒液，每 0.5 秒造成 160 伤害."
+    },
+    {
+      "id": "mine_venom",
+      "name": "地雷毒液",
+      "element": "毒",
+      "triggerSlots": [
+        "召唤"
+      ],
+      "primary": [
+        {
+          "slot": "技能",
+          "style": "毒液",
+          "name": "技能毒液"
+        },
+        {
+          "slot": "传承技",
+          "style": "毒液",
+          "name": "传承技毒液"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "召唤",
+          "style": "地雷",
+          "name": "放置地雷"
+        }
+      ],
+      "description": "地雷爆炸时会出现毒液，每 0.5 秒造成 160 伤害."
+    },
+    {
+      "id": "gas_poison_bubble",
+      "name": "燃气毒泡",
+      "element": "毒",
+      "triggerSlots": [
+        "传承技"
+      ],
+      "primary": [
+        {
+          "slot": "传承技",
+          "style": "毒泡河豚",
+          "name": "传承技河豚"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "普攻",
+          "style": "燃烧",
+          "name": "普攻燃烧"
+        },
+        {
+          "slot": "技能",
+          "style": "燃烧",
+          "name": "技能燃烧"
+        },
+        {
+          "slot": "冲刺",
+          "style": "燃烧",
+          "name": "冲刺燃烧"
+        }
+      ],
+      "description": "燃烧敌人在毒泡中增加 50% 升空速度，额外受到每秒 800 的伤害"
+    },
+    {
+      "id": "bubble_venom",
+      "name": "泡状毒液",
+      "element": "毒",
+      "triggerSlots": [
+        "技能"
+      ],
+      "primary": [
+        {
+          "slot": "传承技",
+          "style": "毒泡河豚",
+          "name": "传承技河豚"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "技能",
+          "style": "毒液",
+          "name": "技能毒液"
+        }
+      ],
+      "description": "毒液会周期性地产生毒泡，每个造成 90 伤害"
+    },
+    {
+      "id": "violent_tentacle",
+      "name": "暴躁触手",
+      "element": "暗",
+      "triggerSlots": [
+        "召唤"
+      ],
+      "primary": [
+        {
+          "slot": "召唤",
+          "style": "触手",
+          "name": "召唤触手"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "普攻",
+          "style": "影刺",
+          "name": "普攻影刺"
+        },
+        {
+          "slot": "技能",
+          "style": "影刺",
+          "name": "技能影刺"
+        }
+      ],
+      "description": "暗影触手持续时间减少 8 秒，但结束时的一击伤害提升 180% 并可破霸体."
+    },
+    {
+      "id": "tentacle_devour",
+      "name": "触手吞噬",
+      "element": "暗",
+      "triggerSlots": [
+        "召唤"
+      ],
+      "primary": [
+        {
+          "slot": "召唤",
+          "style": "触手",
+          "name": "召唤触手"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "传承技",
+          "style": "闪光",
+          "name": "传承技闪光"
+        }
+      ],
+      "description": "暗影触手会吞噬被致盲的普通敌人；或对被致盲的高阶敌人造成基于其最大生命值百分比的伤害"
+    },
+    {
+      "id": "shadow_chain_pull",
+      "name": "影链牵引",
+      "element": "暗",
+      "triggerSlots": [
+        "普攻",
+        "技能"
+      ],
+      "primary": [
+        {
+          "slot": "召唤",
+          "style": "触手",
+          "name": "召唤触手"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "普攻",
+          "style": "暗影标记",
+          "name": "普攻影标"
+        },
+        {
+          "slot": "技能",
+          "style": "暗影标记",
+          "name": "技能影标"
+        }
+      ],
+      "description": "暗影链条在传递伤害时会令相连的非霸体敌人进入受击状态，并朝攻击者位移"
+    },
+    {
+      "id": "shadow_blade_dash",
+      "name": "影刃冲刺",
+      "element": "暗",
+      "triggerSlots": [
+        "冲刺"
+      ],
+      "primary": [
+        {
+          "slot": "冲刺",
+          "style": "影子",
+          "name": "冲刺影子"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "召唤",
+          "style": "刃环",
+          "name": "召唤刃环"
+        }
+      ],
+      "description": "影子冲刺升级为影刃冲刺，伤害提升 110%"
+    },
+    {
+      "id": "probability_shadow_blast",
+      "name": "概率影爆",
+      "element": "暗",
+      "triggerSlots": [
+        "冲刺"
+      ],
+      "primary": [
+        {
+          "slot": "冲刺",
+          "style": "影子",
+          "name": "冲刺影子"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "传承技",
+          "style": "黑洞",
+          "name": "传承技黑洞"
+        }
+      ],
+      "description": "自身影子有 50% 的概率引发影爆，造成 700 伤害"
+    },
+    {
+      "id": "ice_shadow_sword",
+      "name": "冰影双剑",
+      "element": "暗",
+      "triggerSlots": [
+        "普攻"
+      ],
+      "primary": [
+        {
+          "slot": "冲刺",
+          "style": "影子",
+          "name": "冲刺影子"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "普攻",
+          "style": "玄冰剑刃",
+          "name": "玄冰剑刃"
+        }
+      ],
+      "description": "玄冰剑攻击时，召唤暗影玄冰剑进行同样攻击"
+    },
+    {
+      "id": "shadow_blade_recycle",
+      "name": "影刃回收",
+      "element": "暗",
+      "triggerSlots": [
+        "普攻"
+      ],
+      "primary": [
+        {
+          "slot": "冲刺",
+          "style": "影子",
+          "name": "冲刺影子"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "普攻",
+          "style": "飞刃",
+          "name": "普攻飞刃"
+        }
+      ],
+      "description": "回收飞刃时，还会召唤暗影飞刃并回收，每个造成 150 伤害"
+    },
+    {
+      "id": "shadow_thrust",
+      "name": "影子穿刺",
+      "element": "暗",
+      "triggerSlots": [
+        "冲刺"
+      ],
+      "primary": [
+        {
+          "slot": "普攻",
+          "style": "影刺",
+          "name": "普攻影刺"
+        },
+        {
+          "slot": "技能",
+          "style": "影刺",
+          "name": "技能影刺"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "冲刺",
+          "style": "影子",
+          "name": "冲刺影子"
+        }
+      ],
+      "description": "自身影子变成影刺，造成 340 伤害"
+    },
+    {
+      "id": "shadow_transform",
+      "name": "影子转化",
+      "element": "暗",
+      "triggerSlots": [
+        "普攻",
+        "技能"
+      ],
+      "primary": [
+        {
+          "slot": "普攻",
+          "style": "影刺",
+          "name": "普攻影刺"
+        },
+        {
+          "slot": "技能",
+          "style": "影刺",
+          "name": "技能影刺"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "召唤",
+          "style": "地雷",
+          "name": "放置地雷"
+        }
+      ],
+      "description": "大幅增加敌人影子的持续时间。附近有敌人时，影子会直接变为影刺，并且伤害提升 110%"
+    },
+    {
+      "id": "tentacle_collapse",
+      "name": "触手坍塌",
+      "element": "暗",
+      "triggerSlots": [
+        "召唤"
+      ],
+      "primary": [
+        {
+          "slot": "传承技",
+          "style": "黑洞",
+          "name": "传承技黑洞"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "召唤",
+          "style": "触手",
+          "name": "召唤触手"
+        }
+      ],
+      "description": "召唤暗影触手时出现黑洞，每秒造成 330 伤害，冷却时间 12 秒"
+    },
+    {
+      "id": "blackhole_slow",
+      "name": "黑洞减速",
+      "element": "暗",
+      "triggerSlots": [
+        "传承技"
+      ],
+      "primary": [
+        {
+          "slot": "传承技",
+          "style": "黑洞",
+          "name": "传承技黑洞"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "普攻",
+          "style": "寒冷 (聚寒成冰)",
+          "name": "普攻寒冷 (聚寒成冰)"
+        },
+        {
+          "slot": "技能",
+          "style": "寒冷 (聚寒成冰)",
+          "name": "技能寒冷 (聚寒成冰)"
+        }
+      ],
+      "description": "黑洞范围内的所有敌人以及飞行物都会被减速，但持续时间减少 2 秒，伤害提升 100%"
+    },
+    {
+      "id": "shadow_thorn_attract",
+      "name": "影刺吸附",
+      "element": "暗",
+      "triggerSlots": [
+        "普攻",
+        "技能"
+      ],
+      "primary": [
+        {
+          "slot": "传承技",
+          "style": "黑洞",
+          "name": "传承技黑洞"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "普攻",
+          "style": "影刺",
+          "name": "普攻影刺"
+        },
+        {
+          "slot": "技能",
+          "style": "影刺",
+          "name": "技能影刺"
+        }
+      ],
+      "description": "影刺爆发前会吸引周围敌人。影刺造成的伤害增加 90%"
+    },
+    {
+      "id": "active_blackhole",
+      "name": "活性黑洞",
+      "element": "暗",
+      "triggerSlots": [
+        "传承技"
+      ],
+      "primary": [
+        {
+          "slot": "传承技",
+          "style": "黑洞",
+          "name": "传承技黑洞"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "召唤",
+          "style": "史莱姆",
+          "name": "召唤史莱姆"
+        }
+      ],
+      "description": "黑洞会周期性将附近敌人抛起"
+    },
+    {
+      "id": "blackhole_link",
+      "name": "黑洞链接",
+      "element": "暗",
+      "triggerSlots": [
+        "传承技"
+      ],
+      "primary": [
+        {
+          "slot": "普攻",
+          "style": "暗影标记",
+          "name": "普攻影标"
+        },
+        {
+          "slot": "技能",
+          "style": "暗影标记",
+          "name": "技能影标"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "传承技",
+          "style": "黑洞",
+          "name": "传承技黑洞"
+        }
+      ],
+      "description": "在黑洞中的敌人会被持续施加暗影链条，且这些链条的伤害传导比例提升 10%"
+    },
+    {
+      "id": "shadow_chain_pile",
+      "name": "影链电桩",
+      "element": "暗",
+      "triggerSlots": [
+        "传承技"
+      ],
+      "primary": [
+        {
+          "slot": "普攻",
+          "style": "暗影标记",
+          "name": "普攻影标"
+        },
+        {
+          "slot": "技能",
+          "style": "暗影标记",
+          "name": "技能影标"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "传承技",
+          "style": "电桩",
+          "name": "传承技电桩"
+        }
+      ],
+      "description": "电桩附带暗影链条，可攻击电桩以传导伤害。当场上只有两个暗影标记时，传导伤害比例提升 20%"
+    },
+    {
+      "id": "thunder_light_spear",
+      "name": "落雷光枪",
+      "element": "光",
+      "triggerSlots": [
+        "冲刺"
+      ],
+      "primary": [
+        {
+          "slot": "技能",
+          "style": "光枪",
+          "name": "技能光枪"
+        },
+        {
+          "slot": "传承技",
+          "style": "光枪",
+          "name": "传承技光枪"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "冲刺",
+          "style": "落雷",
+          "name": "冲刺落雷"
+        }
+      ],
+      "description": "落雷命中敌人时，会出现光枪射向被命中者，可造成 340 伤害"
+    },
+    {
+      "id": "flash_light_spear",
+      "name": "闪光光枪",
+      "element": "光",
+      "triggerSlots": [
+        "传承技"
+      ],
+      "primary": [
+        {
+          "slot": "技能",
+          "style": "光枪",
+          "name": "技能光枪"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "传承技",
+          "style": "闪光",
+          "name": "传承技闪光"
+        }
+      ],
+      "description": "出现闪光时，向其发射光枪，可造成 900 伤害。光枪命中致盲敌人时，增加 450 伤害"
+    },
+    {
+      "id": "fire_bomb_flash",
+      "name": "火弹闪光",
+      "element": "光",
+      "triggerSlots": [
+        "技能",
+        "传承技"
+      ],
+      "primary": [
+        {
+          "slot": "传承技",
+          "style": "闪光",
+          "name": "传承技闪光"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "技能",
+          "style": "火弹",
+          "name": "技能火弹"
+        }
+      ],
+      "description": "闪光会在火弹出现时跟着出现，致盲敌人 3 秒"
+    },
+    {
+      "id": "mark_flash",
+      "name": "标记闪光",
+      "element": "光",
+      "triggerSlots": [
+        "冲刺"
+      ],
+      "primary": [
+        {
+          "slot": "传承技",
+          "style": "闪光",
+          "name": "传承技闪光"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "冲刺",
+          "style": "圣光标记",
+          "name": "圣光标记"
+        }
+      ],
+      "description": "有圣光标记的敌人攻击或受击时有概率引发闪光"
+    },
+    {
+      "id": "light_spear_flash",
+      "name": "光枪闪光",
+      "element": "光",
+      "triggerSlots": [
+        "技能",
+        "传承技"
+      ],
+      "primary": [
+        {
+          "slot": "传承技",
+          "style": "闪光",
+          "name": "传承技闪光"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "技能",
+          "style": "光枪",
+          "name": "技能光枪"
+        }
+      ],
+      "description": "光枪插地时会激发闪光，致盲敌人 3 秒"
+    },
+    {
+      "id": "shadow_chain_blind",
+      "name": "影链致盲",
+      "element": "光",
+      "triggerSlots": [
+        "普攻",
+        "技能"
+      ],
+      "primary": [
+        {
+          "slot": "传承技",
+          "style": "闪光",
+          "name": "传承技闪光"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "普攻",
+          "style": "暗影标记",
+          "name": "普攻影标"
+        },
+        {
+          "slot": "技能",
+          "style": "暗影标记",
+          "name": "技能影标"
+        }
+      ],
+      "description": "暗影链条激发时，链接的敌人将被短暂致盲"
+    },
+    {
+      "id": "light_wave_transmit",
+      "name": "光波传递",
+      "element": "光",
+      "triggerSlots": [
+        "普攻"
+      ],
+      "primary": [
+        {
+          "slot": "普攻",
+          "style": "光波",
+          "name": "普攻光波"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "技能",
+          "style": "闪电链",
+          "name": "技能闪电"
+        },
+        {
+          "slot": "传承技",
+          "style": "闪电链",
+          "name": "电闪雷鸣"
+        }
+      ],
+      "description": "光波命中敌人会向后传递，每次伤害衰减 20%"
+    },
+    {
+      "id": "light_wave_fast_charge",
+      "name": "光波快充",
+      "element": "光",
+      "triggerSlots": [
+        "普攻"
+      ],
+      "primary": [
+        {
+          "slot": "普攻",
+          "style": "光波",
+          "name": "普攻光波"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "召唤",
+          "style": "光阵",
+          "name": "召唤光阵"
+        }
+      ],
+      "description": "在光阵范围内光波需要的充能时间减少 2.5 秒"
+    },
+    {
+      "id": "light_spear_wave",
+      "name": "光枪光波",
+      "element": "光",
+      "triggerSlots": [
+        "技能",
+        "传承技"
+      ],
+      "primary": [
+        {
+          "slot": "普攻",
+          "style": "光波",
+          "name": "普攻光波"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "技能",
+          "style": "光枪",
+          "name": "技能光枪"
+        },
+        {
+          "slot": "传承技",
+          "style": "光枪",
+          "name": "传承技光枪"
+        }
+      ],
+      "description": "光枪命中敌人时会激发光波，伤害由光枪造成的伤害计算"
+    },
+    {
+      "id": "light_array_attract",
+      "name": "光阵吸引",
+      "element": "光",
+      "triggerSlots": [
+        "召唤"
+      ],
+      "primary": [
+        {
+          "slot": "召唤",
+          "style": "光阵",
+          "name": "召唤光阵"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "传承技",
+          "style": "黑洞",
+          "name": "传承技黑洞"
+        }
+      ],
+      "description": "光阵中心会持续吸引附近的敌人，伤害增幅提升 50 %"
+    },
+    {
+      "id": "lasting_light_array",
+      "name": "持久光阵",
+      "element": "光",
+      "triggerSlots": [
+        "传承技"
+      ],
+      "primary": [
+        {
+          "slot": "召唤",
+          "style": "光阵",
+          "name": "召唤光阵"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "传承技",
+          "style": "闪光",
+          "name": "传承技闪光"
+        }
+      ],
+      "description": "光阵范围内的闪光可使光阵持续时间延长 3 秒"
+    },
+    {
+      "id": "holy_mark",
+      "name": "至圣标记",
+      "element": "光",
+      "triggerSlots": [
+        "普攻"
+      ],
+      "primary": [
+        {
+          "slot": "冲刺",
+          "style": "圣光标记",
+          "name": "圣光标记"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "普攻",
+          "style": "光波",
+          "name": "普攻光波"
+        }
+      ],
+      "description": "光波可触发圣光标记，并使圣光标记额外造成 110% 伤害"
+    },
+    {
+      "id": "ice_spike_mark",
+      "name": "冰刺标记",
+      "element": "光",
+      "triggerSlots": [
+        "召唤"
+      ],
+      "primary": [
+        {
+          "slot": "冲刺",
+          "style": "圣光标记",
+          "name": "圣光标记"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "召唤",
+          "style": "冰刺",
+          "name": "召唤冰刺"
+        }
+      ],
+      "description": "冰刺命中敌人时使其获得圣光标记并使圣光标记爆炸，造成 200 伤害"
+    },
+    {
+      "id": "mark_light_array",
+      "name": "标记光阵",
+      "element": "光",
+      "triggerSlots": [
+        "召唤"
+      ],
+      "primary": [
+        {
+          "slot": "冲刺",
+          "style": "圣光标记",
+          "name": "圣光标记"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "召唤",
+          "style": "光阵",
+          "name": "召唤光阵"
+        }
+      ],
+      "description": "光阵会对其中的敌人持续施加圣光标记"
+    },
+    {
+      "id": "bloodthirsty_flying_sword",
+      "name": "嗜血飞剑",
+      "element": "刃",
+      "triggerSlots": [
+        "冲刺"
+      ],
+      "primary": [
+        {
+          "slot": "冲刺",
+          "style": "飞剑",
+          "name": "冲刺飞剑"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "普攻",
+          "style": "撕裂",
+          "name": "普攻撕裂"
+        },
+        {
+          "slot": "技能",
+          "style": "撕裂",
+          "name": "技能撕裂"
+        }
+      ],
+      "description": "飞剑命中被撕裂的敌人时额外造成 700 伤害"
+    },
+    {
+      "id": "dual_flying_sword",
+      "name": "双向飞剑",
+      "element": "刃",
+      "triggerSlots": [
+        "冲刺"
+      ],
+      "primary": [
+        {
+          "slot": "冲刺",
+          "style": "飞剑",
+          "name": "冲刺飞剑"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "普攻",
+          "style": "火精灵",
+          "name": "火精灵助战"
+        }
+      ],
+      "description": "飞剑将从两侧出现，基础伤害增加 340"
+    },
+    {
+      "id": "anti_shadow_thorn",
+      "name": "针对影刺",
+      "element": "刃",
+      "triggerSlots": [
+        "普攻",
+        "技能"
+      ],
+      "primary": [
+        {
+          "slot": "普攻",
+          "style": "撕裂",
+          "name": "普攻撕裂"
+        },
+        {
+          "slot": "技能",
+          "style": "撕裂",
+          "name": "技能撕裂"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "普攻",
+          "style": "影刺",
+          "name": "普攻影刺"
+        },
+        {
+          "slot": "技能",
+          "style": "影刺",
+          "name": "技能影刺"
+        }
+      ],
+      "description": "撕裂敌人被影刺命中时会额外受到 1000 伤害，并结束撕裂"
+    },
+    {
+      "id": "tear_light_array",
+      "name": "撕裂光阵",
+      "element": "刃",
+      "triggerSlots": [
+        "普攻",
+        "技能"
+      ],
+      "primary": [
+        {
+          "slot": "普攻",
+          "style": "撕裂",
+          "name": "普攻撕裂"
+        },
+        {
+          "slot": "技能",
+          "style": "撕裂",
+          "name": "技能撕裂"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "召唤",
+          "style": "光阵",
+          "name": "召唤光阵"
+        }
+      ],
+      "description": "光阵内敌人所受撕裂伤害提升 100%"
+    },
+    {
+      "id": "execute_storm",
+      "name": "斩杀风暴",
+      "element": "刃",
+      "triggerSlots": [
+        "普攻",
+        "技能"
+      ],
+      "primary": [
+        {
+          "slot": "普攻",
+          "style": "撕裂",
+          "name": "普攻撕裂"
+        },
+        {
+          "slot": "技能",
+          "style": "撕裂",
+          "name": "技能撕裂"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "技能",
+          "style": "刀刃风暴",
+          "name": "技能风暴"
+        },
+        {
+          "slot": "传承技",
+          "style": "刀刃风暴",
+          "name": "传承技风暴"
+        }
+      ],
+      "description": "撕裂斩杀敌人时，在其位置生成短暂的刀刃风暴，造成 350 伤害"
+    },
+    {
+      "id": "summon_boomerang_blade",
+      "name": "召唤回旋刃",
+      "element": "刃",
+      "triggerSlots": [
+        "召唤"
+      ],
+      "primary": [
+        {
+          "slot": "召唤",
+          "style": "刃环",
+          "name": "召唤刃环"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "冲刺",
+          "style": "飞剑",
+          "name": "冲刺飞剑"
+        }
+      ],
+      "description": "刃环升级为回旋刃，自动飞向敌人并切割每次造成 540 伤害"
+    },
+    {
+      "id": "bloodthirsty_blade_ring",
+      "name": "嗜血刃环",
+      "element": "刃",
+      "triggerSlots": [
+        "召唤"
+      ],
+      "primary": [
+        {
+          "slot": "召唤",
+          "style": "刃环",
+          "name": "召唤刃环"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "普攻",
+          "style": "撕裂",
+          "name": "普攻撕裂"
+        },
+        {
+          "slot": "技能",
+          "style": "撕裂",
+          "name": "技能撕裂"
+        }
+      ],
+      "description": "刃环命中被撕裂的敌人时额外造成 500 伤害"
+    },
+    {
+      "id": "continuous_blade_ring",
+      "name": "连续刃环",
+      "element": "刃",
+      "triggerSlots": [
+        "技能"
+      ],
+      "primary": [
+        {
+          "slot": "召唤",
+          "style": "刃环",
+          "name": "召唤刃环"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "技能",
+          "style": "中毒",
+          "name": "技能毒环"
+        }
+      ],
+      "description": "有毒环时，靠近敌人刃环会持续出现，每次造成 130 伤害"
+    },
+    {
+      "id": "flying_blade_ring",
+      "name": "飞刃回环",
+      "element": "刃",
+      "triggerSlots": [
+        "普攻"
+      ],
+      "primary": [
+        {
+          "slot": "召唤",
+          "style": "刃环",
+          "name": "召唤刃环"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "普攻",
+          "style": "飞刃",
+          "name": "普攻飞刃"
+        }
+      ],
+      "description": "飞刃在收回时每命中敌人 10 次，召唤一个造成 600 伤害的刃环"
+    },
+    {
+      "id": "bloodthirsty_storm",
+      "name": "嗜血风暴",
+      "element": "刃",
+      "triggerSlots": [
+        "传承技",
+        "技能"
+      ],
+      "primary": [
+        {
+          "slot": "技能",
+          "style": "刀刃风暴",
+          "name": "技能风暴"
+        },
+        {
+          "slot": "传承技",
+          "style": "刀刃风暴",
+          "name": "传承技风暴"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "普攻",
+          "style": "撕裂",
+          "name": "普攻撕裂"
+        },
+        {
+          "slot": "技能",
+          "style": "撕裂",
+          "name": "技能撕裂"
+        }
+      ],
+      "description": "刀刃风暴命中被撕裂的敌人时额外造成 100 伤害"
+    },
+    {
+      "id": "blackhole_blade",
+      "name": "黑洞刀刃",
+      "element": "刃",
+      "triggerSlots": [
+        "传承技"
+      ],
+      "primary": [
+        {
+          "slot": "技能",
+          "style": "刀刃风暴",
+          "name": "技能风暴"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "传承技",
+          "style": "黑洞",
+          "name": "传承技黑洞"
+        }
+      ],
+      "description": "刀刃风暴会在黑洞周围出现，每次切割造成 60 伤害"
+    },
+    {
+      "id": "teleport_flying_blade",
+      "name": "传送飞刃",
+      "element": "刃",
+      "triggerSlots": [
+        "普攻"
+      ],
+      "primary": [
+        {
+          "slot": "普攻",
+          "style": "飞刃",
+          "name": "普攻飞刃"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "冲刺",
+          "style": "飞剑",
+          "name": "冲刺飞剑"
+        }
+      ],
+      "description": "回收飞刃时，飞刃有 30% 概率从传送门中重新召唤"
+    },
+    {
+      "id": "thunder_flying_blade",
+      "name": "落雷飞刃",
+      "element": "刃",
+      "triggerSlots": [
+        "冲刺"
+      ],
+      "primary": [
+        {
+          "slot": "普攻",
+          "style": "飞刃",
+          "name": "普攻飞刃"
+        }
+      ],
+      "secondary": [
+        {
+          "slot": "冲刺",
+          "style": "落雷",
+          "name": "冲刺落雷"
+        }
+      ],
+      "description": "落雷还会在落地处召唤 3 支飞刃，每个造成 170 伤害"
+    }
+  ]
+}

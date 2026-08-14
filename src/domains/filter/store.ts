@@ -15,7 +15,7 @@ import type {
   ReadOnlyFilterState,
 } from './types.ts';
 import { applyFilter } from './service.ts';
-import { getSkillInfoList } from '../skill/repository.ts';
+import { getSkillIndex } from '../skill/repository.ts';
 
 /**
  * 默认流派复选框状态
@@ -32,7 +32,7 @@ const defaultTriggerCheckboxes: TriggerCheckboxState = {
   普攻: true,
   技能: true,
   冲刺: true,
-  传承: true,
+  传承技: true,
   召唤: true,
 };
 
@@ -73,17 +73,17 @@ export const useFilterStore = defineStore('filter', () => {
    * 筛选结果
    */
   const filterResult: ComputedRef<FilterResult> = computed(() => {
-    const skills = getSkillInfoList().value;
+    const strategies = getSkillIndex().value?.strategies ?? [];
     const state: FilterState = {
       attribute: attribute.value,
       sect: sect.value,
       sectCheckboxes: { ...sectCheckboxes },
       triggerCheckboxes: { ...triggerCheckboxes },
     };
-    const filteredSkills = applyFilter(skills, state);
+    const filteredStrategies = applyFilter(strategies, state);
     return {
-      skills: filteredSkills,
-      count: filteredSkills.length,
+      skills: filteredStrategies,
+      count: filteredStrategies.length,
     };
   });
 

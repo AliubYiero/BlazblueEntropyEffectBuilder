@@ -148,13 +148,13 @@
 						<div class="skill-sects">
 							<el-tag size="small">
 								<span
-									:class="['element-dot', `element-dot--${styleMapper[skill.mainAttribute]}`]"></span>
-								{{ skill.mainSect }}
+									:class="['element-dot', `element-dot--${styleMapper[sectPairOf(skill).primaryAttribute]}`]"></span>
+								{{ sectPairOf(skill).primaryStyle }}
 							</el-tag>
 							<el-tag size="small">
 								<span
-									:class="['element-dot', `element-dot--${styleMapper[skill.secondAttribute]}`]"></span>
-								{{ skill.secondSect }}
+									:class="['element-dot', `element-dot--${styleMapper[sectPairOf(skill).secondaryAttribute]}`]"></span>
+								{{ sectPairOf(skill).secondaryStyle }}
 							</el-tag>
 						</div>
 						<div class="skill-desc">{{ skill.description }}</div>
@@ -173,9 +173,9 @@ import { computed, ref } from 'vue';
 import type { Trigger } from '../../interfaces/Trigger.ts';
 import type { Attribute } from '../../interfaces/Attribute.ts';
 import { attributeList } from '../../domains/config/index.ts';
-import { filterByTrigger } from '../../domains/skill/repository.ts';
+import { getSkillIndex, getStrategySectPair } from '../../domains/skill/repository.ts';
 import { useBuilderStore } from '../../domains/builder/index.ts';
-import type { SkillInfo } from '../../core/data/types.ts';
+import type { DualStrategyInfo } from '../../core/data/types.ts';
 
 const props = defineProps<{
 	triggerName: Trigger;
@@ -189,31 +189,34 @@ const builderStore = useBuilderStore();
 
 const selectedAttribute = ref<Attribute | ''>( '' );
 
-const filteredSkillList = computed<SkillInfo[]>( () => {
-	const skillsByTrigger = filterByTrigger( props.triggerName );
-	let result = skillsByTrigger.value;
-	
+const filteredSkillList = computed<DualStrategyInfo[]>( () => {
+	const strategies = getSkillIndex().value?.strategies ?? [];
+	// 占用当前触发位的策略（triggerSlots 含当前触发位）
+	let result = strategies.filter( ( skill ) => skill.triggerSlots.includes( props.triggerName ) );
+
 	if ( selectedAttribute.value ) {
 		result = result.filter( ( skill ) =>
-			skill.mainAttribute === selectedAttribute.value ||
-			skill.secondAttribute === selectedAttribute.value,
+			skill.element === selectedAttribute.value ||
+			getStrategySectPair( skill ).secondaryAttribute === selectedAttribute.value,
 		);
 	}
-	
-	// 如果存在已激活双重策略, 过滤该双重策略
-	if ( builderStore.activatedSkills.count ) {
-		result = result.filter( ( skill ) =>
-			!builderStore.activatedSkills.skillNames.includes( skill.name ),
-		);
-	}
-	
+
+	// 排除已激活策略（按 id）
+	const activatedIds = new Set( builderStore.activatedSkills.skills.map( ( s ) => s.id ) );
+	result = result.filter( ( skill ) => !activatedIds.has( skill.id ) );
+
 	return result;
 } );
 
-const handleSelect = ( skill: SkillInfo ) => {
-	builderStore.setInheritSkill( props.triggerName, skill );
+const handleSelect = ( skill: DualStrategyInfo ) => {
+	builderStore.setInheritSkill( props.triggerName, skill.id );
 	emit( 'closeDialog' );
 };
+
+/**
+ * 派生显示流派与属性（Q10 helper，组件保持薄）
+ */
+const sectPairOf = ( skill: DualStrategyInfo ) => getStrategySectPair( skill );
 
 const styleMapper: Record<Attribute, string> = {
 	火: 'fire',

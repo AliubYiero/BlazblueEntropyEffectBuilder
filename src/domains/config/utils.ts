@@ -6,7 +6,7 @@
 
 import type { Attribute } from '../../interfaces/Attribute.ts';
 import type { SectValue, SectSkill } from './types.ts';
-import { sectList, sectConfig } from './constants.ts';
+import { sectList } from './constants.ts';
 
 /**
  * 根据流派名称获取技能列表字符串
@@ -26,15 +26,6 @@ export function getSkillsBySect(sectName: SectValue): string {
 export function getAttributeBySect(sect: SectValue): Attribute | undefined {
   const sectInfo = sectList.find(s => s.sect === sect);
   return sectInfo?.attribute;
-}
-
-/**
- * 根据属性获取流派列表
- * @param attribute - 属性
- * @returns 该属性下的所有流派名称列表
- */
-export function getSectsByAttribute(attribute: Attribute): SectValue[] {
-  return sectConfig[attribute] ?? [];
 }
 
 /**

@@ -1,12 +1,13 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
-import type { SkillInfo } from '../../core/data/types.ts';
+import type { DualStrategyInfo } from '../../core/data/types.ts';
 import type { Attribute } from '../../interfaces/Attribute.ts';
 import type { Trigger } from '../../interfaces/Trigger.ts';
 import { getSkillsBySect } from '../../domains/config/index.ts';
+import { getStrategySectPair } from '../../domains/skill/index.ts';
 
 interface Props {
-  skill: SkillInfo;
+  skill: DualStrategyInfo;
   size?: 'compact' | 'normal';
   showTriggers?: boolean;
   showTooltip?: boolean;
@@ -21,10 +22,13 @@ const props = withDefaults(defineProps<Props>(), {
   clickable: false,
 });
 
-const displayTriggers = computed(() => props.triggers ?? props.skill.trigger);
+const displayTriggers = computed(() => props.triggers ?? props.skill.triggerSlots);
+
+// Q10：派生 helper 放 repository，组件保持薄
+const sectPair = computed(() => getStrategySectPair(props.skill));
 
 const emit = defineEmits<{
-  (e: 'click', skill: SkillInfo): void;
+  (e: 'click', skill: DualStrategyInfo): void;
 }>();
 
 const handleClick = () => {
@@ -65,26 +69,26 @@ const getElementDotClass = (attribute: Attribute): string => {
 
     <div class="skill-card__sects">
       <div class="sect-item">
-        <span :class="['element-dot', `element-dot--${getElementDotClass(skill.mainAttribute)}`]"></span>
-        <template v-if="showTooltip && getSkillDisplay(skill.mainSect)">
-          <el-tooltip :content="getSkillDisplay(skill.mainSect)" placement="top">
-            <span class="sect-name">{{ skill.mainSect }}</span>
+        <span :class="['element-dot', `element-dot--${getElementDotClass(sectPair.primaryAttribute)}`]"></span>
+        <template v-if="showTooltip && getSkillDisplay(sectPair.primaryStyle)">
+          <el-tooltip :content="getSkillDisplay(sectPair.primaryStyle)" placement="top">
+            <span class="sect-name">{{ sectPair.primaryStyle }}</span>
           </el-tooltip>
         </template>
         <template v-else>
-          <span class="sect-name">{{ skill.mainSect }}</span>
+          <span class="sect-name">{{ sectPair.primaryStyle }}</span>
         </template>
       </div>
       <span class="sect-connector">+</span>
       <div class="sect-item">
-        <span :class="['element-dot', `element-dot--${getElementDotClass(skill.secondAttribute)}`]"></span>
-        <template v-if="showTooltip && getSkillDisplay(skill.secondSect)">
-          <el-tooltip :content="getSkillDisplay(skill.secondSect)" placement="top">
-            <span class="sect-name">{{ skill.secondSect }}</span>
+        <span :class="['element-dot', `element-dot--${getElementDotClass(sectPair.secondaryAttribute)}`]"></span>
+        <template v-if="showTooltip && getSkillDisplay(sectPair.secondaryStyle)">
+          <el-tooltip :content="getSkillDisplay(sectPair.secondaryStyle)" placement="top">
+            <span class="sect-name">{{ sectPair.secondaryStyle }}</span>
           </el-tooltip>
         </template>
         <template v-else>
-          <span class="sect-name">{{ skill.secondSect }}</span>
+          <span class="sect-name">{{ sectPair.secondaryStyle }}</span>
         </template>
       </div>
     </div>

@@ -30,13 +30,8 @@ export interface SectInfo {
  */
 export interface SectSkill {
 	name: string;
-	trigger: '普攻' | '技能' | '冲刺' | '传承' | '召唤';
+	trigger: '普攻' | '技能' | '冲刺' | '传承技' | '召唤';
 }
-
-/**
- * 属性到流派列表的映射
- */
-export type SectConfigMap = Record<Attribute, SectValue[]>;
 
 /**
  * 属性列表类型（只读）

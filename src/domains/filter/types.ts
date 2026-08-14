@@ -5,7 +5,7 @@
 
 import type { Attribute } from '../../interfaces/Attribute.ts';
 import type { SectValue } from '../config/types.ts';
-import type { SkillInfo } from '../../core/data/types.ts';
+import type { DualStrategyInfo } from '../../core/data/types.ts';
 
 /**
  * 流派复选框状态
@@ -24,7 +24,7 @@ export interface TriggerCheckboxState {
   普攻: boolean;
   技能: boolean;
   冲刺: boolean;
-  传承: boolean;
+  传承技: boolean;
   召唤: boolean;
 }
 
@@ -46,8 +46,8 @@ export interface FilterState {
  * 筛选结果
  */
 export interface FilterResult {
-  /** 匹配的技能列表 */
-  skills: SkillInfo[];
+  /** 匹配的策略列表（V2 新形状） */
+  skills: DualStrategyInfo[];
   /** 匹配数量 */
   count: number;
 }

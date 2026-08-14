@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import type { SkillCardInfo } from '../../domains/builder/types.ts';
 import { useBuilderStore } from '../../domains/builder/index.ts';
-import { getSkillInfoList } from '../../domains/skill/repository.ts';
+import { getSkillIndex } from '../../domains/skill/repository.ts';
 import { triggerList } from '../../domains/config/index.ts';
 import type { Trigger } from '../../interfaces/Trigger.ts';
 import SkillCard from '../Public/SkillCard.vue';
@@ -21,24 +21,27 @@ const occupiedTriggers = computed<Set<Trigger>>( () => {
 } );
 
 const filterDetailList = computed( () => {
-	const skillInfoList = getSkillInfoList().value;
-	let list = skillInfoList.filter( skill =>
-		props.skillCardInfo.sect && ( skill.mainSect.includes( props.skillCardInfo.sect ) || skill.secondSect.includes( props.skillCardInfo.sect ) ),
+	const strategies = getSkillIndex().value?.strategies ?? [];
+	const list = strategies.filter( skill =>
+		props.skillCardInfo.sect && (
+			skill.primary[ 0 ]?.style.includes( props.skillCardInfo.sect ) ||
+			skill.secondary[ 0 ]?.style.includes( props.skillCardInfo.sect )
+		),
 	);
 	const existing = builderStore.skillCardInfoList.filter( c => c.sect || c.inherit ).map( c => c.triggerName );
-	const inheritedNames = new Set(
+	const inheritedIds = new Set(
 		builderStore.skillCardInfoList
 			.filter( c => c.inheritSkill )
-			.map( c => c.inheritSkill!.name ),
+			.map( c => c.inheritSkill! ),
 	);
 	return list
 		.filter( skill =>
-			!inheritedNames.has( skill.name ) &&
-			skill.trigger.some( t => !existing.includes( t ) ),
+			!inheritedIds.has( skill.id ) &&
+			skill.triggerSlots.some( t => !existing.includes( t ) ),
 		)
 		.map( skill => ( {
 			skill,
-			availableTriggers: skill.trigger.filter( t => !occupiedTriggers.value.has( t ) ),
+			availableTriggers: skill.triggerSlots.filter( t => !occupiedTriggers.value.has( t ) ),
 		} ) )
 		.filter( item => item.availableTriggers.length > 0 );
 } );
