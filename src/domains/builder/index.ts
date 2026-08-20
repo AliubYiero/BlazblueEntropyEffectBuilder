@@ -9,6 +9,7 @@ export type {
   SkillCardInfoTuple,
   ActivatedSkillResult,
   DuplicateCheckResult,
+  SlotAssignment,
 } from './types.ts';
 
 // Store
@@ -17,6 +18,7 @@ export { useBuilderStore } from './store.ts';
 // Services
 export {
   calculateActivatedSkills,
+  calculateSlotAssignments,
   checkDuplicateSect,
   getAvailableTriggersForSect,
   isValidSectTriggerCombination,

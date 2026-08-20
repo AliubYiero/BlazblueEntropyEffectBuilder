@@ -7,6 +7,7 @@ import type {
 	DuplicateCheckResult,
 	SkillCardInfo,
 	SkillCardInfoTuple,
+	SlotAssignment,
 } from './types.ts';
 import type { SectValue } from '../config/types.ts';
 import type { Trigger } from '../../interfaces/Trigger.ts';
@@ -15,7 +16,7 @@ import type {
 	DualStrategyInfo,
 	FrozenDualStrategyIndex,
 } from '../../core/data/types.ts';
-import { getSkillIndex } from '../skill/repository.ts';
+import { getSkillIndex, getStrategyById } from '../skill/repository.ts';
 
 /**
  * 计算已激活的策略（Q4 统一规则）
@@ -56,6 +57,83 @@ export function calculateActivatedSkills(
 	}
 
 	return activated;
+}
+
+/**
+ * 计算槽位分配：每触发位占据的双重策略 + 锁定状态（派生，不可手动修改）
+ * @description 解析规则（设计定稿）：
+ * - 手动 pin 优先：占据所选槽位并锁定（isLocked=true），且该策略不再参与自动解析（Q6=A）
+ * - 自动单触发策略：锁定其唯一触发位
+ * - 自动多触发策略：在未锁定槽位上虚线预占；当其它 triggerSlots 全部被锁定时，
+ *   收窄到唯一剩余槽位锁定；平局按数据索引顺序取先者（Q3=A）
+ * - 零剩余（triggerSlots 全部被锁定）：从槽位卡片消失，但仍计入已激活
+ * @param cards - 技能位配置元组
+ * @param calculated - 自然激活的策略列表（索引序）
+ * @returns 触发位 -> 槽位分配（未分配/无策略时不包含）
+ */
+export function calculateSlotAssignments(
+	cards: SkillCardInfoTuple,
+	calculated: DualStrategyInfo[],
+): Map<Trigger, SlotAssignment> {
+	const assignments = new Map<Trigger, SlotAssignment>();
+	const lockedSlots = new Set<Trigger>();
+	const pinnedIds = new Set<string>();
+
+	// 1. 手动 pin 优先（锁定，Q2-A：手动即锁定、只占用所选槽位）
+	for ( const card of cards ) {
+		if ( !card.manualSkillId ) continue;
+		pinnedIds.add( card.manualSkillId );
+		const skill = getStrategyById( card.manualSkillId );
+		if ( !skill ) continue;
+		assignments.set( card.triggerName, {
+			slot: card.triggerName,
+			skill,
+			isLocked: true,
+			source: 'manual',
+		} );
+		lockedSlots.add( card.triggerName );
+	}
+
+	// 2. 自动策略解析（索引序，不动点迭代直到不再变化）
+	//    手动 pin 过的策略不再参与自动解析（Q6=A）
+	const auto = calculated.filter( ( s ) => !pinnedIds.has( s.id ) );
+	const resolved = new Set<string>();
+	let changed = true;
+	while ( changed ) {
+		changed = false;
+		for ( const skill of auto ) {
+			if ( resolved.has( skill.id ) ) continue;
+			const free = skill.triggerSlots.filter( ( t ) => !lockedSlots.has( t ) );
+			if ( free.length === 0 ) {
+				// 零剩余：不显示（Q3=A，但仍计入已激活）
+				resolved.add( skill.id );
+				continue;
+			}
+			if ( free.length === 1 ) {
+				// 其它 triggerSlots 全部被锁定 → 收窄到唯一剩余槽位并锁定
+				const slot = free[ 0 ];
+				assignments.set( slot, { slot, skill, isLocked: true, source: 'auto' } );
+				lockedSlots.add( slot );
+				resolved.add( skill.id );
+				changed = true;
+			}
+			// free.length > 1：虚线候选，最终 pass 处理
+		}
+	}
+
+	// 3. 虚线预占：未锁定的槽位取第一个（索引序）覆盖它的未锁定自动策略
+	for ( const card of cards ) {
+		const slot = card.triggerName;
+		if ( assignments.has( slot ) ) continue;
+		for ( const skill of auto ) {
+			if ( resolved.has( skill.id ) ) continue;
+			if ( !skill.triggerSlots.includes( slot ) ) continue;
+			assignments.set( slot, { slot, skill, isLocked: false, source: 'auto' } );
+			break;
+		}
+	}
+
+	return assignments;
 }
 
 /**

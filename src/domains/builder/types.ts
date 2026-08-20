@@ -18,10 +18,30 @@ export interface SkillCardInfo {
   sect: SectValue | '';
   /** 该触发位下该流派的技能名，查不到回退流派名，未配置为空字符串 */
   skillName: string;
-  /** 是否继承上位效果 */
-  inherit: boolean;
-  /** 继承的双重策略 id（稳定主键，Q7） */
-  inheritSkill?: string;
+  /**
+   * 用户手动 pin 的双重策略 id
+   * @description 粘性：不受流派配置变化影响，仅用户可增删（手动选择/删除）
+   */
+  manualSkillId?: string;
+}
+
+/**
+ * 槽位分配结果
+ * @description 某触发位当前占据的双重策略及其锁定状态（由配置派生，不可手动修改）
+ */
+export interface SlotAssignment {
+  /** 触发位 */
+  slot: Trigger;
+  /** 占据的双重策略 */
+  skill: DualStrategyInfo;
+  /**
+   * 是否锁定
+   * @description 手动 pin / 自动单触发 / 自动多触发收窄到唯一剩余槽位 时为 true；
+   * 多触发虚线预占时为 false
+   */
+  isLocked: boolean;
+  /** 来源：手动 pin 或自动解析 */
+  source: 'manual' | 'auto';
 }
 
 /**

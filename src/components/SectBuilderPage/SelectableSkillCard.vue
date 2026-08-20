@@ -13,7 +13,8 @@ const builderStore = useBuilderStore();
 const occupiedTriggers = computed<Set<Trigger>>( () => {
 	const occupied = new Set<Trigger>();
 	for ( const trigger of triggerList ) {
-		if ( builderStore.getCheckboxState( trigger ) === 'checked' ) {
+		// 已锁定（手动 pin / 自动单触发 / 多触发收窄）的触发位视为已占用
+		if ( builderStore.slotAssignments.get( trigger )?.isLocked ) {
 			occupied.add( trigger );
 		}
 	}
@@ -30,7 +31,7 @@ const filterDetailList = computed( () => {
 				skill.secondary.some( c => c.name.includes( skillName ) )
 			),
 	);
-	const existing = builderStore.skillCardInfoList.filter( c => c.sect || c.inherit ).map( c => c.triggerName );
+	const existing = builderStore.skillCardInfoList.filter( c => c.sect || c.manualSkillId ).map( c => c.triggerName );
 	const filterList = list
 		.filter( skill => {
 				const anotherSect = skill.primary.some( c => c.name.includes( skillName ) )

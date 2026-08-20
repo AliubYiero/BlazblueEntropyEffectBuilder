@@ -134,7 +134,7 @@
 		<div class="form-group">
 			<label class="form-label">
 				关联双重策略
-				<span class="label-hint">(点击卡片激活继承)</span>
+				<span class="label-hint">(点击卡片手动选择)</span>
 			</label>
 			<div v-if="filteredSkillList.length > 0" class="skill-options">
 				<div
@@ -209,7 +209,7 @@ const filteredSkillList = computed<DualStrategyInfo[]>( () => {
 } );
 
 const handleSelect = ( skill: DualStrategyInfo ) => {
-	builderStore.setInheritSkill( props.triggerName, skill.id );
+	builderStore.setManualSkill( props.triggerName, skill.id );
 	emit( 'closeDialog' );
 };
 

@@ -9,11 +9,16 @@ import type {
 	ActivatedSkillResult,
 	SkillCardInfo,
 	SkillCardInfoTuple,
+	SlotAssignment,
 } from './types.ts';
 import type { Trigger } from '../../interfaces/Trigger.ts';
 import type { SectValue } from '../config/types.ts';
 import type { DualStrategyInfo } from '../../core/data/types.ts';
-import { calculateActivatedSkills, checkDuplicateSect } from './service.ts';
+import {
+	calculateActivatedSkills,
+	calculateSlotAssignments,
+	checkDuplicateSect,
+} from './service.ts';
 import { getSkillIndex, getStrategyById } from '../skill/repository.ts';
 import { getSkillNameBySectAndTrigger, isValidSect } from '../config/index.ts';
 
@@ -21,11 +26,11 @@ import { getSkillNameBySectAndTrigger, isValidSect } from '../config/index.ts';
  * 默认技能卡片配置
  */
 const DEFAULT_SKILL_CARDS: SkillCardInfoTuple = [
-	{ triggerName: '普攻', sect: '', skillName: '', inherit: false },
-	{ triggerName: '技能', sect: '', skillName: '', inherit: false },
-	{ triggerName: '冲刺', sect: '', skillName: '', inherit: false },
-	{ triggerName: '传承技', sect: '', skillName: '', inherit: false },
-	{ triggerName: '召唤', sect: '', skillName: '', inherit: false },
+	{ triggerName: '普攻', sect: '', skillName: '' },
+	{ triggerName: '技能', sect: '', skillName: '' },
+	{ triggerName: '冲刺', sect: '', skillName: '' },
+	{ triggerName: '传承技', sect: '', skillName: '' },
+	{ triggerName: '召唤', sect: '', skillName: '' },
 ];
 
 /**
@@ -55,7 +60,7 @@ export const useBuilderStore = defineStore( 'builder', () => {
 	const readOnlyCardList = computed( () => readonly( skillCardInfoList.value ) );
 
 	/**
-	 * 自然激活的策略（不含继承）
+	 * 自然激活的策略
 	 * @description 基于新算法 + V2 索引的唯一计算入口，其余动作复用其结果（Q6-b）
 	 */
 	const calculatedSkills = computed<DualStrategyInfo[]>( () => {
@@ -65,28 +70,33 @@ export const useBuilderStore = defineStore( 'builder', () => {
 	} );
 
 	/**
-	 * 已激活的策略（V2 新形状）
+	 * 槽位分配：每触发位占据的双重策略 + 锁定状态
+	 * @description 派生结果（不可手动修改），由手动 pin + 自动解析共同决定
+	 */
+	const slotAssignments = computed<Map<Trigger, SlotAssignment>>( () => {
+		return calculateSlotAssignments( skillCardInfoList.value, calculatedSkills.value );
+	} );
+
+	/**
+	 * 已激活的策略 = 自然激活 ∪ 手动 pin（按 id 去重）
 	 */
 	const activatedSkills = computed<ActivatedSkillResult>( () => {
 		const skills = calculatedSkills.value;
 
-		// 合并继承的双重策略（按 id 反查完整策略，id 去重）
-		const inheritedSkills = skillCardInfoList.value
-			.filter( ( card ) => card.inherit && card.inheritSkill )
-			.map( ( card ) => card.inheritSkill! )
-			.map( ( id ) => getStrategyById( id ) )
+		// 手动 pin 的策略（按 id 反查完整策略）
+		const pinnedSkills = skillCardInfoList.value
+			.filter( ( card ) => card.manualSkillId )
+			.map( ( card ) => getStrategyById( card.manualSkillId! ) )
 			.filter( ( s ): s is DualStrategyInfo => !!s );
 
 		const calculatedIds = new Set( skills.map( ( s ) => s.id ) );
-		const uniqueInherited = inheritedSkills.filter( ( s ) => !calculatedIds.has( s.id ) );
-		const allSkills = [ ...skills, ...uniqueInherited ];
-
-		const allSkillNames = allSkills.map( ( skill ) => skill.name );
+		const uniquePinned = pinnedSkills.filter( ( s ) => !calculatedIds.has( s.id ) );
+		const allSkills = [ ...skills, ...uniquePinned ];
 
 		return {
 			skills: allSkills,
 			count: allSkills.length,
-			skillNames: allSkillNames,
+			skillNames: allSkills.map( ( skill ) => skill.name ),
 		};
 	} );
 
@@ -130,45 +140,18 @@ export const useBuilderStore = defineStore( 'builder', () => {
 				? { ...item, sect, skillName: getSkillNameBySectAndTrigger( sect, triggerName ) }
 				: item,
 		) as SkillCardInfoTuple;
-		
-		skillCardInfoList.value = newList;
-
-		// 单次计算：自然激活集合仅计算一次，其余动作复用其结果（Q6-b）
-		const index = getSkillIndex().value;
-		const calculated = index ? calculateActivatedSkills( newList, index ) : [];
-		// 先清除不再有效的继承，再自动继承单触发位的双重策略
-		clearInvalidInheritedSkills( calculated );
-		autoInheritSingleTriggerSkills( calculated );
-		return true;
-	};
-
-	/**
-	 * 更新卡片继承状态
-	 * @param triggerName - 触发位名称
-	 * @param inherit - 是否继承
-	 */
-	const updateSkillCardInherit = ( triggerName: Trigger, inherit: boolean ): boolean => {
-		// 防御性编程：验证 triggerName 有效性
-		if ( !VALID_TRIGGERS.includes( triggerName ) ) {
-			console.warn( `[useBuilderStore] 无效的触发位: ${ triggerName }` );
-			return false;
-		}
-
-		// 创建新数组以触发 shallowRef 更新
-		const newList = skillCardInfoList.value.map( ( item ) =>
-			item.triggerName === triggerName ? { ...item, inherit } : item,
-		) as SkillCardInfoTuple;
 
 		skillCardInfoList.value = newList;
 		return true;
 	};
 
 	/**
-	 * 设置继承的双重策略
+	 * 手动选择双重策略到指定触发位（手动 pin）
+	 * @description 粘性：不受流派配置变化影响，仅用户可增删
 	 * @param triggerName - 触发位名称
-	 * @param skillId - 要继承的双重策略 id（Q7）
+	 * @param skillId - 双重策略 id
 	 */
-	const setInheritSkill = ( triggerName: Trigger, skillId: string ): boolean => {
+	const setManualSkill = ( triggerName: Trigger, skillId: string ): boolean => {
 		if ( !VALID_TRIGGERS.includes( triggerName ) ) {
 			console.warn( `[useBuilderStore] 无效的触发位: ${ triggerName }` );
 			return false;
@@ -176,7 +159,7 @@ export const useBuilderStore = defineStore( 'builder', () => {
 
 		const newList = skillCardInfoList.value.map( ( item ) =>
 			item.triggerName === triggerName
-				? { ...item, inherit: true, inheritSkill: skillId }
+				? { ...item, manualSkillId: skillId }
 				: item,
 		) as SkillCardInfoTuple;
 
@@ -185,10 +168,10 @@ export const useBuilderStore = defineStore( 'builder', () => {
 	};
 
 	/**
-	 * 清除继承的双重策略
+	 * 删除指定触发位的手动 pin
 	 * @param triggerName - 触发位名称
 	 */
-	const clearInheritSkill = ( triggerName: Trigger ): boolean => {
+	const clearManualSkill = ( triggerName: Trigger ): boolean => {
 		if ( !VALID_TRIGGERS.includes( triggerName ) ) {
 			console.warn( `[useBuilderStore] 无效的触发位: ${ triggerName }` );
 			return false;
@@ -196,68 +179,12 @@ export const useBuilderStore = defineStore( 'builder', () => {
 
 		const newList = skillCardInfoList.value.map( ( item ) =>
 			item.triggerName === triggerName
-				? { ...item, inherit: false, inheritSkill: undefined }
+				? { ...item, manualSkillId: undefined }
 				: item,
 		) as SkillCardInfoTuple;
 
 		skillCardInfoList.value = newList;
 		return true;
-	};
-
-	/**
-	 * 清除不再有效的继承
-	 * @description 当流派配置变化时，清除 inheritSkill 对应策略已不在激活列表中的继承
-	 * @param calculated - 预计算的自然激活集合（复用单次计算结果）
-	 */
-	const clearInvalidInheritedSkills = ( calculated?: DualStrategyInfo[] ): void => {
-		const activatedIds = new Set( ( calculated ?? calculatedSkills.value ).map( ( s ) => s.id ) );
-		let changed = false;
-		let current = skillCardInfoList.value;
-
-		for ( const card of current ) {
-			if ( card.inherit && card.inheritSkill && !activatedIds.has( card.inheritSkill ) ) {
-				current = current.map( ( item ) =>
-					item.triggerName === card.triggerName
-						? { ...item, inherit: false, inheritSkill: undefined }
-						: item,
-				) as SkillCardInfoTuple;
-				changed = true;
-			}
-		}
-
-		if ( changed ) {
-			skillCardInfoList.value = current;
-		}
-	};
-
-	/**
-	 * 自动设置单触发位和最后剩余触发位的继承
-	 * @description 当激活策略变化时调用，自动勾选确定性的触发位
-	 * @param calculated - 预计算的自然激活集合（复用单次计算结果）
-	 */
-	const autoInheritSingleTriggerSkills = ( calculated?: DualStrategyInfo[] ): void => {
-		const activated = calculated ?? calculatedSkills.value;
-		let changed = false;
-		let current = skillCardInfoList.value;
-
-		for ( const skill of activated ) {
-			if ( skill.triggerSlots.length === 1 ) {
-				const trigger = skill.triggerSlots[ 0 ];
-				const card = current.find( ( c ) => c.triggerName === trigger );
-				if ( card && !card.inherit ) {
-					current = current.map( ( item ) =>
-						item.triggerName === trigger
-							? { ...item, inherit: true, inheritSkill: skill.id }
-							: item,
-					) as SkillCardInfoTuple;
-					changed = true;
-				}
-			}
-		}
-
-		if ( changed ) {
-			skillCardInfoList.value = current;
-		}
 	};
 
 	/**
@@ -294,7 +221,7 @@ export const useBuilderStore = defineStore( 'builder', () => {
 
 	/**
 	 * 导入配置
-	 * @description 从本地存储恢复
+	 * @description 从本地存储恢复；仅保留新模型字段，剥离旧版 inherit/inheritSkill
 	 */
 	const importConfiguration = ( config: SkillCardInfoTuple ): boolean => {
 		// 简单验证
@@ -303,44 +230,22 @@ export const useBuilderStore = defineStore( 'builder', () => {
 			return false;
 		}
 
-		// 回填缺失的技能名（防御旧数据：sect 非空但无 skillName）
 		const normalized = config.map( ( card ) => {
+			// 回填缺失的技能名（防御旧数据：sect 非空但无 skillName）
 			const skillName =
 				typeof card.skillName === 'string'
 					? card.skillName
 					: getSkillNameBySectAndTrigger( card.sect, card.triggerName );
-			return { ...card, skillName };
+			return {
+				triggerName: card.triggerName,
+				sect: card.sect,
+				skillName,
+				manualSkillId: ( card as { manualSkillId?: string } ).manualSkillId,
+			};
 		} ) as SkillCardInfoTuple;
 
 		skillCardInfoList.value = normalized;
 		return true;
-	};
-
-	/**
-	 * 获取触发位的勾选框三态状态
-	 * @description 基于自然激活策略计算，继承的策略不影响其他触发位
-	 * @param trigger - 触发位名称
-	 * @returns 'checked' | 'pending' | 'unchecked'
-	 */
-	const getCheckboxState = ( trigger: Trigger ): 'checked' | 'pending' | 'unchecked' => {
-		const card = skillCardInfoList.value.find( ( c ) => c.triggerName === trigger );
-		if ( card?.inherit ) return 'checked';
-
-		const related = calculatedSkills.value.filter( ( s ) => s.triggerSlots.includes( trigger ) );
-		if ( related.length === 0 ) return 'unchecked';
-
-		for ( const skill of related ) {
-			if ( skill.triggerSlots.length === 1 ) return 'checked';
-
-			const otherTriggers = skill.triggerSlots.filter( ( t ) => t !== trigger );
-			const allOthersChecked = otherTriggers.every( ( t ) => {
-				const otherCard = skillCardInfoList.value.find( ( c ) => c.triggerName === t );
-				return otherCard?.inherit;
-			} );
-			if ( allOthersChecked ) return 'checked';
-		}
-
-		return 'pending';
 	};
 
 	return {
@@ -350,22 +255,19 @@ export const useBuilderStore = defineStore( 'builder', () => {
 		// Getters
 		readOnlyCardList,
 		activatedSkills,
+		slotAssignments,
 		configuredCount,
 		hasConfiguration,
 		calculatedSkills,
 
 		// Actions
 		updateSkillCardInfo,
-		updateSkillCardInherit,
-		setInheritSkill,
-		clearInheritSkill,
-		clearInvalidInheritedSkills,
-		autoInheritSingleTriggerSkills,
+		setManualSkill,
+		clearManualSkill,
 		getSkillCardByTrigger,
 		checkSectDuplicate,
 		resetAllSkillCards,
 		exportConfiguration,
 		importConfiguration,
-		getCheckboxState,
 	};
 } );

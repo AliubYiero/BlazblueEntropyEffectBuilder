@@ -37,40 +37,91 @@
 	margin-bottom: 32px;
 }
 
-.activated-grid {
+.slot-cards {
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+	grid-template-columns: repeat(5, 1fr);
 	gap: 12px;
-}
-
-.inherit-filters {
-	display: flex;
-	gap: 8px;
-	flex-wrap: wrap;
 	margin-bottom: 12px;
 }
 
-.inherit-filters :deep(.el-checkbox.is-pending .el-checkbox__inner) {
-	border-style: dashed;
-	border-color: var(--primary) !important;
+.slot-card {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	cursor: pointer;
+}
+
+.skill-card, .slot-card__empty {
+	height: 115px;
+}
+
+.slot-card__trigger {
+	font-family: var(--font-chinese);
+	font-size: 11px;
+	font-weight: 500;
+	color: var(--muted-foreground);
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	padding-left: 4px;
+}
+
+.slot-card__empty {
+	font-family: var(--font-chinese);
+	line-height: 60px;
+	font-size: 12px;
+	color: var(--muted-foreground);
+	border: 1px dashed var(--border);
+	border-radius: var(--radius);
+	padding: 24px 16px;
+	text-align: center;
 	background: transparent;
-	
-	&::after {
-		display: none;
+}
+
+.slot-card__badge {
+	font-family: var(--font-chinese);
+	font-size: 10px;
+	line-height: 1;
+	padding: 2px 6px;
+	border-radius: calc(var(--radius) - 4px);
+	background: var(--primary);
+	color: var(--primary-foreground);
+}
+
+.slot-card__remove {
+	position: absolute;
+	top: -2px;
+	right: -2px;
+	z-index: 1;
+	font-size: 14px;
+	background: var(--card);
+	border: 1px solid var(--border);
+	border-radius: 50%;
+	padding: 2px;
+	opacity: 0.7;
+	cursor: pointer;
+	transition: opacity 0.15s ease;
+
+	&:hover {
+		opacity: 1;
 	}
 }
 
-.inherit-filters :deep(.el-checkbox.is-pending.is-checked .el-checkbox__inner) {
+// 锁定：实线（SkillCard 默认边框）
+// 多触发虚线预占（isLocked=false）
+.slot-card.is-pending :deep(.skill-card) {
 	border-style: dashed;
+	border-color: var(--primary);
+
+	&:hover {
+		border-color: var(--primary);
+	}
 }
 
-.empty-activated {
-	grid-column: 1 / -1;
-	text-align: center;
-	padding: 32px;
-	border: 1px dashed var(--border);
-	border-radius: var(--radius);
-	color: var(--muted-foreground);
+// 手动 pin：主色高亮边框（实线）
+.slot-card.is-manual :deep(.skill-card) {
+	border-color: var(--primary);
 }
 
 .builder-section {
@@ -107,39 +158,42 @@
 				<h2 class="section-title">
 					<span>已激活策略</span>
 					<span
-						class="section-title-tooltip">(点击勾选框可选择继承的双重策略)</span>
+						class="section-title-tooltip">(点击空位或虚线卡片可手动选择策略)</span>
 				</h2>
 				<span class="section-count">共 {{
-						activatedSkills.length
+						activatedSkillsCount
 					}} 条</span>
 			</div>
-			
-			<div class="inherit-filters">
-				<el-checkbox
-					v-for="trigger in triggerList"
-					:key="trigger"
-					:class="{ 'is-pending': isInheritPending(trigger) }"
-					:indeterminate="isInheritPending(trigger)"
-					:label="trigger"
-					:model-value="isInheritChecked(trigger)"
-					@change="() => handleInheritClick(trigger)"
-				/>
-			</div>
-			
-			<div class="activated-grid">
-				<div v-if="activatedSkills.length === 0"
-				     class="empty-activated">
-					选择流派以激活双重策略
+
+			<div class="slot-cards">
+				<div
+					v-for="item in slotCards"
+					:key="item.trigger"
+					:class="['slot-card', slotCardClass(item.trigger)]"
+					@click="handleSlotCardClick(item.trigger)"
+				>
+					<el-icon
+						v-if="isSlotManual(item.trigger)"
+						class="slot-card__remove"
+						@click.stop="handleRemoveManual(item.trigger)"
+					>
+						<Close/>
+					</el-icon>
+					<div class="slot-card__trigger">
+						{{ item.trigger }}
+						<span
+							v-if="isSlotManual(item.trigger)"
+							class="slot-card__badge">手动</span>
+					</div>
+					<SkillCard
+						v-if="item.assignment"
+						:skill="item.assignment.skill"
+						size="compact"
+						:show-tooltip="false"
+						:show-triggers="true"
+					/>
+					<div v-else class="slot-card__empty">未占用</div>
 				</div>
-				
-				<SkillCard
-					v-for="skill in activatedSkills"
-					:key="skill.name"
-					:show-tooltip="false"
-					:show-triggers="true"
-					:skill="skill"
-					size="normal"
-				/>
 			</div>
 		</section>
 		
@@ -163,7 +217,7 @@
 			                        @close-dialog="closeDialog"/>
 		</el-dialog>
 		
-		<el-dialog v-model="isShowInheritDialog" title="继承双重策略"
+		<el-dialog v-model="isShowInheritDialog" title="手动选择双重策略"
 		           width="400px">
 			<InheritSkillForm :trigger-name="currentInheritTrigger"
 			                  @close-dialog="closeInheritDialog"/>
@@ -173,6 +227,7 @@
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue';
+import { Close } from '@element-plus/icons-vue';
 import SelectSkillCard from '../components/SectBuilderPage/SelectSkillCard.vue';
 import SelectableSkillCard
 	from '../components/SectBuilderPage/SelectableSkillCard.vue';
@@ -192,24 +247,64 @@ const builderStore = useBuilderStore();
 
 const skillCardInfoList = computed<SkillCardInfoTuple>( () => builderStore.skillCardInfoList as SkillCardInfoTuple );
 
-const activatedSkills = computed( () => builderStore.activatedSkills.skills );
-
-const isInheritChecked = ( trigger: Trigger ) => builderStore.getCheckboxState( trigger ) === 'checked';
-const isInheritPending = ( trigger: Trigger ) => builderStore.getCheckboxState( trigger ) === 'pending';
+const activatedSkillsCount = computed( () => builderStore.activatedSkills.count );
 
 /**
- * 处理 checkbox 点击
+ * 当前触发位的槽位分配（未分配返回 undefined）
  */
-const handleInheritClick = ( trigger: Trigger ) => {
-	const state = builderStore.getCheckboxState( trigger );
-	if ( state === 'checked' ) {
-		builderStore.clearInheritSkill( trigger );
+const assignmentOf = ( trigger: Trigger ) => builderStore.slotAssignments.get( trigger );
+
+/**
+ * 每个触发位的槽位卡片数据（含触发位 + 其分配，供模板渲染 SkillCard）
+ */
+const slotCards = computed( () =>
+	triggerList.map( trigger => ( {
+		trigger,
+		assignment: builderStore.slotAssignments.get( trigger ),
+	} ) ),
+);
+
+const isSlotManual = ( trigger: Trigger ) => assignmentOf( trigger )?.source === 'manual';
+
+/**
+ * 槽位卡片的样式类：锁定=实线，预占=虚线，空=占位，手动=高亮+角标
+ */
+const slotCardClass = ( trigger: Trigger ) => {
+	const assignment = assignmentOf( trigger );
+	if ( !assignment ) {
+		return { 'is-empty': true };
 	}
-	else {
-		// pending 或 unchecked -> 打开继承对话框
+	return {
+		'is-locked': assignment.isLocked,
+		'is-pending': !assignment.isLocked,
+		'is-manual': assignment.source === 'manual',
+	};
+};
+
+/**
+ * 点击槽位卡片
+ * @description 空位/虚线预占 → 打开手动选择对话框；自动锁定 → 只读；手动 pin → 由删除按钮处理
+ */
+const handleSlotCardClick = ( trigger: Trigger ) => {
+	const assignment = assignmentOf( trigger );
+	if ( !assignment ) {
 		currentInheritTrigger.value = trigger;
 		isShowInheritDialog.value = true;
+		return;
 	}
+	if ( assignment.source === 'manual' || assignment.isLocked ) {
+		return;
+	}
+	// 虚线预占 → 打开手动选择
+	currentInheritTrigger.value = trigger;
+	isShowInheritDialog.value = true;
+};
+
+/**
+ * 删除手动 pin
+ */
+const handleRemoveManual = ( trigger: Trigger ) => {
+	builderStore.clearManualSkill( trigger );
 };
 
 // 修改技能流派对话框
@@ -225,7 +320,7 @@ const closeDialog = () => {
 	isShowDialog.value = false;
 };
 
-// 继承双重策略对话框
+// 手动选择双重策略对话框
 const isShowInheritDialog = ref( false );
 const currentInheritTrigger = ref<Trigger>( '普攻' );
 
