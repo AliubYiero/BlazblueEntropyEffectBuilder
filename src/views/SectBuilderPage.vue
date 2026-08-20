@@ -191,6 +191,7 @@
 						size="compact"
 						:show-tooltip="false"
 						:show-triggers="true"
+						:trigger="item.trigger"
 					/>
 					<div v-else class="slot-card__empty">未占用</div>
 				</div>
