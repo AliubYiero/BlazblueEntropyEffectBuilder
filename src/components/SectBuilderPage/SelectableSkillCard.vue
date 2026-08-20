@@ -22,28 +22,35 @@ const occupiedTriggers = computed<Set<Trigger>>( () => {
 
 const filterDetailList = computed( () => {
 	const strategies = getSkillIndex().value?.strategies ?? [];
+	const skillName = props.skillCardInfo.skillName;
+	// 通过技能名筛选：命中任一 primary/secondary 条件的 name（子串匹配，覆盖正体→变体，与激活语义一致）
 	const list = strategies.filter( skill =>
-		props.skillCardInfo.sect && (
-			skill.primary[ 0 ]?.style.includes( props.skillCardInfo.sect ) ||
-			skill.secondary[ 0 ]?.style.includes( props.skillCardInfo.sect )
-		),
+			!!skillName && (
+				skill.primary.some( c => c.name.includes( skillName ) ) ||
+				skill.secondary.some( c => c.name.includes( skillName ) )
+			),
 	);
 	const existing = builderStore.skillCardInfoList.filter( c => c.sect || c.inherit ).map( c => c.triggerName );
-	const inheritedIds = new Set(
-		builderStore.skillCardInfoList
-			.filter( c => c.inheritSkill )
-			.map( c => c.inheritSkill! ),
-	);
-	return list
-		.filter( skill =>
-			!inheritedIds.has( skill.id ) &&
-			skill.triggerSlots.some( t => !existing.includes( t ) ),
+	const filterList = list
+		.filter( skill => {
+				const anotherSect = skill.primary.some( c => c.name.includes( skillName ) )
+					? skill.secondary
+					: skill.primary;
+				
+				const isAllExisted = anotherSect.every( c => {
+					return existing.includes( c.slot );
+				} );
+				
+				return !isAllExisted;
+			},
 		)
 		.map( skill => ( {
 			skill,
 			availableTriggers: skill.triggerSlots.filter( t => !occupiedTriggers.value.has( t ) ),
 		} ) )
 		.filter( item => item.availableTriggers.length > 0 );
+	
+	return filterList;
 } );
 </script>
 
