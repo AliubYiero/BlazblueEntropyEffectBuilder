@@ -16,6 +16,8 @@ export interface SkillCardInfo {
   triggerName: Trigger;
   /** 配置的流派名称，空字符串表示未配置 */
   sect: SectValue | '';
+  /** 该触发位下该流派的技能名，查不到回退流派名，未配置为空字符串 */
+  skillName: string;
   /** 是否继承上位效果 */
   inherit: boolean;
   /** 继承的双重策略 id（稳定主键，Q7） */

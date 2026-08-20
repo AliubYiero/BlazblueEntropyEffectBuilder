@@ -14,6 +14,7 @@ export { sectList, attributeList, triggerList } from './constants.ts';
 export {
   getSkillsBySect,
   getAttributeBySect,
+  getSkillNameBySectAndTrigger,
   isValidSect,
   getAllSectNames,
   getSectInfo,

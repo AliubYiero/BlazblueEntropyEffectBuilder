@@ -6,26 +6,26 @@
 import { defineStore } from 'pinia';
 import { computed, readonly, shallowRef } from 'vue';
 import type {
-  ActivatedSkillResult,
-  SkillCardInfo,
-  SkillCardInfoTuple,
+	ActivatedSkillResult,
+	SkillCardInfo,
+	SkillCardInfoTuple,
 } from './types.ts';
 import type { Trigger } from '../../interfaces/Trigger.ts';
 import type { SectValue } from '../config/types.ts';
 import type { DualStrategyInfo } from '../../core/data/types.ts';
 import { calculateActivatedSkills, checkDuplicateSect } from './service.ts';
 import { getSkillIndex, getStrategyById } from '../skill/repository.ts';
-import { isValidSect } from '../config/index.ts';
+import { getSkillNameBySectAndTrigger, isValidSect } from '../config/index.ts';
 
 /**
  * 默认技能卡片配置
  */
 const DEFAULT_SKILL_CARDS: SkillCardInfoTuple = [
-	{ triggerName: '普攻', sect: '', inherit: false },
-	{ triggerName: '技能', sect: '', inherit: false },
-	{ triggerName: '冲刺', sect: '', inherit: false },
-	{ triggerName: '传承技', sect: '', inherit: false },
-	{ triggerName: '召唤', sect: '', inherit: false },
+	{ triggerName: '普攻', sect: '', skillName: '', inherit: false },
+	{ triggerName: '技能', sect: '', skillName: '', inherit: false },
+	{ triggerName: '冲刺', sect: '', skillName: '', inherit: false },
+	{ triggerName: '传承技', sect: '', skillName: '', inherit: false },
+	{ triggerName: '召唤', sect: '', skillName: '', inherit: false },
 ];
 
 /**
@@ -124,11 +124,13 @@ export const useBuilderStore = defineStore( 'builder', () => {
 			return false;
 		}
 
-		// 创建新数组以触发 shallowRef 更新
+		// 创建新数组以触发 shallowRef 更新，并一并写入该触发位下该流派的技能名
 		const newList = skillCardInfoList.value.map( ( item ) =>
-			item.triggerName === triggerName ? { ...item, sect } : item,
+			item.triggerName === triggerName
+				? { ...item, sect, skillName: getSkillNameBySectAndTrigger( sect, triggerName ) }
+				: item,
 		) as SkillCardInfoTuple;
-
+		
 		skillCardInfoList.value = newList;
 
 		// 单次计算：自然激活集合仅计算一次，其余动作复用其结果（Q6-b）
@@ -301,7 +303,16 @@ export const useBuilderStore = defineStore( 'builder', () => {
 			return false;
 		}
 
-		skillCardInfoList.value = config;
+		// 回填缺失的技能名（防御旧数据：sect 非空但无 skillName）
+		const normalized = config.map( ( card ) => {
+			const skillName =
+				typeof card.skillName === 'string'
+					? card.skillName
+					: getSkillNameBySectAndTrigger( card.sect, card.triggerName );
+			return { ...card, skillName };
+		} ) as SkillCardInfoTuple;
+
+		skillCardInfoList.value = normalized;
 		return true;
 	};
 

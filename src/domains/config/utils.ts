@@ -5,6 +5,7 @@
  */
 
 import type { Attribute } from '../../interfaces/Attribute.ts';
+import type { Trigger } from '../../interfaces/Trigger.ts';
 import type { SectValue, SectSkill } from './types.ts';
 import { sectList } from './constants.ts';
 
@@ -52,4 +53,16 @@ export function getAllSectNames(): SectValue[] {
  */
 export function getSectInfo(sect: SectValue): { attribute: Attribute; sect: SectValue; skill: SectSkill[] } | undefined {
   return sectList.find(s => s.sect === sect);
+}
+
+/**
+ * 根据流派和触发位获取技能名
+ * @param sect - 流派名称
+ * @param trigger - 触发位名称
+ * @returns 匹配的技能名；未找到时回退返回流派名；空流派返回空字符串
+ */
+export function getSkillNameBySectAndTrigger(sect: SectValue, trigger: Trigger): string {
+  if (!sect) return '';
+  const skill = getSectInfo(sect)?.skill.find(s => s.trigger === trigger);
+  return skill ? skill.name : sect;
 }

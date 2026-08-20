@@ -274,11 +274,14 @@ import type { Trigger } from '../../interfaces/Trigger.ts';
 import type { Attribute } from '../../interfaces/Attribute.ts';
 import type { SectValue } from '../../domains/config/types.ts';
 import { attributeList } from '../../domains/config/index.ts';
-import { getSkillIndex, getStrategySectPair } from '../../domains/skill/repository.ts';
 import {
+	getSkillIndex,
+	getStrategySectPair,
+} from '../../domains/skill/repository.ts';
+import {
+	getAvailableTriggersForSect,
 	type SkillCardInfo,
 	useBuilderStore,
-	getAvailableTriggersForSect,
 } from '../../domains/builder/index.ts';
 import { validateSect } from '../../shared/validation/index.ts';
 import type { FormInstance, FormRules } from 'element-plus';
@@ -383,6 +386,7 @@ const handleSubmit = async () => {
 	await formRef.value.validate( ( valid ) => {
 		if ( valid && formData.sect ) {
 			builderStore.updateSkillCardInfo( props.triggerName, formData.sect );
+			// console.log(props.triggerName, formData.sect);
 			handleCancel();
 		}
 	} );
