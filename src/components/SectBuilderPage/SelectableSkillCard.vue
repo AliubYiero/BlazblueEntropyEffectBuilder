@@ -31,12 +31,28 @@ const filterDetailList = computed( () => {
 				skill.secondary.some( c => c.name.includes( skillName ) )
 			),
 	);
+	// 已经选择完成的流派
+	const existingSkills = builderStore.readOnlyCardList.filter( card => card.sect ).map( card => card.triggerName );
+	
 	const filterList = list
 		.map( skill => ( {
 			skill,
 			availableTriggers: skill.triggerSlots.filter( t => !occupiedTriggers.value.has( t ) ),
 		} ) )
-		.filter( item => item.availableTriggers.length > 0 );
+		.filter( item => {
+			// 判断是否还存在可用触发位
+			const hasAvailableTriggers = item.availableTriggers.length > 0;
+			if ( !hasAvailableTriggers ) {
+				return false;
+			}
+			
+			// 判断当前双重策略的另一个技能位是否可用
+			const anotherSkill = item.skill.primary.some( c => c.name.includes( skillName ) )
+				? item.skill.secondary
+				: item.skill.primary;
+			const hasAvailableSkillSlot = !anotherSkill.every( ( { slot } ) => existingSkills.includes( slot ) );
+			return hasAvailableSkillSlot;
+		} );
 	
 	return filterList;
 } );
