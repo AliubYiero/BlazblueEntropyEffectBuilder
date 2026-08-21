@@ -172,7 +172,7 @@
 import { computed, ref } from 'vue';
 import type { Trigger } from '../../interfaces/Trigger.ts';
 import type { Attribute } from '../../interfaces/Attribute.ts';
-import { attributeList } from '../../domains/config/index.ts';
+import { attributeList, styleMapper } from '../../domains/config/index.ts';
 import { getSkillIndex, getStrategySectPair } from '../../domains/skill/repository.ts';
 import { useBuilderStore } from '../../domains/builder/index.ts';
 import type { DualStrategyInfo } from '../../core/data/types.ts';
@@ -218,13 +218,4 @@ const handleSelect = ( skill: DualStrategyInfo ) => {
  */
 const sectPairOf = ( skill: DualStrategyInfo ) => getStrategySectPair( skill );
 
-const styleMapper: Record<Attribute, string> = {
-	火: 'fire',
-	冰: 'ice',
-	电: 'thunder',
-	毒: 'poison',
-	暗: 'dark',
-	光: 'light',
-	刃: 'blade',
-};
 </script>

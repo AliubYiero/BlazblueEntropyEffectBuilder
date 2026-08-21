@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="300" height="300">
+	<!-- 闪电:7 个顶点的多边形 -->
+	<g transform="translate(150 150) scale(0.941176) translate(-145 -142.5)">
+		<path fill="#FFFFFF" d="M95,15
+                          L205,15
+                          L172,95
+                          L225,105
+                          L100,270
+                          L122,168
+                          L65,160
+                          Z"/>
+	</g>
+</svg>

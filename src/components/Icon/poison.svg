@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="300" height="300">
+	<defs>
+		<!-- 单元:一个圆 + 一条连向中心的直线 -->
+		<g id="node">
+			<line x1="150" y1="120" x2="150" y2="52" stroke="#FFFFFF" stroke-width="14"/>
+			<circle cx="150" cy="52" r="34" fill="#FFFFFF"/>
+		</g>
+	</defs>
+	
+	<g transform="translate(150 150) scale(1.139227) translate(-150 -109.222432)">
+		<!-- 三个单元,彼此旋转 120°,距离中心相等 -->
+		<use href="#node"/>
+		<use href="#node" transform="rotate(120 150 120)"/>
+		<use href="#node" transform="rotate(240 150 120)"/>
+	</g>
+</svg>  

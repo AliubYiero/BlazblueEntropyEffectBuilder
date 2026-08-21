@@ -273,7 +273,7 @@ import { computed, reactive, ref } from 'vue';
 import type { Trigger } from '../../interfaces/Trigger.ts';
 import type { Attribute } from '../../interfaces/Attribute.ts';
 import type { SectValue } from '../../domains/config/types.ts';
-import { attributeList } from '../../domains/config/index.ts';
+import { attributeList, styleMapper } from '../../domains/config/index.ts';
 import {
 	getSkillIndex,
 	getStrategySectPair,
@@ -401,13 +401,4 @@ const handleCancel = () => {
 	emit( 'closeDialog' );
 };
 
-const styleMapper: Record<Attribute, string> = {
-	火: 'fire',
-	冰: 'ice',
-	电: 'thunder',
-	毒: 'poison',
-	暗: 'dark',
-	光: 'light',
-	刃: 'blade',
-};
 </script>

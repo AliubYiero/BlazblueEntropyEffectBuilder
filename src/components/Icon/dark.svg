@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="300" height="300">
+	<!-- 外层残月:外弧(大圆) + 内弧(偏移小圆)围成,开口朝右 -->
+	<g transform="translate(150 150) scale(1.333247) translate(-141 -112)">
+		<path fill="#FFFFFF" d="M222,58
+                          A90,90 0 1 0 222,166
+                          A75,75 0 1 1 222,58 Z"/>
+		<!-- 中间实心圆 -->
+		<circle cx="170" cy="112" r="38" fill="#FFFFFF"/>
+	</g>
+</svg>

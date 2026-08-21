@@ -3,7 +3,7 @@ import { computed } from 'vue';
 import type { DualStrategyInfo } from '../../core/data/types.ts';
 import type { Attribute } from '../../interfaces/Attribute.ts';
 import type { Trigger } from '../../interfaces/Trigger.ts';
-import { getSkillsBySect } from '../../domains/config/index.ts';
+import { getSkillsBySect, styleMapper } from '../../domains/config/index.ts';
 import { getStrategySectPair } from '../../domains/skill/index.ts';
 
 interface Props {
@@ -41,11 +41,6 @@ const handleClick = () => {
 	if ( props.clickable ) {
 		emit( 'click', props.skill );
 	}
-};
-
-const styleMapper: Record<Attribute, string> = {
-	'火': 'fire', '冰': 'ice', '电': 'thunder',
-	'毒': 'poison', '暗': 'dark', '光': 'light', '刃': 'blade',
 };
 
 const getSkillDisplay = ( sectName: string ): string => {

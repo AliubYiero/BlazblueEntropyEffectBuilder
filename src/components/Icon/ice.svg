@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="300" height="300">
+	<defs>
+		<!-- 单个棱形:外尖(150,8)、内尖(150,94)、左右角宽 26 -->
+		<path id="petal" d="M150,8 L163,52 L150,94 L137,52 Z"/>
+	</defs>
+	
+	<!-- 6 个棱形,每 60° 旋转一次,中心留空 -->
+	<g transform="translate(150 150) scale(1.153846) translate(-150 -112)">
+		<g fill="#FFFFFF">
+			<use href="#petal"/>
+			<use href="#petal" transform="rotate(60 150 112)"/>
+			<use href="#petal" transform="rotate(120 150 112)"/>
+			<use href="#petal" transform="rotate(180 150 112)"/>
+			<use href="#petal" transform="rotate(240 150 112)"/>
+			<use href="#petal" transform="rotate(300 150 112)"/>
+		</g>
+	</g>
+</svg>

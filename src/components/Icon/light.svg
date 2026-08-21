@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="300" height="300">
+	<!-- 底层:圆环 -->
+	<g transform="translate(150 150) scale(1.090909) translate(-150 -112)">
+		<circle cx="150" cy="112" r="88" fill="none" stroke="#FFFFFF" stroke-width="7"/>
+
+		<!-- 上层:四角星(四边内凹,尖角朝上/下/左/右,伸出圆环外) -->
+		<path fill="#FFFFFF" d="M150,12
+                          Q160,102 260,112
+                          Q160,122 150,212
+                          Q140,122 40,112
+                          Q140,102 150,12 Z"/>
+	</g>
+</svg>

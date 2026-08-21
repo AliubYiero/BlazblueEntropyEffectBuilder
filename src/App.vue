@@ -33,7 +33,7 @@
 	--element-ice: hsl(199 89% 48%);
 	--element-thunder: hsl(48 96% 53%);
 	--element-poison: hsl(271 91% 65%);
-	--element-dark: hsl(258 90% 66%);
+	--element-dark: hsl(258 45% 17%);
 	--element-light: hsl(45 93% 47%);
 	--element-blade: hsl(215 16% 47%);
 
@@ -63,6 +63,9 @@
 	--border: hsl(217.2 32.6% 17.5%);
 	--input: hsl(217.2 32.6% 17.5%);
 	--ring: hsl(212.7 26.8% 83.9%);
+
+	/* 深色模式下补亮暗属性元素色，避免与深色背景融为一体 */
+	--element-dark: hsl(258 60% 70%);
 }
 
 /* 全局重置 */
@@ -303,7 +306,6 @@ body {
 	width: 8px;
 	height: 8px;
 	border-radius: 50%;
-	margin-right: 6px;
 
 	&--fire {
 		background: var(--element-fire);

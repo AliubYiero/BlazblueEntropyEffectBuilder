@@ -5,6 +5,7 @@
  */
 
 import type { SectInfo, AttributeList, TriggerList } from './types.ts';
+import type { Attribute } from '../../interfaces/Attribute.ts';
 
 /**
  * 完整流派列表（36个流派）
@@ -256,3 +257,17 @@ export const attributeList: AttributeList = ['火', '冰', '电', '毒', '暗', 
  * 触发位列表（5个位置）
  */
 export const triggerList: TriggerList = ['普攻', '技能', '冲刺', '传承技', '召唤'] as const;
+
+/**
+ * 元素到 CSS 样式名映射
+ * @description 中文元素名 → 英文 CSS class/变量后缀（用于元素颜色与图标）
+ */
+export const styleMapper: Record<Attribute, string> = {
+  '火': 'fire',
+  '冰': 'ice',
+  '电': 'thunder',
+  '毒': 'poison',
+  '暗': 'dark',
+  '光': 'light',
+  '刃': 'blade',
+};
