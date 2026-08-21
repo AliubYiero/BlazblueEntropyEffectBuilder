@@ -23,6 +23,13 @@
 	gap: 12px;
 }
 
+.logo-icon {
+	$size: 40px;
+	width: $size;
+	height: $size;
+	user-select: none;
+}
+
 .logo-text {
 	font-family: var(--font-chinese);
 	font-size: 16px;
@@ -114,6 +121,9 @@
 	<header class="header">
 		<div class="header-inner">
 			<div class="logo-section">
+				<i class="logo-icon-section">
+					<img src="/logo.png" alt="logo" class="logo-icon" >
+				</i>
 				<span class="logo-text">苍翼混沌效应</span>
 				<span class="logo-subtitle">流派构建器</span>
 			</div>

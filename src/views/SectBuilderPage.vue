@@ -18,9 +18,11 @@
 	font-size: 14px;
 	font-weight: 600;
 	color: var(--foreground);
+	display: flex;
+	gap: 8px;
+	align-items: center;
 	
 	&-tooltip {
-		padding-left: 8px;
 		color: var(--muted-foreground);
 		font-weight: lighter;
 		font-size: 12px;
@@ -145,9 +147,24 @@
 		padding: 16px;
 	}
 	
+	.section-title {
+		gap: 0;
+		flex-direction: column;
+		align-items: flex-start;
+	}
+	
+	.slot-cards {
+		grid-template-columns: 1fr;
+	}
+	
 	.slot-row {
 		flex-direction: column;
 	}
+	.skill-card {
+		height: 70px;
+		justify-content: center;
+	}
+	
 }
 </style>
 
