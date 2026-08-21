@@ -31,20 +31,7 @@ const filterDetailList = computed( () => {
 				skill.secondary.some( c => c.name.includes( skillName ) )
 			),
 	);
-	const existing = builderStore.skillCardInfoList.filter( c => c.sect || c.manualSkillId ).map( c => c.triggerName );
 	const filterList = list
-		.filter( skill => {
-				const anotherSect = skill.primary.some( c => c.name.includes( skillName ) )
-					? skill.secondary
-					: skill.primary;
-				
-				const isAllExisted = anotherSect.every( c => {
-					return existing.includes( c.slot );
-				} );
-				
-				return !isAllExisted;
-			},
-		)
 		.map( skill => ( {
 			skill,
 			availableTriggers: skill.triggerSlots.filter( t => !occupiedTriggers.value.has( t ) ),
