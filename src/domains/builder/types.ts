@@ -36,8 +36,8 @@ export interface SlotAssignment {
   skill: DualStrategyInfo;
   /**
    * 是否锁定
-   * @description 手动 pin / 自动单触发 / 自动多触发收窄到唯一剩余槽位 时为 true；
-   * 多触发虚线预占时为 false
+   * @description 手动 pin / 自动单触发 / 自动多触发收窄到唯一剩余槽位 / 自动多触发竞争分槽 时为 true；
+   * 无竞争的多触发虚线预占时为 false
    */
   isLocked: boolean;
   /** 来源：手动 pin 或自动解析 */

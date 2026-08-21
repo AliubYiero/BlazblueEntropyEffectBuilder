@@ -64,8 +64,11 @@ export function calculateActivatedSkills(
  * @description 解析规则（设计定稿）：
  * - 手动 pin 优先：占据所选槽位并锁定（isLocked=true），且该策略不再参与自动解析（Q6=A）
  * - 自动单触发策略：锁定其唯一触发位
- * - 自动多触发策略：在未锁定槽位上虚线预占；当其它 triggerSlots 全部被锁定时，
- *   收窄到唯一剩余槽位锁定；平局按数据索引顺序取先者（Q3=A）
+ * - 自动多触发策略：覆盖优先分槽——先做最大覆盖匹配（Kuhn 增广路径，索引序先到先得，
+ *   每个策略至多 1 槽），再把剩余空槽按索引序认领。共享同一触发位集合的双重策略因此
+ *   分槽并存，而非索引序前者独占全部共享槽位；当其它 triggerSlots 全部被锁定时收窄到
+ *   唯一剩余槽位锁定。被 ≥2 个激活策略声明的竞争槽位分槽后自动锁定（isLocked=true）；
+ *   无竞争预占槽位保持虚线（isLocked=false）
  * - 零剩余（triggerSlots 全部被锁定）：从槽位卡片消失，但仍计入已激活
  * @param cards - 技能位配置元组
  * @param calculated - 自然激活的策略列表（索引序）
@@ -121,15 +124,64 @@ export function calculateSlotAssignments(
 		}
 	}
 
-	// 3. 虚线预占：未锁定的槽位取第一个（索引序）覆盖它的未锁定自动策略
-	for ( const card of cards ) {
-		const slot = card.triggerName;
-		if ( assignments.has( slot ) ) continue;
-		for ( const skill of auto ) {
-			if ( resolved.has( skill.id ) ) continue;
-			if ( !skill.triggerSlots.includes( slot ) ) continue;
-			assignments.set( slot, { slot, skill, isLocked: false, source: 'auto' } );
-			break;
+	// 3. 覆盖优先分槽（修订 Q3-A）：多触发策略竞争同一触发位集合时分槽并存，而非索引序前者独占全部槽位
+	//    3a. 最大覆盖匹配（Kuhn 增广路径，索引序先到先得）：每个未解析策略至多 1 槽
+	//    3b. 剩余空槽按索引序认领：让策略占满其 triggerSlots 中剩余的空槽
+	//        → 单个无竞争策略仍占满所有 triggerSlots；被挤出者无槽但仍在已激活集合
+	//    锁定规则：被 ≥2 个激活策略声明的竞争槽位，分槽后自动锁定（isLocked=true，只读）；
+	//    无竞争预占槽位保持虚线（isLocked=false，可点击手动接管）
+	const matchedSlotOf = new Map<string, Trigger>();      // strategyId -> 匹配槽位
+	const matchedStrategyOf = new Map<Trigger, string>();  // 槽位 -> 已匹配的 strategyId
+	const autoById = new Map( auto.map( ( s ) => [ s.id, s ] as const ) );
+
+	// 每个触发位被多少个激活自动策略声明（竞争槽位 = 声明数 ≥ 2）
+	const claimCount = new Map<Trigger, number>();
+	for ( const skill of auto ) {
+		for ( const t of skill.triggerSlots ) {
+			claimCount.set( t, ( claimCount.get( t ) ?? 0 ) + 1 );
+		}
+	}
+	const isContested = ( t: Trigger ): boolean => ( claimCount.get( t ) ?? 0 ) >= 2;
+
+	// Kuhn 增广：为 skill 找槽位；已锁定槽（手动 pin / Pass 2）不参与匹配
+	const augment = ( skill: DualStrategyInfo, visited: Set<Trigger> ): boolean => {
+		for ( const t of skill.triggerSlots ) {
+			if ( assignments.has( t ) || visited.has( t ) ) continue;
+			visited.add( t );
+			const ownerId = matchedStrategyOf.get( t );
+			if ( ownerId === undefined ) {
+				matchedSlotOf.set( skill.id, t );
+				matchedStrategyOf.set( t, skill.id );
+				return true;
+			}
+			const owner = autoById.get( ownerId );
+			if ( owner && augment( owner, visited ) ) {
+				matchedSlotOf.set( skill.id, t );
+				matchedStrategyOf.set( t, skill.id );
+				return true;
+			}
+		}
+		return false;
+	};
+
+	for ( const skill of auto ) {
+		if ( resolved.has( skill.id ) ) continue;
+		augment( skill, new Set() );
+	}
+
+	// 3a 结果写入分配（竞争槽位锁定，无竞争虚线预占）
+	for ( const [ skillId, slot ] of matchedSlotOf ) {
+		const skill = autoById.get( skillId );
+		if ( !skill ) continue;
+		assignments.set( slot, { slot, skill, isLocked: isContested( slot ), source: 'auto' } );
+	}
+
+	// 3b 剩余空槽认领
+	for ( const skill of auto ) {
+		if ( resolved.has( skill.id ) ) continue;
+		for ( const t of skill.triggerSlots ) {
+			if ( assignments.has( t ) ) continue;
+			assignments.set( t, { slot: t, skill, isLocked: isContested( t ), source: 'auto' } );
 		}
 	}
 
